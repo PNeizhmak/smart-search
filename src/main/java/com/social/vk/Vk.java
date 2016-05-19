@@ -1,5 +1,6 @@
-package com.vk;
+package com.social.vk;
 
+import com.model.IUserOperations;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -11,7 +12,7 @@ import java.io.IOException;
 /**
  * @author Pavel Neizhmak
  */
-public class Vk {
+public class Vk implements IUserOperations {
 
     private static final String CLIENT_ID = "5087523";
     private static final String SCOPE = "offline";
@@ -23,24 +24,6 @@ public class Vk {
 
     private static final String ACCESS_TOKEN = "25a3b88adc5c8321385d9e5433a9f2880dc89df0eac66805fd38ccabcc9c8b29c9b392e45855ed61b4bd1";
 
-    public static void main(String[] args) {
-        try {
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpResponse response;
-
-            response = search(httpClient);
-            final String searchStringResponse = EntityUtils.toString(response.getEntity());
-            System.out.println(searchStringResponse);
-
-            response = getPersonalInfoByUid(httpClient);
-            String getInfoStringResponse = EntityUtils.toString(response.getEntity());
-            System.out.println(getInfoStringResponse);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * Search users by user name
      * Additional search params are here https://vk.com/dev/users.search
@@ -49,7 +32,7 @@ public class Vk {
      * @return {@see HttpResponse}
      * @throws IOException
      */
-    private static HttpResponse search(HttpClient httpClient) throws IOException {
+    public String searchUsersByName(HttpClient httpClient) throws IOException {
         HttpResponse response;
         HttpPost searchPost = new HttpPost(VK_PREFIX +
                 "users.search" +
@@ -58,7 +41,11 @@ public class Vk {
 
         response = httpClient.execute(searchPost);
         searchPost.abort();
-        return response;
+
+        final String stringResponse = EntityUtils.toString(response.getEntity());
+        System.out.println(stringResponse);
+
+        return stringResponse;
     }
 
     /**
@@ -68,7 +55,7 @@ public class Vk {
      * @return {@see HttpResponse}
      * @throws IOException
      */
-    private static HttpResponse getPersonalInfoByUid(HttpClient httpClient) throws IOException {
+    public String getPersonalInfoById(HttpClient httpClient) throws IOException {
         HttpResponse response;
         HttpPost getInfoPost = new HttpPost(VK_PREFIX +
                 "users.get" +
@@ -78,7 +65,11 @@ public class Vk {
 
         response = httpClient.execute(getInfoPost);
         getInfoPost.abort();
-        return response;
+
+        String stringResponse = EntityUtils.toString(response.getEntity());
+        System.out.println(stringResponse);
+
+        return stringResponse;
     }
 
     /**
