@@ -4,6 +4,7 @@ import com.social.instagram.Instagram;
 import com.social.vk.Vk;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
 
@@ -16,8 +17,7 @@ public class Main {
         try {
             Instagram instagram = new Instagram();
             Vk vk = new Vk();
-            final HttpClient httpClient = new DefaultHttpClient();
-
+            final HttpClient httpClient = HttpClients.createDefault();
             vk.searchUsersByName(httpClient);
             vk.getPersonalInfoById(httpClient);
 
