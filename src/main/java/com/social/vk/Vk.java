@@ -1,18 +1,24 @@
 package com.social.vk;
 
-import com.model.IUserOperations;
+import java.io.IOException;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+
+import com.google.inject.Inject;
+import com.model.IUserOperationsNew;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import java.io.IOException;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-/**
- * @author Pavel Neizhmak
- */
-public class Vk implements IUserOperations {
+@Path("vk")
+public class Vk implements IUserOperationsNew {
 
     private static final String CLIENT_ID = "5087523";
     private static final String SCOPE = "offline";
@@ -24,19 +30,17 @@ public class Vk implements IUserOperations {
 
     private static final String ACCESS_TOKEN = "25a3b88adc5c8321385d9e5433a9f2880dc89df0eac66805fd38ccabcc9c8b29c9b392e45855ed61b4bd1";
 
-    /**
-     * Search users by user name
-     * Additional search params are here https://vk.com/dev/users.search
-     *
-     * @param httpClient {@see HttpClient}
-     * @return {@see IUserOperations#searchUsersByName}
-     * @throws IOException
-     */
-    public String searchUsersByName(HttpClient httpClient) throws IOException {
+    @Inject
+    private HttpClient httpClient;
+
+    @GET
+    @Path("/searchByName/{name}")
+    @Produces( APPLICATION_JSON )
+    public String searchUsersByName(@PathParam("name") String name) throws IOException {
         HttpResponse response;
         HttpPost searchPost = new HttpPost(VK_PREFIX +
                 "users.search" +
-                "?q=Durov" +
+                "?q=" + name +
                 "&access_token=" + ACCESS_TOKEN);
 
         response = httpClient.execute(searchPost);
@@ -46,20 +50,17 @@ public class Vk implements IUserOperations {
         System.out.println(stringResponse);
 
         return stringResponse;
+
     }
 
-    /**
-     * Support multiple user_ids
-     *
-     * @param httpClient {@see HttpClient}
-     * @return {@see IUserOperations#getPersonalInfoById}
-     * @throws IOException
-     */
-    public String getPersonalInfoById(HttpClient httpClient) throws IOException {
+    @GET
+    @Path("/searchById/{id}")
+    @Produces( APPLICATION_JSON )
+    public String getPersonalInfoById(@PathParam("id") String id) throws IOException {
         HttpResponse response;
         HttpPost getInfoPost = new HttpPost(VK_PREFIX +
                 "users.get" +
-                "?user_ids=durov" +
+                "?user_ids=" + id +
                 "&fields=city,contacts,site,education,status,connections" +
                 "&name_case=Nom");
 
