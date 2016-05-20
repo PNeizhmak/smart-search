@@ -1,4 +1,4 @@
-package com.facebook;
+package com.social.facebook;
 
 import com.model.IUserOperations;
 import org.apache.http.HttpResponse;

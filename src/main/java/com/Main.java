@@ -2,7 +2,7 @@ package com;
 
 import java.io.IOException;
 
-import com.facebook.Facebook;
+import com.social.facebook.Facebook;
 import com.social.instagram.Instagram;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClients;
