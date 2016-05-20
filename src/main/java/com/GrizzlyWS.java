@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServlet;
 
+import com.config.CORSResponseFilter;
 import com.google.inject.servlet.GuiceFilter;
 import com.config.Config;
 import com.sun.grizzly.http.embed.GrizzlyWebServer;
@@ -15,6 +16,7 @@ public class GrizzlyWS {
             GrizzlyWebServer server = new GrizzlyWebServer(8081);
             ServletAdapter adapter = new ServletAdapter(new DummySevlet());
             adapter.addServletListener(Config.class.getName());
+            adapter.addFilter(new CORSResponseFilter(), "CORSResponseFilter", null);
             adapter.addFilter(new GuiceFilter(), "GuiceFilter", null);
             server.addGrizzlyAdapter(adapter, new String[]{ "/" });
             server.start();
