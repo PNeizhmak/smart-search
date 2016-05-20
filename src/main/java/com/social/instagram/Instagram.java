@@ -1,5 +1,6 @@
 package com.social.instagram;
 
+import com.google.inject.Inject;
 import com.model.IUserOperations;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -8,7 +9,13 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import java.io.IOException;
+
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 /**
  * @author Pavel Neizhmak
@@ -21,6 +28,7 @@ import java.io.IOException;
  *         <p>
  *         current solution: i've generated the token via https://apigee.com/console
  */
+@Path("instagram")
 public class Instagram implements IUserOperations {
 
     private static final String CLIENT_ID = "d350fe69884746199db9eec8f9a8048a";
@@ -33,19 +41,18 @@ public class Instagram implements IUserOperations {
 
     private static final String TEMP_ACCESS_TOKEN = "185507778.1fb234f.c62a8528849b4388a184edd97aa74993";
 
-    /**
-     * Search users by user name
-     *
-     * @param httpClient {@see HttpClient}
-     * @return {@see IUserOperations#searchUsersByName}
-     * @throws IOException
-     */
-    public String searchUsersByName(HttpClient httpClient) throws IOException {
+    @Inject
+    private HttpClient httpClient;
+
+    @GET
+    @Path("/searchByName/{name}")
+    @Produces(APPLICATION_JSON)
+    public String searchByName(@PathParam("name") final String name) throws IOException {
 
         HttpResponse response;
         HttpGet searchGet = new HttpGet(INSTAGRAM_PREFIX +
                 API_VERSION + "/users/search" +
-                "?q=Durov" +
+                "?q=" + name +
                 "&access_token=" + TEMP_ACCESS_TOKEN);
 
         response = httpClient.execute(searchGet);
@@ -56,20 +63,15 @@ public class Instagram implements IUserOperations {
         return stringResponse;
     }
 
-    /**
-     * Gets public personal info
-     *
-     * @param httpClient {@see HttpClient}
-     * @return {@see IUserOperations#getPersonalInfoById}
-     * @throws IOException
-     */
-    public String getPersonalInfoById(HttpClient httpClient) throws IOException {
-        final String userIdToSearch = "4663052";
+    @GET
+    @Path("/getUserInfo/{id}")
+    @Produces(APPLICATION_JSON)
+    public String getUserInfo(@PathParam("id") final String id) throws IOException {
         HttpResponse response;
 
         HttpGet getInfoGet = new HttpGet(INSTAGRAM_PREFIX +
                 API_VERSION + "/users/" +
-                userIdToSearch +
+                id +
                 "?access_token=" + TEMP_ACCESS_TOKEN);
 
         response = httpClient.execute(getInfoGet);

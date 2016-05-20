@@ -1,24 +1,23 @@
 package com.social.vk;
 
-import java.io.IOException;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-
 import com.google.inject.Inject;
-import com.model.IUserOperationsNew;
+import com.model.IUserOperations;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import java.io.IOException;
+
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("vk")
-public class Vk implements IUserOperationsNew {
+public class Vk implements IUserOperations {
 
     private static final String CLIENT_ID = "5087523";
     private static final String SCOPE = "offline";
@@ -35,8 +34,8 @@ public class Vk implements IUserOperationsNew {
 
     @GET
     @Path("/searchByName/{name}")
-    @Produces( APPLICATION_JSON )
-    public String searchUsersByName(@PathParam("name") String name) throws IOException {
+    @Produces(APPLICATION_JSON)
+    public String searchByName(@PathParam("name") final String name) throws IOException {
         HttpResponse response;
         HttpPost searchPost = new HttpPost(VK_PREFIX +
                 "users.search" +
@@ -50,13 +49,12 @@ public class Vk implements IUserOperationsNew {
         System.out.println(stringResponse);
 
         return stringResponse;
-
     }
 
     @GET
-    @Path("/searchById/{id}")
-    @Produces( APPLICATION_JSON )
-    public String getPersonalInfoById(@PathParam("id") String id) throws IOException {
+    @Path("/getUserInfo/{id}")
+    @Produces(APPLICATION_JSON)
+    public String getUserInfo(@PathParam("id") final String id) throws IOException {
         HttpResponse response;
         HttpPost getInfoPost = new HttpPost(VK_PREFIX +
                 "users.get" +

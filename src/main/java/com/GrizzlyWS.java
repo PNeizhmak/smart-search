@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServlet;
 
 import com.google.inject.servlet.GuiceFilter;
-import com.social.config.Config;
+import com.config.Config;
 import com.sun.grizzly.http.embed.GrizzlyWebServer;
 import com.sun.grizzly.http.servlet.ServletAdapter;
 

@@ -1,10 +1,12 @@
-package com.social.config;
+package com.config;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
+import com.social.facebook.Facebook;
+import com.social.instagram.Instagram;
 import com.social.vk.Vk;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import org.apache.http.client.HttpClient;
@@ -17,6 +19,8 @@ public class Config extends GuiceServletContextListener {
             @Override
             protected void configureServlets() {
                 bind(Vk.class);
+                bind(Instagram.class);
+                bind(Facebook.class);
                 serve("*").with(GuiceContainer.class);
             }
 

@@ -1,29 +1,26 @@
 package com.model;
 
-import org.apache.http.client.HttpClient;
-
 import java.io.IOException;
 
-/**
- * @author Pavel Neizhmak
- */
 public interface IUserOperations {
 
     /**
-     * searches users by full or partial name
+     * Search users by user name
+     * Additional search params are here https://vk.com/dev/users.search
      *
-     * @param httpClient {@see HttpClient}
-     * @return json represented as a string
+     * @param name User name
+     *
+     * @return {@see IUserOperations#searchByName}
      * @throws IOException
      */
-    String searchUsersByName(HttpClient httpClient) throws IOException;
+    String searchByName(String name) throws IOException;
 
     /**
-     * gets detailed user info
+     * Support multiple user_ids
      *
-     * @param httpClient {@see HttpClient}
-     * @return json represented as a string
+     * @param id User id
+     * @return {@see IUserOperations#getUserInfo}
      * @throws IOException
      */
-    String getPersonalInfoById(HttpClient httpClient) throws IOException;
+    String getUserInfo(String id) throws IOException;
 }
