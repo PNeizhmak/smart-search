@@ -29,7 +29,7 @@ public class Vk implements IUserOperations {
      * Additional search params are here https://vk.com/dev/users.search
      *
      * @param httpClient {@see HttpClient}
-     * @return {@see HttpResponse}
+     * @return {@see IUserOperations#searchUsersByName}
      * @throws IOException
      */
     public String searchUsersByName(HttpClient httpClient) throws IOException {
@@ -52,7 +52,7 @@ public class Vk implements IUserOperations {
      * Support multiple user_ids
      *
      * @param httpClient {@see HttpClient}
-     * @return {@see HttpResponse}
+     * @return {@see IUserOperations#getPersonalInfoById}
      * @throws IOException
      */
     public String getPersonalInfoById(HttpClient httpClient) throws IOException {

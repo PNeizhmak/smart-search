@@ -28,15 +28,23 @@ public class Instagram implements IUserOperations {
     private static final String RESPONSE_TYPE = "token";
     private static final String REDIRECT_URI = "http://localhost";
     private static final String INSTAGRAM_PREFIX = "https://api.instagram.com/";
+    private static final String API_VERSION = "v1";
     private static final String CLIENT_SECRET = "feb99c46f2234f0580ac167e01c47c5f";
 
     private static final String TEMP_ACCESS_TOKEN = "185507778.1fb234f.c62a8528849b4388a184edd97aa74993";
 
+    /**
+     * Search users by user name
+     *
+     * @param httpClient {@see HttpClient}
+     * @return {@see IUserOperations#searchUsersByName}
+     * @throws IOException
+     */
     public String searchUsersByName(HttpClient httpClient) throws IOException {
 
         HttpResponse response;
         HttpGet searchGet = new HttpGet(INSTAGRAM_PREFIX +
-                "v1/users/search" +
+                API_VERSION + "/users/search" +
                 "?q=Durov" +
                 "&access_token=" + TEMP_ACCESS_TOKEN);
 
@@ -48,12 +56,19 @@ public class Instagram implements IUserOperations {
         return stringResponse;
     }
 
+    /**
+     * Gets public personal info
+     *
+     * @param httpClient {@see HttpClient}
+     * @return {@see IUserOperations#getPersonalInfoById}
+     * @throws IOException
+     */
     public String getPersonalInfoById(HttpClient httpClient) throws IOException {
         final String userIdToSearch = "4663052";
         HttpResponse response;
 
         HttpGet getInfoGet = new HttpGet(INSTAGRAM_PREFIX +
-                "v1/users/" +
+                API_VERSION + "/users/" +
                 userIdToSearch +
                 "?access_token=" + TEMP_ACCESS_TOKEN);
 
