@@ -14,7 +14,7 @@ public class GrizzlyWS {
     public static void main(String[] args) {
         try {
             GrizzlyWebServer server = new GrizzlyWebServer(8081);
-            ServletAdapter adapter = new ServletAdapter(new DummySevlet());
+            ServletAdapter adapter = new ServletAdapter(new DummyServlet());
             adapter.addServletListener(Config.class.getName());
             adapter.addFilter(new CORSResponseFilter(), "CORSResponseFilter", null);
             adapter.addFilter(new GuiceFilter(), "GuiceFilter", null);
@@ -27,4 +27,4 @@ public class GrizzlyWS {
 }
 
 @SuppressWarnings("serial")
-class DummySevlet extends HttpServlet { }
+class DummyServlet extends HttpServlet { }
