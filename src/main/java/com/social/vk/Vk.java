@@ -2,10 +2,14 @@ package com.social.vk;
 
 import com.google.inject.Inject;
 import com.model.IUserOperations;
+import com.util.Constants;
+import com.util.Utils;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import javax.ws.rs.GET;
@@ -13,6 +17,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -22,7 +30,7 @@ public class Vk implements IUserOperations {
     private static final String CLIENT_ID = "5087523";
     private static final String SCOPE = "offline";
     private static final String REDIRECT_URI = "http://oauth.vk.com/blank.html";
-    private static final String VK_PREFIX = "https://api.vk.com/method/";
+    private static final String VK_PREFIX = "api.vk.com/method";
     private static final String DISPLAY = "page";
     private static final String RESPONSE_TYPE = "token";
     private static final String APP_SECRET = "0w2LtEeW1KWvtcCIRusx";
@@ -35,12 +43,15 @@ public class Vk implements IUserOperations {
     @GET
     @Path("/searchByName/{name}")
     @Produces(APPLICATION_JSON)
-    public String searchByName(@PathParam("name") final String name) throws IOException {
+    public String searchByName(@PathParam("name") final String name) throws IOException, URISyntaxException {
         HttpResponse response;
-        HttpPost searchPost = new HttpPost(VK_PREFIX +
-                "users.search" +
-                "?q=" + name +
-                "&access_token=" + ACCESS_TOKEN);
+
+        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        nameValuePairs.add(new BasicNameValuePair("q", name));
+        nameValuePairs.add(new BasicNameValuePair("access_token", ACCESS_TOKEN));
+
+        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, VK_PREFIX, "/users.search", nameValuePairs);
+        HttpPost searchPost = new HttpPost(uri);
 
         response = httpClient.execute(searchPost);
         searchPost.abort();
@@ -54,13 +65,16 @@ public class Vk implements IUserOperations {
     @GET
     @Path("/getUserInfo/{id}")
     @Produces(APPLICATION_JSON)
-    public String getUserInfo(@PathParam("id") final String id) throws IOException {
+    public String getUserInfo(@PathParam("id") final String id) throws IOException, URISyntaxException {
         HttpResponse response;
-        HttpPost getInfoPost = new HttpPost(VK_PREFIX +
-                "users.get" +
-                "?user_ids=" + id +
-                "&fields=city,contacts,site,education,status,connections" +
-                "&name_case=Nom");
+
+        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        nameValuePairs.add(new BasicNameValuePair("user_ids", id));
+        nameValuePairs.add(new BasicNameValuePair("fields", "city,contacts,site,education,status,connections"));
+        nameValuePairs.add(new BasicNameValuePair("name_case", "Nom"));
+
+        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, VK_PREFIX, "/users.get", nameValuePairs);
+        HttpPost getInfoPost = new HttpPost(uri);
 
         response = httpClient.execute(getInfoPost);
         getInfoPost.abort();

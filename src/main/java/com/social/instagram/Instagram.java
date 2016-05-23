@@ -2,11 +2,15 @@ package com.social.instagram;
 
 import com.google.inject.Inject;
 import com.model.IUserOperations;
+import com.util.Constants;
+import com.util.Utils;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import javax.ws.rs.GET;
@@ -14,6 +18,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -35,8 +43,7 @@ public class Instagram implements IUserOperations {
     private static final String SCOPE = "basic+public_content+comments+relationships+likes+follower_list";
     private static final String RESPONSE_TYPE = "token";
     private static final String REDIRECT_URI = "http://localhost";
-    private static final String INSTAGRAM_PREFIX = "https://api.instagram.com/";
-    private static final String API_VERSION = "v1";
+    private static final String INSTAGRAM_PREFIX = "api.instagram.com/v1";
     private static final String CLIENT_SECRET = "feb99c46f2234f0580ac167e01c47c5f";
 
     private static final String TEMP_ACCESS_TOKEN = "185507778.1fb234f.c62a8528849b4388a184edd97aa74993";
@@ -47,13 +54,16 @@ public class Instagram implements IUserOperations {
     @GET
     @Path("/searchByName/{name}")
     @Produces(APPLICATION_JSON)
-    public String searchByName(@PathParam("name") final String name) throws IOException {
+    public String searchByName(@PathParam("name") final String name) throws IOException, URISyntaxException {
 
         HttpResponse response;
-        HttpGet searchGet = new HttpGet(INSTAGRAM_PREFIX +
-                API_VERSION + "/users/search" +
-                "?q=" + name +
-                "&access_token=" + TEMP_ACCESS_TOKEN);
+
+        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        nameValuePairs.add(new BasicNameValuePair("q", name));
+        nameValuePairs.add(new BasicNameValuePair("access_token", TEMP_ACCESS_TOKEN));
+
+        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, INSTAGRAM_PREFIX, "/users/search", nameValuePairs);
+        HttpGet searchGet = new HttpGet(uri);
 
         response = httpClient.execute(searchGet);
 
@@ -66,13 +76,14 @@ public class Instagram implements IUserOperations {
     @GET
     @Path("/getUserInfo/{id}")
     @Produces(APPLICATION_JSON)
-    public String getUserInfo(@PathParam("id") final String id) throws IOException {
+    public String getUserInfo(@PathParam("id") final String id) throws IOException, URISyntaxException {
         HttpResponse response;
 
-        HttpGet getInfoGet = new HttpGet(INSTAGRAM_PREFIX +
-                API_VERSION + "/users/" +
-                id +
-                "?access_token=" + TEMP_ACCESS_TOKEN);
+        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        nameValuePairs.add(new BasicNameValuePair("access_token", TEMP_ACCESS_TOKEN));
+
+        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, INSTAGRAM_PREFIX, "/users/" + id, nameValuePairs);
+        HttpGet getInfoGet = new HttpGet(uri);
 
         response = httpClient.execute(getInfoGet);
 

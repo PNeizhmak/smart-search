@@ -1,6 +1,7 @@
 package com.model;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public interface IUserOperations {
 
@@ -13,7 +14,7 @@ public interface IUserOperations {
      * @return {@see IUserOperations#searchByName}
      * @throws IOException
      */
-    String searchByName(String name) throws IOException;
+    String searchByName(String name) throws IOException, URISyntaxException;
 
     /**
      * Support multiple user_ids
@@ -22,5 +23,5 @@ public interface IUserOperations {
      * @return {@see IUserOperations#getUserInfo}
      * @throws IOException
      */
-    String getUserInfo(String id) throws IOException;
+    String getUserInfo(String id) throws IOException, URISyntaxException;
 }
