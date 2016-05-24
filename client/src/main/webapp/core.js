@@ -1,12 +1,13 @@
 var core = {};
 core.getServiceUrl = function (baseUrl) {
-    var platform = $('#smart-search-form select#Platform').val();
-    var apiMethod = $('#smart-search-form select#Search-param').val();
-    var value = $('#smart-search-form input#search-value').val();
+    var form = '#smart-search-form';
+    var platform = $(form).find('select#Platform').val();
+    var apiMethod = $(form).find('select#Search-param').val();
+    var value = $(form).find('input#search-value').val();
     return baseUrl + platform + "/" + apiMethod + "/" + value;
 };
 
-$(function() {
+$(function () {
 
     var baseUrl = "http://localhost:8081/";
 
@@ -17,7 +18,7 @@ $(function() {
             url: core.getServiceUrl(baseUrl),
             type: 'get',
             success: function (data) {
-                textarea.val(data);
+                textarea.val(JSON.stringify(data));
                 console.log(data);
             },
             error: function (data) {
