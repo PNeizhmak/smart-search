@@ -16,8 +16,8 @@ public class VkWrapper implements IConvertAPI {
 
         Gson gson = new Gson();
 
-        final VkUserInfoDto vkDto = gson.fromJson(response, VkUserInfoDto.class);
+        final VkUserInfoDto userInfoDto = gson.fromJson(response, VkUserInfoDto.class);
 
-        return vkDto.getResponse().get(0).toString();
+        return userInfoDto.getResponse().get(0).toString();
     }
 }

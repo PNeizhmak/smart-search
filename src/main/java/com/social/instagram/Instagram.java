@@ -1,5 +1,7 @@
 package com.social.instagram;
 
+import com.converter.JsonConverter;
+import com.converter.instagram.InstagramWrapper;
 import com.google.inject.Inject;
 import com.model.IUserOperations;
 import com.util.Constants;
@@ -88,9 +90,13 @@ public class Instagram implements IUserOperations {
         response = httpClient.execute(getInfoGet);
 
         String stringResponse = EntityUtils.toString(response.getEntity());
-        System.out.println(stringResponse);
 
-        return stringResponse;
+        JsonConverter jsonConverter = new JsonConverter(new InstagramWrapper());
+        final String parsedData = jsonConverter.parseUserInfo(stringResponse);
+
+        System.out.println(parsedData);
+
+        return parsedData;
     }
 
     private static void getAccessToken() throws IOException {
