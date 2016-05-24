@@ -2,6 +2,8 @@ package com.social.vk;
 
 import com.google.inject.Inject;
 import com.model.IUserOperations;
+import com.converter.JsonConverter;
+import com.converter.vk.VkWrapper;
 import com.util.Constants;
 import com.util.Utils;
 import org.apache.http.HttpResponse;
@@ -68,7 +70,7 @@ public class Vk implements IUserOperations {
     public String getUserInfo(@PathParam("id") final String id) throws IOException, URISyntaxException {
         HttpResponse response;
 
-        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        final List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("user_ids", id));
         nameValuePairs.add(new BasicNameValuePair("fields", "city,contacts,site,education,status,connections"));
         nameValuePairs.add(new BasicNameValuePair("name_case", "Nom"));
@@ -80,9 +82,13 @@ public class Vk implements IUserOperations {
         getInfoPost.abort();
 
         String stringResponse = EntityUtils.toString(response.getEntity());
-        System.out.println(stringResponse);
 
-        return stringResponse;
+        JsonConverter jsonConverter = new JsonConverter(new VkWrapper());
+        final String parsedData = jsonConverter.parseUserInfo(stringResponse);
+
+        System.out.println(parsedData);
+
+        return parsedData;
     }
 
     /**
