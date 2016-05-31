@@ -48,7 +48,7 @@ public class Vk implements IUserOperations {
     public String searchByName(@PathParam("name") final String name) throws IOException, URISyntaxException {
         HttpResponse response;
 
-        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        final List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("q", name));
         nameValuePairs.add(new BasicNameValuePair("access_token", ACCESS_TOKEN));
 

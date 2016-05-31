@@ -55,7 +55,7 @@ public class Facebook implements IUserOperations {
     public String searchByName(@PathParam("name") final String name) throws IOException, URISyntaxException {
         HttpResponse response;
 
-        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        final List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("access_token", TEMP_ACCESS_TOKEN));
         nameValuePairs.add(new BasicNameValuePair("q", name));
         nameValuePairs.add(new BasicNameValuePair("type", "user"));
@@ -77,7 +77,7 @@ public class Facebook implements IUserOperations {
     public String getUserInfo(@PathParam("id") final String id) throws IOException, URISyntaxException {
         HttpResponse response;
 
-        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        final List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("fields", "id,name,picture"));
         nameValuePairs.add(new BasicNameValuePair("access_token", TEMP_ACCESS_TOKEN));
 

@@ -60,7 +60,7 @@ public class Instagram implements IUserOperations {
 
         HttpResponse response;
 
-        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        final List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("q", name));
         nameValuePairs.add(new BasicNameValuePair("access_token", TEMP_ACCESS_TOKEN));
 
@@ -81,7 +81,7 @@ public class Instagram implements IUserOperations {
     public String getUserInfo(@PathParam("id") final String id) throws IOException, URISyntaxException {
         HttpResponse response;
 
-        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        final List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("access_token", TEMP_ACCESS_TOKEN));
 
         final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, INSTAGRAM_PREFIX, "/users/" + id, nameValuePairs);
