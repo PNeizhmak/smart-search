@@ -1,5 +1,6 @@
 package com.social.github;
 
+import com.converter.github.GithubWrapper;
 import com.google.inject.Inject;
 import com.model.IUserOperations;
 import com.util.Constants;
@@ -35,7 +36,7 @@ public class Github implements IUserOperations{
 
     private static final String GITHUB_PREFIX = "api.github.com";
 
-    private static final String TEMP_ACCESS_TOKEN = "34272b1754ba429e18bb10aa78126259cbf0b02e";
+    private static final String TEMP_ACCESS_TOKEN = "dea13c98b352a5cbb30b8106024942556d8786d9";
 
     @Inject
     private HttpClient httpClient;
@@ -86,7 +87,7 @@ public class Github implements IUserOperations{
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return Utils.buildResponse(stringResponse);
+        return Utils.buildResponse(stringResponse, new GithubWrapper());
     }
 
     /**
