@@ -50,7 +50,7 @@ public class Vk implements IUserOperations {
 
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("q", name));
-        nameValuePairs.add(new BasicNameValuePair("access_token", ACCESS_TOKEN));
+        nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, ACCESS_TOKEN));
 
         final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, VK_PREFIX, "/users.search", nameValuePairs);
         HttpPost searchPost = new HttpPost(uri);

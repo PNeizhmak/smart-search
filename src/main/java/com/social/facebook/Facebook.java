@@ -56,7 +56,7 @@ public class Facebook implements IUserOperations {
         HttpResponse response;
 
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
-        nameValuePairs.add(new BasicNameValuePair("access_token", TEMP_ACCESS_TOKEN));
+        nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, TEMP_ACCESS_TOKEN));
         nameValuePairs.add(new BasicNameValuePair("q", name));
         nameValuePairs.add(new BasicNameValuePair("type", "user"));
 
@@ -78,7 +78,7 @@ public class Facebook implements IUserOperations {
 
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("fields", "id,name,picture"));
-        nameValuePairs.add(new BasicNameValuePair("access_token", TEMP_ACCESS_TOKEN));
+        nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, TEMP_ACCESS_TOKEN));
 
         final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, FB_GRAPH_FREFIX, "/" + id, nameValuePairs);
         HttpGet getInfoRequest = new HttpGet(uri);

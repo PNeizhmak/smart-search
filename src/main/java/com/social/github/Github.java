@@ -48,7 +48,7 @@ public class Github implements IUserOperations{
         HttpResponse response;
 
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
-        nameValuePairs.add(new BasicNameValuePair("access_token", TEMP_ACCESS_TOKEN));
+        nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, TEMP_ACCESS_TOKEN));
         nameValuePairs.add(new BasicNameValuePair("q", name));
         nameValuePairs.add(new BasicNameValuePair("type", "Users"));
 
@@ -78,7 +78,7 @@ public class Github implements IUserOperations{
         HttpResponse response;
 
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
-        nameValuePairs.add(new BasicNameValuePair("access_token", TEMP_ACCESS_TOKEN));
+        nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, TEMP_ACCESS_TOKEN));
 
         final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, GITHUB_PREFIX, "/users/" + id, nameValuePairs);
         HttpGet getInfoRequest = new HttpGet(uri);
