@@ -59,9 +59,8 @@ public class Vk implements IUserOperations {
         searchPost.abort();
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
-        System.out.println(stringResponse);
 
-        return stringResponse;
+        return Utils.buildResponse(stringResponse);
     }
 
     @GET
@@ -83,12 +82,7 @@ public class Vk implements IUserOperations {
 
         String stringResponse = EntityUtils.toString(response.getEntity());
 
-        JsonConverter jsonConverter = new JsonConverter(new VkWrapper());
-        final String parsedData = jsonConverter.parseUserInfo(stringResponse);
-
-        System.out.println(parsedData);
-
-        return parsedData;
+        return Utils.buildResponse(stringResponse, new VkWrapper());
     }
 
     /**

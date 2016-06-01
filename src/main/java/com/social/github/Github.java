@@ -35,7 +35,7 @@ public class Github implements IUserOperations{
 
     private static final String GITHUB_PREFIX = "api.github.com";
 
-    private static final String TEMP_ACCESS_TOKEN = "f1f3bdd7ad8a4538d013af06b2b6dea6ca0f4254";
+    private static final String TEMP_ACCESS_TOKEN = "34272b1754ba429e18bb10aa78126259cbf0b02e";
 
     @Inject
     private HttpClient httpClient;
@@ -57,14 +57,36 @@ public class Github implements IUserOperations{
         response = httpClient.execute(searchGet);
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
-        System.out.println(stringResponse);
 
-        return stringResponse;
+        return Utils.buildResponse(stringResponse);
     }
 
-    @Override
-    public String getUserInfo(String id) throws IOException, URISyntaxException {
-        return null;
+    /**
+     * Gets user public data by github login
+     *
+     * @param id github login
+     * @return detailed user info
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    @GET
+    @Path("/getUserInfo/{id}")
+    @Produces(APPLICATION_JSON)
+    public String getUserInfo(@PathParam("id") final String id) throws IOException, URISyntaxException {
+
+        HttpResponse response;
+
+        final List<NameValuePair> nameValuePairs = new ArrayList<>();
+        nameValuePairs.add(new BasicNameValuePair("access_token", TEMP_ACCESS_TOKEN));
+
+        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, GITHUB_PREFIX, "/users/" + id, nameValuePairs);
+        HttpGet getInfoRequest = new HttpGet(uri);
+
+        response = httpClient.execute(getInfoRequest);
+
+        final String stringResponse = EntityUtils.toString(response.getEntity());
+
+        return Utils.buildResponse(stringResponse);
     }
 
     /**

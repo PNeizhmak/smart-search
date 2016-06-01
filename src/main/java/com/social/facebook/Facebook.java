@@ -66,9 +66,8 @@ public class Facebook implements IUserOperations {
         response = httpClient.execute(searchRequest);
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
-        System.out.println(stringResponse);
 
-        return stringResponse;
+        return Utils.buildResponse(stringResponse);
     }
 
     @GET
@@ -87,9 +86,8 @@ public class Facebook implements IUserOperations {
         response = httpClient.execute(getInfoRequest);
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
-        System.out.println(stringResponse);
 
-        return stringResponse;
+        return Utils.buildResponse(stringResponse);
     }
 
     public String getAccessToken() throws IOException {

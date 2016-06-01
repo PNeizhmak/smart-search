@@ -1,5 +1,7 @@
 package com.util;
 
+import com.converter.IConvertAPI;
+import com.converter.JsonConverter;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 
@@ -19,6 +21,32 @@ public class Utils {
                 .setPath(path)
                 .setParameters(params)
                 .build();
+    }
+
+    /**
+     * Builds JSON response
+     *
+     * @param stringResponse stringResponse
+     * @return json response representation
+     */
+    public static String buildResponse(final String stringResponse) {
+        System.out.println(stringResponse);
+        return stringResponse;
+    }
+
+    /**
+     * Builds POJO response
+     *
+     * @param stringResponse stringResponse
+     * @param convertAPI     {@see IConvertAPI}
+     * @return pojo response representation
+     */
+    public static String buildResponse(final String stringResponse, final IConvertAPI convertAPI) {
+        JsonConverter jsonConverter = new JsonConverter(convertAPI);
+        final String parsedData = jsonConverter.parseUserInfo(stringResponse);
+
+        System.out.println(parsedData);
+        return parsedData;
     }
 
 }
