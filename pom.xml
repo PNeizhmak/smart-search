@@ -61,6 +61,11 @@
             <artifactId>grizzly-webserver</artifactId>
             <version>1.9.64</version>
         </dependency>
+        <dependency>
+            <groupId>oauth.signpost</groupId>
+            <artifactId>signpost-commonshttp4</artifactId>
+            <version>1.2</version>
+        </dependency>
     </dependencies>
 
 </project>
