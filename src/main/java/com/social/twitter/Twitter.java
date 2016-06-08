@@ -1,6 +1,7 @@
 package com.social.twitter;
 
 import com.google.inject.Inject;
+import com.model.ExtraParamsDto;
 import com.model.IUserOperations;
 import com.util.Constants;
 import com.util.Utils;
@@ -16,12 +17,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -80,10 +77,31 @@ public class Twitter implements IUserOperations {
     @GET
     @Path("/getUserInfo/{id}")
     @Produces(APPLICATION_JSON)
-    public String getUserInfo(@PathParam("id") final String id) throws IOException, URISyntaxException {
+    public String getUserInfo(@PathParam("id") final String id, @MatrixParam("params") final List<String> jsonParamsMap)
+            throws IOException, URISyntaxException {
 
-        //todo
-        return null;
+        HttpResponse response;
+
+        ExtraParamsDto paramsDto = Utils.parseExtraParams(jsonParamsMap.toString());
+        final String nickname = paramsDto != null ? paramsDto.getNickname() : "";
+
+        final List<NameValuePair> nameValuePairs = new ArrayList<>();
+        nameValuePairs.add(new BasicNameValuePair("screen_name", nickname));
+        nameValuePairs.add(new BasicNameValuePair("user_id", id));
+
+        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, TWITTER_PREFIX, "/1.1/users/show.json", nameValuePairs);
+        HttpGet searchGet = new HttpGet(uri);
+
+        try {
+            getAuthConsumer().sign(searchGet);
+        } catch (OAuthMessageSignerException | OAuthExpectationFailedException | OAuthCommunicationException e) {
+            e.printStackTrace();
+        }
+        response = httpClient.execute(searchGet);
+
+        final String stringResponse = EntityUtils.toString(response.getEntity());
+
+        return Utils.buildResponse(stringResponse);
     }
 
     private static OAuthConsumer initAuthConsumer() {

@@ -12,10 +12,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -73,7 +70,8 @@ public class Github implements IUserOperations{
     @GET
     @Path("/getUserInfo/{id}")
     @Produces(APPLICATION_JSON)
-    public String getUserInfo(@PathParam("id") final String id) throws IOException, URISyntaxException {
+    public String getUserInfo(@PathParam("id") final String id, @MatrixParam("params") final List<String> jsonParamsMap)
+            throws IOException, URISyntaxException {
 
         HttpResponse response;
 

@@ -4,10 +4,24 @@ core.getServiceUrl = function (baseUrl) {
     var platform = $(form).find('select#Platform').val();
     var apiMethod = $(form).find('select#Search-param').val();
     var value = $(form).find('input#search-value').val();
+    var nicknameValue = $(form).find('input#search-value-nickname').val();
+
+    if (nicknameValue != undefined) {
+
+        var twitterExtraParam1 = "'nickname':'" + nicknameValue + "'";
+        var twitterExtraParam2 =  "'anotherOneParam':'parse_more_than_one_param'";
+
+        return baseUrl + platform + "/" + apiMethod + "/" + value + ";params=" + twitterExtraParam1 + ";params=" + twitterExtraParam2;
+    }
+
     return baseUrl + platform + "/" + apiMethod + "/" + value;
 };
 
 $(function () {
+
+    $('#Platform').on('change', function () {
+        $("#search-by-nickname").css('display', (this.value == 'twitter') ? 'block' : 'none');
+    });
 
     var baseUrl = "http://localhost:8081/";
 

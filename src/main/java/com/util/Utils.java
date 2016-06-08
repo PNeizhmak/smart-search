@@ -2,6 +2,8 @@ package com.util;
 
 import com.converter.IConvertAPI;
 import com.converter.JsonConverter;
+import com.google.gson.Gson;
+import com.model.ExtraParamsDto;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 
@@ -49,4 +51,11 @@ public class Utils {
         return parsedData;
     }
 
+    public static ExtraParamsDto parseExtraParams(String params) {
+
+        Gson gson = new Gson();
+        final String updatedParams = "{" + params.substring(1, params.length()-1) + "}";
+
+        return gson.fromJson(updatedParams, ExtraParamsDto.class);
+    }
 }
