@@ -80,7 +80,7 @@ public class Vk implements IUserOperations {
 
         String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return Utils.buildResponse(stringResponse, new VkWrapper());
+        return Utils.buildResponse(stringResponse);
     }
 
     /**
