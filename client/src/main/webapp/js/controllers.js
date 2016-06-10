@@ -3,15 +3,26 @@
     angular.module('smartSearchApp.controllers', ['smartSearchApp.services']).controller('SocialCtrl', ['$scope', 'SocialService', function ($scope, SocialService) {
 
         $scope.result = '';
-        $scope.searchParam = '';
+        $scope.searchParam = 'getUserInfo';
         $scope.searchValue= '';
-        $scope.platform = '';
+        $scope.platform = 'vk';
 
         $scope.submit = function($event) {
             var platform = angular.element( document.querySelector( 'select#Platform' ) ).val();
             var apiMethod = angular.element( document.querySelector( 'select#Search-param' ) ).val();
             var value = angular.element( document.querySelector( 'input#search-value' ) ).val();
-            SocialService.search(platform, apiMethod, value).then(function(data) {
+
+            var params;
+            if ($scope.platform == 'twitter') {
+                var nicknameValue = angular.element( document.querySelector( 'input#search-value-nickname' ) ).val();
+                if (nicknameValue != undefined) {
+                    var twitterExtraParam1 = "'nickname':'" + nicknameValue + "'";
+                    var twitterExtraParam2 =  "'anotherOneParam':'parse_more_than_one_param'";
+                    params = ";params=" + twitterExtraParam1 + ";params=" + twitterExtraParam2;
+                }
+            }
+
+            SocialService.search(platform, apiMethod, value, params).then(function(data) {
                 $scope.result = JSON.stringify(data);
             }, function(data) {
                 $scope.result = data.valueOf().responseText;

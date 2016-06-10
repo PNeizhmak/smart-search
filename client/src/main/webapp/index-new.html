@@ -42,10 +42,16 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="search-value">Search value</label>
+                    <label class="col-md-4 control-label" for="search-value">Search by id/name</label>
                     <div class="col-md-4">
-                        <input id="search-value" ng-model="searchValue" name="search-value" type="text"
-                               placeholder="What to search?" class="form-control input-md" required="">
+                        <input id="search-value" ng-model="searchValue" name="search-value" type="text" placeholder="What to search?" class="form-control input-md" required="">
+                    </div>
+                </div>
+                <div ng-show="platform == 'twitter'" id="search-by-nickname" class="form-group">
+                    <label class="col-md-4 control-label" for="search-value-nickname">Search by nickname</label>
+                    <div class="col-md-4">
+                        <input id="search-value-nickname" ng-model="searchValueNickname" name="search-value-nickname" type="text" placeholder="What to search?"
+                               class="form-control input-md">
                     </div>
                 </div>
 
