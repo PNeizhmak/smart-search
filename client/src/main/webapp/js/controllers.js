@@ -1,11 +1,12 @@
 (function() {
     'use strict';
-    angular.module('smartSearchApp.controllers', ['smartSearchApp.services']).controller('SocialCtrl', ['$scope', 'SocialService', function ($scope, SocialService) {
+    angular.module('smartSearchApp.controllers', ['smartSearchApp.services', 'smartSearchApp.constants'])
+        .controller('SocialCtrl', ['$scope', 'SocialService', 'CONSTANTS', function ($scope, SocialService, CONSTANTS) {
 
         $scope.result = '';
         $scope.searchParam = 'getUserInfo';
         $scope.searchValue= '';
-        $scope.platform = 'vk';
+        $scope.platform = CONSTANTS.PLATFORMS.VK;
 
         $scope.submit = function($event) {
             var platform = angular.element( document.querySelector( 'select#Platform' ) ).val();
@@ -13,7 +14,7 @@
             var value = angular.element( document.querySelector( 'input#search-value' ) ).val();
 
             var params;
-            if ($scope.platform == 'twitter') {
+            if ($scope.platform == CONSTANTS.PLATFORMS.TWITTER) {
                 var nicknameValue = angular.element( document.querySelector( 'input#search-value-nickname' ) ).val();
                 if (nicknameValue != undefined) {
                     var twitterExtraParam1 = "'nickname':'" + nicknameValue + "'";

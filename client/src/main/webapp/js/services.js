@@ -1,8 +1,7 @@
 (function() {
     'use strict';
-    angular.module('smartSearchApp.services', []).service('SocialService', ['$http', '$q', function ($http, $q) {
-
-        this.baseUrl = "http://localhost:8081/";
+    angular.module('smartSearchApp.services', ['smartSearchApp.constants'])
+        .service('SocialService', ['$http', '$q', 'CONSTANTS', function ($http, $q, CONSTANTS) {
 
         this.search = function(platform, apiMethod, value, params) {
             var deferred = $q.defer();
@@ -21,7 +20,7 @@
         };
 
         this.getServiceUrl = function(platform, apiMethod, value, params) {
-            return this.baseUrl + platform + "/" + apiMethod + "/" + value + params;
+            return CONSTANTS.BASE_URL + platform + "/" + apiMethod + "/" + value + params;
         };
 
     }]);
