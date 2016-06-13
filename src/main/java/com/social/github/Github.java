@@ -1,6 +1,5 @@
 package com.social.github;
 
-import com.converter.github.GithubWrapper;
 import com.google.inject.Inject;
 import com.model.IUserOperations;
 import com.util.Constants;
@@ -85,7 +84,7 @@ public class Github implements IUserOperations{
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return Utils.buildResponse(stringResponse, new GithubWrapper());
+        return Utils.buildResponse(stringResponse);
     }
 
     /**

@@ -2,8 +2,6 @@ package com.social.vk;
 
 import com.google.inject.Inject;
 import com.model.IUserOperations;
-import com.converter.JsonConverter;
-import com.converter.vk.VkWrapper;
 import com.util.Constants;
 import com.util.Utils;
 import org.apache.http.HttpResponse;
