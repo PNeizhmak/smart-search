@@ -1,7 +1,7 @@
 (function() {
     'use strict';
-    angular.module('smartSearchApp.controllers', ['smartSearchApp.services', 'smartSearchApp.constants'])
-        .controller('SocialCtrl', ['$scope', 'SocialService', 'CONSTANTS', function ($scope, SocialService, CONSTANTS) {
+    angular.module('smartSearchApp.controllers', ['smartSearchApp.services', 'smartSearchApp.constants', 'ngCookies'])
+        .controller('SocialCtrl', ['$scope', '$cookies', '$window', 'SocialService', 'CONSTANTS', function ($scope, $cookies, $window, SocialService, CONSTANTS) {
 
         $scope.result = '';
         $scope.searchParam = 'getUserInfo';
@@ -23,12 +23,30 @@
                 }
             }
 
-            SocialService.search(platform, apiMethod, value, params).then(function(data) {
+            SocialService.search($cookies.get("user_id"), platform, apiMethod, value, params).then(function(data) {
                 $scope.result = JSON.stringify(data);
             }, function(data) {
                 $scope.result = data.valueOf().responseText;
             });
         };
+            
+        $scope.getToken = function () {
+            var platform = angular.element( document.querySelector( 'select#Platform' ) ).val();
+            SocialService.getAccessToken(platform);
+        };
+
+        var that = this;
+        $window.addEventListener('message', function(event) {
+            $cookies.put("user_id", that.getCookieFromStr("user_id", event.data));
+        });
+
+        this.getCookieFromStr = function (cookieName, str) {
+            var matches = str.match(new RegExp(
+                "(?:^|; )" + cookieName.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+            ));
+            return matches ? decodeURIComponent(matches[1]) : undefined;
+        };
 
     }]);
+
 })();

@@ -1,51 +1,71 @@
 package com.social.vk;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.MatrixParam;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
+
+import com.google.gson.Gson;
 import com.google.inject.Inject;
+import com.model.AccessTokenResponseBean;
 import com.model.IUserOperations;
 import com.util.Constants;
 import com.util.Utils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import javax.ws.rs.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.MediaType.TEXT_HTML;
+import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 
 @Path("vk")
 public class Vk implements IUserOperations {
 
     private static final String CLIENT_ID = "5087523";
     private static final String SCOPE = "offline";
-    private static final String REDIRECT_URI = "http://oauth.vk.com/blank.html";
+    private static final String REDIRECT_URI = "http://localhost:8081/vk/setAccessToken";
     private static final String VK_PREFIX = "api.vk.com/method";
     private static final String DISPLAY = "page";
-    private static final String RESPONSE_TYPE = "token";
+    private static final String RESPONSE_TYPE = "code";
     private static final String APP_SECRET = "0w2LtEeW1KWvtcCIRusx";
 
-    private static final String ACCESS_TOKEN = "25a3b88adc5c8321385d9e5433a9f2880dc89df0eac66805fd38ccabcc9c8b29c9b392e45855ed61b4bd1";
+    private static final String API_VERSION = "5.52";
+    private static final String AUTOCLOSE_HTML_WINDOW_MARKUP = "<script type=\"text/javascript\">window.opener.postMessage(window.document.cookie, " +
+            "'http://localhost:63342');" +
+            "setTimeout('window.close()', 1000);</script>";
+
+    private static Map<String, AccessTokenResponseBean> accessTokensMap = new ConcurrentHashMap<>();
 
     @Inject
     private HttpClient httpClient;
 
     @GET
-    @Path("/searchByName/{name}")
+    @Path("/{userId}/searchByName/{name}")
     @Produces(APPLICATION_JSON)
-    public String searchByName(@PathParam("name") final String name) throws IOException, URISyntaxException {
+    public String searchByName(@PathParam("userId") final String userId, @PathParam("name") final String name) throws IOException, URISyntaxException {
         HttpResponse response;
 
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("q", name));
-        nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, ACCESS_TOKEN));
+        nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, accessTokensMap.get(userId).access_token));
 
         final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, VK_PREFIX, "/users.search", nameValuePairs);
         HttpPost searchPost = new HttpPost(uri);
@@ -58,8 +78,13 @@ public class Vk implements IUserOperations {
         return Utils.buildResponse(stringResponse);
     }
 
+    @Override
+    public String searchByName(String name) throws IOException, URISyntaxException {
+        return null;
+    }
+
     @GET
-    @Path("/getUserInfo/{id}")
+    @Path("/{userId}/getUserInfo/{id}")
     @Produces(APPLICATION_JSON)
     public String getUserInfo(@PathParam("id") final String id, @MatrixParam("params") final List<String> jsonParamsMap)
             throws IOException, URISyntaxException {
@@ -81,28 +106,50 @@ public class Vk implements IUserOperations {
         return Utils.buildResponse(stringResponse);
     }
 
-    /**
-     * Internal method to get access token for vk
-     * Need to be executed only once
-     * Flow: copy built request in browser, execute and get token
-     * Temp solution to avoid redundant code
-     *
-     * @throws IOException
-     */
-    private static void getAccessToken() throws IOException {
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpResponse response;
-
-        HttpPost request = new HttpPost("http://oauth.vk.com/authorize?" +
+    @GET
+    @Path("/getAccessTokenUrl")
+    @Produces(TEXT_PLAIN)
+    public String getAccessTokenUrl() {
+        return "https://oauth.vk.com/authorize?" +
                 "client_id=" + CLIENT_ID +
                 "&redirect_uri=" + REDIRECT_URI +
                 "&scope=" + SCOPE +
                 "&display=" + DISPLAY +
-                "&response_type=" + RESPONSE_TYPE);
+                "&v=" + API_VERSION +
+                "&response_type=" + RESPONSE_TYPE;
+    }
 
+    @GET
+    @Path("/setAccessToken")
+    @Consumes(APPLICATION_JSON)
+    @Produces(TEXT_HTML)
+    public Response setAccessToken(@QueryParam("code") final String code) {
+        Response response = Response.ok().build();
+        try {
+            if (code != null) {
+                System.out.println("Code: " + code);
+                AccessTokenResponseBean token = getAccessToken(code);
+                accessTokensMap.put(String.valueOf(token.user_id), token);
+                NewCookie cookie = new NewCookie("user_id", String.valueOf(token.user_id));
+                response = Response.ok(AUTOCLOSE_HTML_WINDOW_MARKUP).cookie(cookie).build();
+            }
+        } catch (IOException e) {
+            response = Response.serverError().entity(e.getMessage()).build();
+        } finally {
+            return response;
+        }
+    }
 
-        response = httpClient.execute(request);
-
-        System.out.println(EntityUtils.toString(response.getEntity()));
+    private AccessTokenResponseBean getAccessToken(final String code) throws IOException {
+        HttpGet request = new HttpGet("https://oauth.vk.com/access_token?" +
+                                                "client_id=" + CLIENT_ID +
+                                                "&client_secret=" + APP_SECRET +
+                                                "&redirect_uri=" + REDIRECT_URI +
+                                                "&code=" + code);
+        HttpResponse response = httpClient.execute(request);
+        String responseJson = EntityUtils.toString(response.getEntity());
+        System.out.println(responseJson);
+        Gson gson = new Gson();
+        return gson.fromJson(responseJson, AccessTokenResponseBean.class);
     }
 }
