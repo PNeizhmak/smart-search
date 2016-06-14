@@ -29,11 +29,6 @@
                 $scope.result = data.valueOf().responseText;
             });
         };
-            
-        $scope.getToken = function () {
-            var platform = angular.element( document.querySelector( 'select#Platform' ) ).val();
-            SocialService.getAccessToken(platform);
-        };
 
         var that = this;
         $window.addEventListener('message', function(event) {

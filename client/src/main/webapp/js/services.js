@@ -23,21 +23,5 @@
             return CONSTANTS.BASE_URL + platform + "/" + userId + "/" + apiMethod + "/" + value + params;
         };
 
-        this.getAccessTokenUrl = function (platform) {
-            return CONSTANTS.BASE_URL + platform + "/getAccessTokenUrl";
-        }
-
-        this.getAccessToken = function (platform) {
-            $http({
-                method: 'GET',
-                url: this.getAccessTokenUrl(platform)
-            }).then(function (data) {
-                var win = $window.open(data.data);
-                console.log(win);
-            }, function (data) {
-                console.log(data);
-            });
-        }
-
     }]);
 })();

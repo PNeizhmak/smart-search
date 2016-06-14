@@ -34,20 +34,15 @@ import org.apache.http.util.EntityUtils;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.TEXT_HTML;
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 
 @Path("vk")
 public class Vk implements IUserOperations {
 
     private static final String CLIENT_ID = "5087523";
-    private static final String SCOPE = "offline";
     private static final String REDIRECT_URI = "http://localhost:8081/vk/setAccessToken";
     private static final String VK_PREFIX = "api.vk.com/method";
-    private static final String DISPLAY = "page";
-    private static final String RESPONSE_TYPE = "code";
     private static final String APP_SECRET = "0w2LtEeW1KWvtcCIRusx";
 
-    private static final String API_VERSION = "5.52";
     private static final String AUTOCLOSE_HTML_WINDOW_MARKUP = "<script type=\"text/javascript\">window.opener.postMessage(window.document.cookie, " +
             "'http://localhost:63342');" +
             "setTimeout('window.close()', 1000);</script>";
@@ -104,19 +99,6 @@ public class Vk implements IUserOperations {
         String stringResponse = EntityUtils.toString(response.getEntity());
 
         return Utils.buildResponse(stringResponse);
-    }
-
-    @GET
-    @Path("/getAccessTokenUrl")
-    @Produces(TEXT_PLAIN)
-    public String getAccessTokenUrl() {
-        return "https://oauth.vk.com/authorize?" +
-                "client_id=" + CLIENT_ID +
-                "&redirect_uri=" + REDIRECT_URI +
-                "&scope=" + SCOPE +
-                "&display=" + DISPLAY +
-                "&v=" + API_VERSION +
-                "&response_type=" + RESPONSE_TYPE;
     }
 
     @GET
