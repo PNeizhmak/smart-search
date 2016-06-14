@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     angular.module('smartSearchApp.services', ['smartSearchApp.constants'])
-        .service('SocialService', ['$http', '$q', '$window', 'CONSTANTS', function ($http, $q, $window, CONSTANTS) {
+        .service('SocialService', ['$http', '$q', 'CONSTANTS', function ($http, $q, CONSTANTS) {
 
         this.search = function(userId, platform, apiMethod, value, params) {
             var deferred = $q.defer();

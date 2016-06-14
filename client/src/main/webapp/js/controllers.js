@@ -30,6 +30,11 @@
             });
         };
 
+        $scope.getToken = function ($event) {
+            $event.preventDefault();
+            $window.open("https://oauth.vk.com/authorize?client_id=5087523&redirect_uri=http://localhost:8081/vk/setAccessToken&scope=offline&display=page&v=5.52&response_type=code");
+        };
+
         var that = this;
         $window.addEventListener('message', function(event) {
             $cookies.put("user_id", that.getCookieFromStr("user_id", event.data));
