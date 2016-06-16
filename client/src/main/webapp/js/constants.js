@@ -8,7 +8,8 @@
                 FB: 'fb',
                 INSTAGRAM: 'instagram',
                 GITHUB: 'github',
-                TWITTER: 'twitter'
+                TWITTER: 'twitter',
+                GOOGLE_PLUS: 'googlePlus'
             },
             SEARCH_METHODS: {
                 BY_NAME: 'searchByName',

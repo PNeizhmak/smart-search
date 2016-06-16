@@ -7,6 +7,7 @@ import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.social.facebook.Facebook;
 import com.social.github.Github;
+import com.social.google.GooglePlus;
 import com.social.instagram.Instagram;
 import com.social.twitter.Twitter;
 import com.social.vk.Vk;
@@ -25,6 +26,7 @@ public class Config extends GuiceServletContextListener {
                 bind(Facebook.class);
                 bind(Github.class);
                 bind(Twitter.class);
+                bind(GooglePlus.class);
                 serve("*").with(GuiceContainer.class);
             }
 
