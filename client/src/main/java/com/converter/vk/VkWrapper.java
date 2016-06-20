@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.model.VkUserInfoDto;
 import com.converter.IConvertAPI;
 
-import java.util.Arrays;
-
 /**
  * @author Pavel Neizhmak
  */

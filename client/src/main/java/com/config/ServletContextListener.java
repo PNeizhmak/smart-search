@@ -15,19 +15,20 @@ import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-public class Config extends GuiceServletContextListener {
+public class ServletContextListener extends GuiceServletContextListener {
     @Override
     protected Injector getInjector() {
         return Guice.createInjector(new ServletModule() {
             @Override
             protected void configureServlets() {
+                super.configureServlets();
                 bind(Vk.class);
                 bind(Instagram.class);
                 bind(Facebook.class);
                 bind(Github.class);
                 bind(Twitter.class);
                 bind(GooglePlus.class);
-                serve("*").with(GuiceContainer.class);
+                serve("/rest/*").with(GuiceContainer.class);
             }
 
             @Provides

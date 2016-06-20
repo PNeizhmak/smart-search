@@ -2,7 +2,7 @@
     'use strict';
     angular.module('smartSearchApp.constants', []).factory('CONSTANTS', function () {
         return {
-            BASE_URL: 'http://localhost:8081/',
+            BASE_URL: 'http://localhost:8081/rest/',
             PLATFORMS: {
                 VK: 'vk',
                 FB: 'fb',

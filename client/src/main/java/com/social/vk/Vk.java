@@ -39,12 +39,12 @@ import static javax.ws.rs.core.MediaType.TEXT_HTML;
 public class Vk implements IUserOperations {
 
     private static final String CLIENT_ID = "5087523";
-    private static final String REDIRECT_URI = "http://localhost:8081/vk/setAccessToken";
+    private static final String REDIRECT_URI = "http://localhost:8081/rest/vk/setAccessToken";
     private static final String VK_PREFIX = "api.vk.com/method";
     private static final String APP_SECRET = "0w2LtEeW1KWvtcCIRusx";
 
     private static final String AUTOCLOSE_HTML_WINDOW_MARKUP = "<script type=\"text/javascript\">window.opener.postMessage(window.document.cookie, " +
-            "'http://localhost:63342');" +
+            "'http://localhost:8081');" +
             "setTimeout('window.close()', 1000);</script>";
 
     private static Map<String, AccessTokenResponseBean> accessTokensMap = new ConcurrentHashMap<>();
