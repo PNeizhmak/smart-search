@@ -1,1 +1,23 @@
-/* Empty. Add your own CSS if you like */
+.icon-size {
+    height: 50px;
+    width: 50px;
+}
+
+.vk {
+    content: url("../img/vk.png");
+}
+.fb {
+    content: url("../img/fb.png");
+}
+.instagram {
+    content: url("../img/instagram.png");
+}
+.github {
+    content: url("../img/github.png");
+}
+.twitter {
+    content: url("../img/twitter.png");
+}
+.google {
+    content: url("../img/google.png");
+}
