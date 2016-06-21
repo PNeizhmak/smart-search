@@ -11,6 +11,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import javax.ws.rs.core.Response;
+
 /**
  * @author Pavel Neizhmak
  */
@@ -31,9 +33,9 @@ public class Utils {
      * @param stringResponse stringResponse
      * @return json response representation
      */
-    public static String buildResponse(final String stringResponse) {
+    public static Response buildResponse(final String stringResponse) {
         System.out.println(stringResponse);
-        return stringResponse;
+        return Response.ok(stringResponse).build();
     }
 
     /**

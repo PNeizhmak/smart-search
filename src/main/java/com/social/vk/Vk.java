@@ -22,8 +22,10 @@ import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.model.AccessTokenResponseBean;
 import com.model.IUserOperations;
+import com.social.exception.SmartSearchException;
 import com.util.Constants;
 import com.util.Utils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -52,15 +54,22 @@ public class Vk implements IUserOperations {
     @Inject
     private HttpClient httpClient;
 
+    @Inject
+    private Gson gson;
+
     @GET
     @Path("/{userId}/searchByName/{name}")
     @Produces(APPLICATION_JSON)
-    public String searchByName(@PathParam("userId") final String userId, @PathParam("name") final String name) throws IOException, URISyntaxException {
+    public Response searchByName(@PathParam("userId") final String userId, @PathParam("name") final String name) throws IOException, URISyntaxException {
         HttpResponse response;
 
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("q", name));
-        nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, accessTokensMap.get(userId).access_token));
+        AccessTokenResponseBean token = accessTokensMap.get(userId);
+        if (token == null || StringUtils.isEmpty(token.access_token)) {
+            throw new SmartSearchException("No token.");
+        }
+        nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, token.access_token));
 
         final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, VK_PREFIX, "/users.search", nameValuePairs);
         HttpPost searchPost = new HttpPost(uri);
@@ -76,7 +85,7 @@ public class Vk implements IUserOperations {
     @GET
     @Path("/{userId}/getUserInfo/{id}")
     @Produces(APPLICATION_JSON)
-    public String getUserInfo(@PathParam("userId") final String userId, @PathParam("id") final String id, @MatrixParam("params") final List<String> jsonParamsMap)
+    public Response getUserInfo(@PathParam("userId") final String userId, @PathParam("id") final String id, @MatrixParam("params") final List<String> jsonParamsMap)
             throws IOException, URISyntaxException {
         HttpResponse response;
 
@@ -126,7 +135,6 @@ public class Vk implements IUserOperations {
         HttpResponse response = httpClient.execute(request);
         String responseJson = EntityUtils.toString(response.getEntity());
         System.out.println(responseJson);
-        Gson gson = new Gson();
         return gson.fromJson(responseJson, AccessTokenResponseBean.class);
     }
 }

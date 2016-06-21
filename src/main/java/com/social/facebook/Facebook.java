@@ -13,6 +13,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -49,7 +51,7 @@ public class Facebook implements IUserOperations {
     @GET
     @Path("/{userId}/searchByName/{name}")
     @Produces(APPLICATION_JSON)
-    public String searchByName(@PathParam("userId") final String userId, @PathParam("name") final String name) throws IOException, URISyntaxException {
+    public Response searchByName(@PathParam("userId") final String userId, @PathParam("name") final String name) throws IOException, URISyntaxException {
         HttpResponse response;
 
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -70,7 +72,7 @@ public class Facebook implements IUserOperations {
     @GET
     @Path("/{userId}/getUserInfo/{id}")
     @Produces(APPLICATION_JSON)
-    public String getUserInfo(@PathParam("userId") final String userId,
+    public Response getUserInfo(@PathParam("userId") final String userId,
                               @PathParam("id") final String id,
                               @MatrixParam("params") final List<String> jsonParamsMap)
             throws IOException, URISyntaxException {

@@ -1,10 +1,12 @@
 package com.config;
 
+import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
+import com.social.exception.handler.SmartSearchExceptionHandler;
 import com.social.facebook.Facebook;
 import com.social.github.Github;
 import com.social.google.GooglePlus;
@@ -22,6 +24,7 @@ public class ServletContextListener extends GuiceServletContextListener {
             @Override
             protected void configureServlets() {
                 super.configureServlets();
+                bind(SmartSearchExceptionHandler.class);
                 bind(Vk.class);
                 bind(Instagram.class);
                 bind(Facebook.class);
@@ -34,6 +37,11 @@ public class ServletContextListener extends GuiceServletContextListener {
             @Provides
             public HttpClient buildHttpClient() {
                 return HttpClients.createDefault();
+            }
+
+            @Provides
+            public Gson buildGson() {
+                return new Gson();
             }
         });
     }
