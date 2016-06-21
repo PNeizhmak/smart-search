@@ -73,15 +73,10 @@ public class Vk implements IUserOperations {
         return Utils.buildResponse(stringResponse);
     }
 
-    @Override
-    public String searchByName(String name) throws IOException, URISyntaxException {
-        return null;
-    }
-
     @GET
     @Path("/{userId}/getUserInfo/{id}")
     @Produces(APPLICATION_JSON)
-    public String getUserInfo(@PathParam("id") final String id, @MatrixParam("params") final List<String> jsonParamsMap)
+    public String getUserInfo(@PathParam("userId") final String userId, @PathParam("id") final String id, @MatrixParam("params") final List<String> jsonParamsMap)
             throws IOException, URISyntaxException {
         HttpResponse response;
 

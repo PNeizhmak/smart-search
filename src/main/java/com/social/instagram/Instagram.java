@@ -49,9 +49,9 @@ public class Instagram implements IUserOperations {
     private HttpClient httpClient;
 
     @GET
-    @Path("/searchByName/{name}")
+    @Path("/{userId}/searchByName/{name}")
     @Produces(APPLICATION_JSON)
-    public String searchByName(@PathParam("name") final String name) throws IOException, URISyntaxException {
+    public String searchByName(@PathParam("userId") final String userId, @PathParam("name") final String name) throws IOException, URISyntaxException {
 
         HttpResponse response;
 
@@ -70,9 +70,11 @@ public class Instagram implements IUserOperations {
     }
 
     @GET
-    @Path("/getUserInfo/{id}")
+    @Path("/{userId}/getUserInfo/{id}")
     @Produces(APPLICATION_JSON)
-    public String getUserInfo(@PathParam("id") final String id, @MatrixParam("params") final List<String> jsonParamsMap)
+    public String getUserInfo(@PathParam("userId") final String userId,
+                              @PathParam("id") final String id,
+                              @MatrixParam("params") final List<String> jsonParamsMap)
             throws IOException, URISyntaxException {
         HttpResponse response;
 
