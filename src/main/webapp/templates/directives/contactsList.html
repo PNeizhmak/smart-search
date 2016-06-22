@@ -1,0 +1,9 @@
+<!-- contacts list directive -->
+<div ng-repeat="contact in contacts" ng-click="showDetails(contact)">
+    <div style="float: left; margin-right: 5px;">
+        {{::contact.firstName}}
+    </div>
+    <div>
+        {{::contact.lastName}}
+    </div>
+</div>

@@ -1,7 +1,7 @@
 (function() {
     'use strict';
-    angular.module('smartSearchApp.controllers', ['smartSearchApp.services', 'smartSearchApp.constants', 'ngCookies'])
-        .controller('SocialCtrl', ['$scope', '$cookies', '$window', 'SocialService', 'CONSTANTS', function ($scope, $cookies, $window, SocialService, CONSTANTS) {
+    var module = angular.module('smartSearchApp.controllers', ['smartSearchApp.services', 'smartSearchApp.constants', 'ngCookies']);
+    module.controller('SocialController', ['$scope', '$cookies', '$window', 'SocialService', 'CONSTANTS', function ($scope, $cookies, $window, SocialService, CONSTANTS) {
 
         $scope.result = '';
         $scope.searchParam = 'getUserInfo';
@@ -9,6 +9,7 @@
         $scope.platform = CONSTANTS.PLATFORMS.VK;
 
         $scope.submit = function($event) {
+            $scope.contacts = null;
             var platform = angular.element( document.querySelector( 'select#Platform' ) ).val();
             var apiMethod = angular.element( document.querySelector( 'select#Search-param' ) ).val();
             var value = angular.element( document.querySelector( 'input#search-value' ) ).val();
@@ -24,9 +25,9 @@
             }
 
             SocialService.search($cookies.get("user_id"), platform, apiMethod, value, params).then(function(data) {
-                $scope.result = JSON.stringify(data);
+                $scope.contacts = SocialService.buildContacts(data);
             }, function(data) {
-                $scope.result = data.valueOf().responseText;
+                console.log(data);
             });
         };
 
@@ -37,16 +38,23 @@
 
         var that = this;
         $window.addEventListener('message', function(event) {
-            $cookies.put("user_id", that.getCookieFromStr("user_id", event.data));
+            var userId = that.getCookieFromStr("user_id", event.data);
+            if (userId) {
+                $cookies.put("user_id", userId);
+            }
         });
 
         this.getCookieFromStr = function (cookieName, str) {
-            var matches = str.match(new RegExp(
-                "(?:^|; )" + cookieName.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-            ));
+            var matches = str && str.match
+                ? str.match(new RegExp("(?:^|; )" + cookieName.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"))
+                : undefined;
             return matches ? decodeURIComponent(matches[1]) : undefined;
         };
 
+    }]);
+
+    module.controller('ContactDetailsController', ['$scope', 'SocialService', 'CONSTANTS', function ($scope, SocialService, CONSTANTS) {
+        $scope.value = '';
     }]);
 
 })();
