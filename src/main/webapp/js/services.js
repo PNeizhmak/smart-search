@@ -19,6 +19,27 @@
             return deferred.promise;
         };
 
+        this.searchVK = function(token, apiMethod, value) {
+            var deferred = $q.defer();
+            $http({
+                method: 'GET',
+                url: this.buildVkURL(token, apiMethod, value)
+            }).then(function (data) {
+                deferred.resolve(data.data.response);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.buildVkURL = function (token, apiMethod, value) {
+            if (apiMethod == CONSTANTS.SEARCH_METHODS.BY_ID) {
+                return CONSTANTS.BASE_URL + CONSTANTS.PLATFORMS.VK.id + "/" + apiMethod + "/" + value;
+            } else if (apiMethod == CONSTANTS.SEARCH_METHODS.BY_NAME) {
+                return CONSTANTS.BASE_URL + CONSTANTS.PLATFORMS.VK.id + "/" + apiMethod + "/" + value + "?token=" + token;
+            }
+        };
+
         this.getServiceUrl = function(userId, platform, apiMethod, value, params) {
             return CONSTANTS.BASE_URL + platform + "/" + userId + "/" + apiMethod + "/" + value + params;
         };

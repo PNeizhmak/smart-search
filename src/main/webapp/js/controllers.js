@@ -34,21 +34,13 @@
 
         $scope.performSearch = function (params) {
             if ($scope.platform.id == CONSTANTS.PLATFORMS.VK.id) {
-                if ($scope.searchParam == CONSTANTS.SEARCH_METHODS.BY_ID) {
-                    VK.Api.call('users.get', {
-                        user_ids: $scope.searchValue,
-                        'fields': 'city,contacts,site,education,status,connections',
-                        'name_case': 'Nom'
-                    }, function (r) {
-                        $scope.contacts = SocialService.buildContacts($scope.platform.id, r.response);
-                        $scope.$apply();
+                var token = $rootScope.sessions[CONSTANTS.PLATFORMS.VK.id].sid;
+                SocialService.searchVK(token, $scope.searchParam, $scope.searchValue)
+                    .then(function (data) {
+                        $scope.contacts = SocialService.buildContacts($scope.platform.id, data);
+                    }, function (data) {
+                        console.log(data);
                     });
-                } else if ($scope.searchParam == CONSTANTS.SEARCH_METHODS.BY_NAME) {
-                    VK.Api.call('users.search', {'q': $scope.searchValue}, function (r) {
-                        $scope.contacts = SocialService.buildContacts($scope.platform.id, r.response);
-                        $scope.$apply();
-                    });
-                }
             } else if ($scope.platform.id == CONSTANTS.PLATFORMS.FB.id) {
                 if ($scope.searchParam == CONSTANTS.SEARCH_METHODS.BY_ID) {
                     FB.api($scope.searchValue, {
