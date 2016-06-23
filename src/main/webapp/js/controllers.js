@@ -1,8 +1,10 @@
 (function() {
     'use strict';
     var module = angular.module('smartSearchApp.controllers', ['smartSearchApp.services', 'smartSearchApp.constants', 'ngCookies']);
-    module.controller('SocialController', ['$scope', '$cookies', '$window', 'SocialService', 'CONSTANTS', function ($scope, $cookies, $window, SocialService, CONSTANTS) {
+    module.controller('SocialController', ['$rootScope', '$scope', '$cookies', '$window', 'SocialService', 'CONSTANTS',
+        function ($rootScope, $scope, $cookies, $window, SocialService, CONSTANTS) {
 
+        $rootScope.sessions = $rootScope.sessions || {};
         $scope.result = '';
         $scope.searchParam = 'getUserInfo';
         $scope.searchValue= '';
@@ -11,51 +13,98 @@
 
         $scope.submit = function($event) {
             $scope.contacts = null;
-            var apiMethod = angular.element( document.querySelector( 'select#Search-param' ) ).val();
-            var value = angular.element( document.querySelector( 'input#search-value' ) ).val();
 
             var params;
-            if ($scope.platform == CONSTANTS.PLATFORMS.TWITTER) {
-                var nicknameValue = angular.element( document.querySelector( 'input#search-value-nickname' ) ).val();
-                if (nicknameValue != undefined) {
+            if ($scope.platform.id == CONSTANTS.PLATFORMS.TWITTER.id) {
+                if ($scope.searchValueNickname != undefined) {
                     var twitterExtraParam1 = "'nickname':'" + nicknameValue + "'";
                     var twitterExtraParam2 =  "'anotherOneParam':'parse_more_than_one_param'";
                     params = ";params=" + twitterExtraParam1 + ";params=" + twitterExtraParam2;
                 }
             }
 
-            SocialService.search($cookies.get(CONSTANTS.COOKIES.USER_ID), $scope.platform.id, apiMethod, value, params).then(function(data) {
-                $scope.contacts = SocialService.buildContacts(data);
-            }, function(data) {
-                console.log(data);
-            });
+            if (!$scope.authorize($scope.platform.id)) {
+                return;
+            } else {
+                $scope.performSearch();
+            }
+
+
+        };
+
+        $scope.performSearch = function () {
+            if ($scope.platform.id == CONSTANTS.PLATFORMS.VK.id) {
+                if ($scope.searchParam == CONSTANTS.SEARCH_METHODS.BY_ID) {
+                    VK.Api.call('users.get', {
+                        user_ids: $scope.searchValue,
+                        'fields': 'city,contacts,site,education,status,connections',
+                        'name_case': 'Nom'
+                    }, function (r) {
+                        $scope.contacts = SocialService.buildContacts(r.response);
+                        $scope.$apply();
+                    });
+                } else if ($scope.searchParam == CONSTANTS.SEARCH_METHODS.BY_NAME) {
+                    VK.Api.call('users.search', {'q': $scope.searchValue}, function (r) {
+                        $scope.contacts = SocialService.buildContacts(r.response);
+                        $scope.$apply();
+                    });
+                }
+            } else {
+                SocialService.search($cookies.get(CONSTANTS.COOKIES.USER_ID), $scope.platform.id, $scope.searchParam, $scope.searchValue, params)
+                    .then(function (data) {
+                        $scope.contacts = SocialService.buildContacts(data);
+                    }, function (data) {
+                        console.log(data);
+                    });
+            }
+        };
+
+        $scope.authorize = function (platformId) {
+            if (!$rootScope.sessions || !$rootScope.sessions[platformId]) {
+                if (platformId == CONSTANTS.PLATFORMS.VK.id) {
+                    if (!window.confirm('You are not logged in to VK. Log in?')) {
+                        return false;
+                    } else {
+                        VK.Auth.login(function(response) {
+                            if (response.session) {
+                                /* Пользователь успешно авторизовался */
+                                $rootScope.sessions[CONSTANTS.PLATFORMS.VK.id] = response.session;
+                                if (response.settings) {
+                                    /* Выбранные настройки доступа пользователя, если они были запрошены */
+                                }
+                                $scope.performSearch();
+                            } else {
+                                /* Пользователь нажал кнопку Отмена в окне авторизации */
+                            }
+                        });
+                    }
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
+            }
         };
 
         $scope.getToken = function ($event) {
             $event.preventDefault();
-            $window.open("https://oauth.vk.com/authorize?client_id=5087523&redirect_uri=http://localhost:8081/rest/vk/setAccessToken&scope=offline&display=page&v=5.52&response_type=code");
-        };
-
-        var that = this;
-        $window.addEventListener('message', function(event) {
-            var userId = that.getCookieFromStr(CONSTANTS.COOKIES.USER_ID, event.data);
-            if (userId) {
-                $cookies.put(CONSTANTS.COOKIES.USER_ID, userId);
-            }
-        });
-
-        this.getCookieFromStr = function (cookieName, str) {
-            var matches = str && str.match
-                ? str.match(new RegExp("(?:^|; )" + cookieName.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"))
-                : undefined;
-            return matches ? decodeURIComponent(matches[1]) : undefined;
+            VK.Auth.login(function(response) {
+                if (response.session) {
+                    /* Пользователь успешно авторизовался */
+                    if (response.settings) {
+                        /* Выбранные настройки доступа пользователя, если они были запрошены */
+                    }
+                } else {
+                    /* Пользователь нажал кнопку Отмена в окне авторизации */
+                }
+            });
         };
 
     }]);
 
     module.controller('ContactDetailsController', ['$scope', '$location', 'SocialService', 'CONSTANTS',
         function ($scope, $location, SocialService, CONSTANTS) {
-        $scope.contactId = $location.search().contactId;
-    }]);
+            $scope.contactId = $location.search().contactId;
+        }]);
 
 })();
