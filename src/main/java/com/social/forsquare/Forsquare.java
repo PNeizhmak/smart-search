@@ -37,7 +37,7 @@ public class Forsquare implements IUserOperations {
     private static final String GRANT_TYPE = "authorization_code";
     private static final String RESPONSE_TYPE = "code";
     private static final String REDIRECT_URI = "http://localhost:8081/";
-    private static final String FS_PREFIX = "https://api.foursquare.com/v2";
+    private static final String FS_PREFIX = "api.foursquare.com/v2";
 
     private static final String TEMP_ACCESS_TOKEN = "GZG2R0LGWSV0VY4IUCYOFVFZDYL5FTADKHQ52P55O5ZZAGKF";
 
@@ -55,11 +55,10 @@ public class Forsquare implements IUserOperations {
         nameValuePairs.add(new BasicNameValuePair("v", "20131016"));
         nameValuePairs.add(new BasicNameValuePair("name", name));
 
-        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, FS_PREFIX, "/users.search", nameValuePairs);
+        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, FS_PREFIX, "/users/search", nameValuePairs);
         HttpPost searchPost = new HttpPost(uri);
 
         response = httpClient.execute(searchPost);
-        searchPost.abort();
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
 

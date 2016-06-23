@@ -1,8 +1,8 @@
 (function() {
     'use strict';
-    var module = angular.module('smartSearchApp.controllers', ['smartSearchApp.services', 'smartSearchApp.constants', 'ngCookies']);
-    module.controller('SocialController', ['$rootScope', '$scope', '$cookies', '$window', 'SocialService', 'CONSTANTS',
-        function ($rootScope, $scope, $cookies, $window, SocialService, CONSTANTS) {
+    var module = angular.module('smartSearchApp.controllers', ['smartSearchApp.services', 'smartSearchApp.constants']);
+    module.controller('SocialController', ['$rootScope', '$scope', '$window', 'SocialService', 'CONSTANTS',
+        function ($rootScope, $scope, $window, SocialService, CONSTANTS) {
 
         $rootScope.sessions = $rootScope.sessions || {};
         $scope.result = '';
@@ -26,13 +26,13 @@
             if (!$scope.authorize($scope.platform.id)) {
                 return;
             } else {
-                $scope.performSearch();
+                $scope.performSearch(params);
             }
 
 
         };
 
-        $scope.performSearch = function () {
+        $scope.performSearch = function (params) {
             if ($scope.platform.id == CONSTANTS.PLATFORMS.VK.id) {
                 if ($scope.searchParam == CONSTANTS.SEARCH_METHODS.BY_ID) {
                     VK.Api.call('users.get', {
@@ -40,12 +40,12 @@
                         'fields': 'city,contacts,site,education,status,connections',
                         'name_case': 'Nom'
                     }, function (r) {
-                        $scope.contacts = SocialService.buildContacts(r.response);
+                        $scope.contacts = SocialService.buildContacts($scope.platform.id, r.response);
                         $scope.$apply();
                     });
                 } else if ($scope.searchParam == CONSTANTS.SEARCH_METHODS.BY_NAME) {
                     VK.Api.call('users.search', {'q': $scope.searchValue}, function (r) {
-                        $scope.contacts = SocialService.buildContacts(r.response);
+                        $scope.contacts = SocialService.buildContacts($scope.platform.id, r.response);
                         $scope.$apply();
                     });
                 }
@@ -59,14 +59,14 @@
                     });
                 } else if ($scope.searchParam == CONSTANTS.SEARCH_METHODS.BY_NAME) {
                     FB.api('/search', {'q': $scope.searchValue, 'type': 'user'}, function (r) {
-                        $scope.contacts = SocialService.buildContactsFB(r.data);
+                        $scope.contacts = SocialService.buildContacts($scope.platform.id, r.data);
                         $scope.$apply();
                     });
                 }
             } else {
-                SocialService.search($cookies.get(CONSTANTS.COOKIES.USER_ID), $scope.platform.id, $scope.searchParam, $scope.searchValue, params)
+                SocialService.search(null, $scope.platform.id, $scope.searchParam, $scope.searchValue, params)
                     .then(function (data) {
-                        $scope.contacts = SocialService.buildContacts(data);
+                        $scope.contacts = SocialService.buildContacts($scope.platform.id, data);
                     }, function (data) {
                         console.log(data);
                     });
@@ -119,12 +119,11 @@
             $event.preventDefault();
             VK.Auth.login(function(response) {
                 if (response.session) {
-                    /* Пользователь успешно авторизовался */
                     if (response.settings) {
-                        /* Выбранные настройки доступа пользователя, если они были запрошены */
+
                     }
                 } else {
-                    /* Пользователь нажал кнопку Отмена в окне авторизации */
+
                 }
             });
         };

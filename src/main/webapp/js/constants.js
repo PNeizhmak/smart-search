@@ -33,9 +33,6 @@
                     name: 'Forsquare'
                 }
             },
-            COOKIES: {
-                USER_ID: "user_id"
-            },
             SEARCH_METHODS: {
                 BY_NAME: 'searchByName',
                 BY_ID: 'getUserInfo'
