@@ -6,11 +6,11 @@
         $scope.result = '';
         $scope.searchParam = 'getUserInfo';
         $scope.searchValue= '';
+        $scope.platforms = CONSTANTS.PLATFORMS;
         $scope.platform = CONSTANTS.PLATFORMS.VK;
 
         $scope.submit = function($event) {
             $scope.contacts = null;
-            var platform = angular.element( document.querySelector( 'select#Platform' ) ).val();
             var apiMethod = angular.element( document.querySelector( 'select#Search-param' ) ).val();
             var value = angular.element( document.querySelector( 'input#search-value' ) ).val();
 
@@ -24,7 +24,7 @@
                 }
             }
 
-            SocialService.search($cookies.get("user_id"), platform, apiMethod, value, params).then(function(data) {
+            SocialService.search($cookies.get(CONSTANTS.COOKIES.USER_ID), $scope.platform.id, apiMethod, value, params).then(function(data) {
                 $scope.contacts = SocialService.buildContacts(data);
             }, function(data) {
                 console.log(data);
@@ -38,9 +38,9 @@
 
         var that = this;
         $window.addEventListener('message', function(event) {
-            var userId = that.getCookieFromStr("user_id", event.data);
+            var userId = that.getCookieFromStr(CONSTANTS.COOKIES.USER_ID, event.data);
             if (userId) {
-                $cookies.put("user_id", userId);
+                $cookies.put(CONSTANTS.COOKIES.USER_ID, userId);
             }
         });
 
@@ -53,8 +53,9 @@
 
     }]);
 
-    module.controller('ContactDetailsController', ['$scope', 'SocialService', 'CONSTANTS', function ($scope, SocialService, CONSTANTS) {
-        $scope.value = '';
+    module.controller('ContactDetailsController', ['$scope', '$location', 'SocialService', 'CONSTANTS',
+        function ($scope, $location, SocialService, CONSTANTS) {
+        $scope.contactId = $location.search().contactId;
     }]);
 
 })();

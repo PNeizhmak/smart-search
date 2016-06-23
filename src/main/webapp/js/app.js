@@ -8,7 +8,7 @@
                 templateUrl: 'templates/pages/main.html',
                 controller: 'SocialController'
             })
-            .when('/details/:contactId', {
+            .when('/details', {
                 templateUrl: 'templates/pages/contactDetails.html',
                 controller: 'ContactDetailsController'
             })

@@ -12,7 +12,7 @@
                     $scope.contacts = $scope.contacts || {};
                     $scope.showDetails = function (contact) {
                         $rootScope.contact = contact;
-                        $location.path('/details/' + contact.id).search({contactId: contact.id});
+                        $location.path('/details').search({contactId: contact.id});
                     };
                 }
             }

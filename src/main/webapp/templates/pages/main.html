@@ -7,13 +7,8 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="Platform">Select platform</label>
                 <div class="col-md-4">
-                    <select id="Platform" name="Platform" class="form-control" ng-model="platform">
-                        <option value="vk">VK</option>
-                        <option value="fb">Facebook</option>
-                        <option value="instagram">Instagram</option>
-                        <option value="github">Github</option>
-                        <option value="twitter">Twitter</option>
-                        <option value="googlePlus">Google+</option>
+                    <select id="Platform" name="Platform" class="form-control" ng-model="platform"
+                            ng-options="item as item.name for item in platforms track by item.id">
                     </select>
                 </div>
             </div>
