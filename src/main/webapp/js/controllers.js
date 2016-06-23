@@ -120,6 +120,10 @@
             });
         };
 
+        $scope.getActive = function (platform) {
+            return $rootScope.sessions[CONSTANTS.PLATFORMS[platform].id] ? 'active' : 'inactive';
+        }
+
     }]);
 
     module.controller('ContactDetailsController', ['$scope', '$location', 'SocialService', 'CONSTANTS',

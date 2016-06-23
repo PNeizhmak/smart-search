@@ -3,6 +3,14 @@
     width: 50px;
 }
 
+.icon-size.active {
+    opacity: 1.0;
+}
+
+.icon-size.inactive {
+    opacity: 0.3;
+}
+
 .vk {
     content: url("../img/vk.png");
 }
