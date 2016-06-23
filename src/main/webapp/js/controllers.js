@@ -42,19 +42,13 @@
                         console.log(data);
                     });
             } else if ($scope.platform.id == CONSTANTS.PLATFORMS.FB.id) {
-                if ($scope.searchParam == CONSTANTS.SEARCH_METHODS.BY_ID) {
-                    FB.api($scope.searchValue, {
-                        'fields': 'id,name,picture'
-                    }, function (r) {
-                        $scope.contacts = [{id: r.id, firstName: r.name}];
-                        $scope.$apply();
+                var token = $rootScope.sessions[CONSTANTS.PLATFORMS.FB.id].accessToken;
+                SocialService.searchFB(token, $scope.searchParam, $scope.searchValue)
+                    .then(function (data) {
+                        $scope.contacts = SocialService.buildContacts($scope.platform.id, data);
+                    }, function (data) {
+                        console.log(data);
                     });
-                } else if ($scope.searchParam == CONSTANTS.SEARCH_METHODS.BY_NAME) {
-                    FB.api('/search', {'q': $scope.searchValue, 'type': 'user'}, function (r) {
-                        $scope.contacts = SocialService.buildContacts($scope.platform.id, r.data);
-                        $scope.$apply();
-                    });
-                }
             } else {
                 SocialService.search(null, $scope.platform.id, $scope.searchParam, $scope.searchValue, params)
                     .then(function (data) {

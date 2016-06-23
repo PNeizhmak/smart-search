@@ -32,6 +32,23 @@
             return deferred.promise;
         };
 
+        this.searchFB = function (token, apiMethod, value) {
+            var deferred = $q.defer();
+            $http({
+                method: 'GET',
+                url: this.buildFbURL(token, apiMethod, value)
+            }).then(function (data) {
+                deferred.resolve(data.data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.buildFbURL = function (token, apiMethod, value) {
+            return CONSTANTS.BASE_URL + CONSTANTS.PLATFORMS.FB.id + "/" + apiMethod + "/" + value + "?token=" + token;
+        };
+
         this.buildVkURL = function (token, apiMethod, value) {
             if (apiMethod == CONSTANTS.SEARCH_METHODS.BY_ID) {
                 return CONSTANTS.BASE_URL + CONSTANTS.PLATFORMS.VK.id + "/" + apiMethod + "/" + value;
@@ -73,11 +90,15 @@
         };
 
         this.buildContactsFB = function (data) {
-            var contacts = [];
-            data.forEach(function (item) {
-                contacts.push({id: item.id, firstName: item.name});
-            });
-            return contacts;
+            if (data.data) {
+                var contacts = [];
+                data.data.forEach(function (item) {
+                    contacts.push({id: item.id, firstName: item.name});
+                });
+                return contacts;
+            } else {
+                return [{id: data.id, firstName: data.name}];
+            }
         }
 
     }]);
