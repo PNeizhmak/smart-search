@@ -49,6 +49,20 @@
                         $scope.$apply();
                     });
                 }
+            } else if ($scope.platform.id == CONSTANTS.PLATFORMS.FB.id) {
+                if ($scope.searchParam == CONSTANTS.SEARCH_METHODS.BY_ID) {
+                    FB.api($scope.searchValue, {
+                        'fields': 'id,name,picture'
+                    }, function (r) {
+                        $scope.contacts = [{id: r.id, firstName: r.name}];
+                        $scope.$apply();
+                    });
+                } else if ($scope.searchParam == CONSTANTS.SEARCH_METHODS.BY_NAME) {
+                    FB.api('/search', {'q': $scope.searchValue, 'type': 'user'}, function (r) {
+                        $scope.contacts = SocialService.buildContactsFB(r.data);
+                        $scope.$apply();
+                    });
+                }
             } else {
                 SocialService.search($cookies.get(CONSTANTS.COOKIES.USER_ID), $scope.platform.id, $scope.searchParam, $scope.searchValue, params)
                     .then(function (data) {
@@ -67,16 +81,31 @@
                     } else {
                         VK.Auth.login(function(response) {
                             if (response.session) {
-                                /* Пользователь успешно авторизовался */
                                 $rootScope.sessions[CONSTANTS.PLATFORMS.VK.id] = response.session;
                                 if (response.settings) {
-                                    /* Выбранные настройки доступа пользователя, если они были запрошены */
+
                                 }
                                 $scope.performSearch();
                             } else {
-                                /* Пользователь нажал кнопку Отмена в окне авторизации */
+
                             }
                         });
+                    }
+                } else if (platformId == CONSTANTS.PLATFORMS.FB.id) {
+                    if (!window.confirm('You are not logged in to Facebook. Log in?')) {
+                        return false;
+                    } else {
+                        FB.login(function(response) {
+                            if (response.authResponse) {
+                                $rootScope.sessions[CONSTANTS.PLATFORMS.FB.id] = response.authResponse;
+                                // FB.api('/me', function(response) {
+                                //     console.log('Good to see you, ' + response.name + '.');
+                                // });
+                                $scope.performSearch();
+                            } else {
+                                console.log('User cancelled login or did not fully authorize.');
+                            }
+                        }, {scope: 'email,user_likes'});
                     }
                 } else {
                     return true;

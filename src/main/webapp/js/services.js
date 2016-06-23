@@ -23,13 +23,21 @@
             return CONSTANTS.BASE_URL + platform + "/" + userId + "/" + apiMethod + "/" + value + params;
         };
 
-            this.buildContacts = function (data) {
-                var contacts = [];
-                data.forEach(function (item) {
-                    contacts.push({id: item.uid, firstName: item.first_name, lastName: item.last_name});
-                });
-                return contacts;
-            }
+        this.buildContacts = function (data) {
+            var contacts = [];
+            data.forEach(function (item) {
+                contacts.push({id: item.uid, firstName: item.first_name, lastName: item.last_name});
+            });
+            return contacts;
+        }
+
+        this.buildContactsFB = function (data) {
+            var contacts = [];
+            data.forEach(function (item) {
+                contacts.push({id: item.id, firstName: item.name});
+            });
+            return contacts;
+        }
 
     }]);
 })();
