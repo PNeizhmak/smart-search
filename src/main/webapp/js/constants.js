@@ -27,6 +27,10 @@
                 GOOGLE_PLUS: {
                     id: 'googlePlus',
                     name: 'Google+'
+                },
+                FORSQUARE: {
+                    id: 'forsquare',
+                    name: 'Forsquare'
                 }
             },
             COOKIES: {

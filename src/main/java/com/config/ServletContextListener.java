@@ -8,6 +8,7 @@ import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.social.exception.handler.SmartSearchExceptionHandler;
 import com.social.facebook.Facebook;
+import com.social.forsquare.Forsquare;
 import com.social.github.Github;
 import com.social.google.GooglePlus;
 import com.social.instagram.Instagram;
@@ -31,6 +32,7 @@ public class ServletContextListener extends GuiceServletContextListener {
                 bind(Github.class);
                 bind(Twitter.class);
                 bind(GooglePlus.class);
+                bind(Forsquare.class);
                 serve("/rest/*").with(GuiceContainer.class);
             }
 
