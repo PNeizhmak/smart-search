@@ -13,10 +13,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URI;
@@ -65,9 +62,25 @@ public class Forsquare implements IUserOperations {
         return Utils.buildResponse(stringResponse);
     }
 
-    @Override
-    public Response getUserInfo(String userId, String id, List<String> jsonParamsMap) throws IOException, URISyntaxException {
-        return null;
+    @GET
+    @Path("/{userId}/getUserInfo/{id}")
+    @Produces(APPLICATION_JSON)
+    public Response getUserInfo(@PathParam("userId") final String userId,
+                                @PathParam("id") final String id,
+                                @MatrixParam("params") final List<String> jsonParamsMap) throws IOException, URISyntaxException {
+        HttpResponse response;
+
+        final List<NameValuePair> nameValuePairs = new ArrayList<>();
+        nameValuePairs.add(new BasicNameValuePair("oauth_token", TEMP_ACCESS_TOKEN));
+        nameValuePairs.add(new BasicNameValuePair("v", "20131016 "));
+
+        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, FS_PREFIX, "/users/" + id, nameValuePairs);
+        HttpGet getUserInfo = new HttpGet(uri);
+        response = httpClient.execute(getUserInfo);
+
+        String stringResponse = EntityUtils.toString(response.getEntity());
+
+        return Utils.buildResponse(stringResponse);
     }
 
     private String getAccessToken() throws URISyntaxException, IOException {
