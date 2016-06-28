@@ -32,3 +32,30 @@
 .forsquare {
     content: url("../img/forsquare.png");
 }
+
+div.resultset {
+    margin: 5px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 170px;
+}
+
+div.resultset:hover {
+    border: 1px solid #777;
+}
+
+div.resultset img {
+    width: 100%;
+    height: auto;
+}
+
+div.resultset-description {
+    padding: 5px;
+    text-align: center;
+}
+
+div.resultset-vk {
+    content: url("../img/vk.png");
+    width: 30%;
+    padding: 5px 5px;
+}
