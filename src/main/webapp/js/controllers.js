@@ -25,10 +25,9 @@
 
             if (!$scope.authorize($scope.platform.id)) {
                 return;
-            } else {
-                $scope.performSearch(params);
             }
-
+            
+            $scope.performSearch(params);
 
         };
 
@@ -101,20 +100,7 @@
             }
         };
 
-        $scope.getToken = function ($event) {
-            $event.preventDefault();
-            VK.Auth.login(function(response) {
-                if (response.session) {
-                    if (response.settings) {
-
-                    }
-                } else {
-
-                }
-            });
-        };
-
-        $scope.getActive = function (platform) {
+        $scope.isActive = function (platform) {
             return $rootScope.sessions[CONSTANTS.PLATFORMS[platform].id] ? 'active' : 'inactive';
         }
 
