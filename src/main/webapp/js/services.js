@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    var module = angular.module('smartSearchApp.services', ['smartSearchApp.constants', 'ngCookies']);
+    var module = angular.module('smartSearchApp.services', ['smartSearchApp.constants', 'ngCookies', 'base64']);
 
         module.service('SocialService', ['$http', '$q', 'CONSTANTS', function ($http, $q, CONSTANTS) {
 
@@ -104,8 +104,8 @@
 
         }]);
 
-        module.service('AuthenticationService', ['Base64', '$http', '$cookieStore', '$rootScope', '$timeout',
-            function (Base64, $http, $cookieStore, $rootScope, $timeout) {
+        module.service('AuthenticationService', ['$base64', '$http', '$cookieStore', '$rootScope', '$timeout',
+            function ($base64, $http, $cookieStore, $rootScope, $timeout) {
 
                 this.login = function (username, password, callback) {
                     $timeout(function () {
@@ -118,7 +118,7 @@
                 };
 
                 this.setCredentials = function (username, password) {
-                    var authdata = Base64.encode(username + ':' + password);
+                    var authdata = $base64.encode(username + ':' + password);
 
                     $rootScope.globals = {
                         currentUser: {
