@@ -1,6 +1,25 @@
 (function() {
     'use strict';
     var module = angular.module('smartSearchApp.controllers', ['smartSearchApp.services', 'smartSearchApp.constants']);
+
+    module.controller('LoginController', ['$scope', '$rootScope', '$location', 'AuthenticationService',
+            function ($scope, $rootScope, $location, AuthenticationService) {
+                AuthenticationService.clearCredentials();
+
+                $scope.login = function () {
+                    $scope.dataLoading = true;
+                    AuthenticationService.login($scope.username, $scope.password, function(response) {
+                        if(response.success) {
+                            AuthenticationService.setCredentials($scope.username, $scope.password);
+                            $location.path('/');
+                        } else {
+                            $scope.error = response.message;
+                            $scope.dataLoading = false;
+                        }
+                    });
+                };
+            }]);
+
     module.controller('SocialController', ['$rootScope', '$scope', '$window', 'SocialService', 'CONSTANTS',
         function ($rootScope, $scope, $window, SocialService, CONSTANTS) {
 
