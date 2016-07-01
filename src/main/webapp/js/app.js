@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     var app = angular.module('smartSearchApp',
-        ['smartSearchApp.controllers', 'smartSearchApp.services', 'smartSearchApp.constants', 'ngRoute']);
+        ['smartSearchApp.controllers', 'smartSearchApp.services', 'smartSearchApp.constants', 'ngRoute', 'ngCookies']);
     app.config(['$routeProvider', function ($routeProvider) {
         $routeProvider
             .when('/', {

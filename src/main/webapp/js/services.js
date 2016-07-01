@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    var module = angular.module('smartSearchApp.services', ['smartSearchApp.constants']);
+    var module = angular.module('smartSearchApp.services', ['smartSearchApp.constants', 'ngCookies']);
 
         module.service('SocialService', ['$http', '$q', 'CONSTANTS', function ($http, $q, CONSTANTS) {
 
