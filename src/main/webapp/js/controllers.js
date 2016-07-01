@@ -25,10 +25,9 @@
 
             if (!$scope.authorize($scope.platform.id)) {
                 return;
-            } else {
-                $scope.performSearch(params);
             }
 
+            $scope.performSearch(params);
 
         };
 
@@ -93,25 +92,21 @@
                             }
                         }, {scope: 'email,user_likes'});
                     }
+                } else if (platformId == CONSTANTS.PLATFORMS.INSTAGRAM.id) {
+                    IG.login(function (response) {
+                        if (response.session) {
+                            $rootScope.sessions[CONSTANTS.PLATFORMS.INSTAGRAM.id] = response;
+                            $scope.performSearch();
+                        } else {
+                            console.log(response);
+                        }
+                    }, {scope: ['basic', 'public_content', 'comments', 'relationships', 'likes', 'follower_list']});
                 } else {
                     return true;
                 }
             } else {
                 return true;
             }
-        };
-
-        $scope.getToken = function ($event) {
-            $event.preventDefault();
-            VK.Auth.login(function(response) {
-                if (response.session) {
-                    if (response.settings) {
-
-                    }
-                } else {
-
-                }
-            });
         };
 
         $scope.getActive = function (platform) {
