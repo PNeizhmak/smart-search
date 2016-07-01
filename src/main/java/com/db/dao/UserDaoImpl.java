@@ -48,7 +48,17 @@ public class UserDaoImpl implements IUserDAO {
 
     @Override
     public User getById(Long id) {
-        return null;
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        return jdbcTemplate.queryForObject(DbQueries.USER_GET, new String[]{String.valueOf(id)}, (rs, rowNum) -> {
+            User user = new User();
+            user.setId(rs.getLong("id"));
+            user.setUsername(rs.getString("username"));
+            user.setLastLoginDate(rs.getDate("last_login_ts"));
+            user.setUserCreatedDate(rs.getDate("user_created_ts"));
+            user.setAccountStatusId(rs.getInt("account_status_id"));
+            return user;
+        });
     }
 
     @Override

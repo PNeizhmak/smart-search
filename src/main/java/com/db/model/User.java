@@ -1,5 +1,7 @@
 package com.db.model;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import java.sql.Date;
 
 /**
@@ -51,5 +53,10 @@ public class User {
 
     public void setAccountStatusId(int accountStatusId) {
         this.accountStatusId = accountStatusId;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }
