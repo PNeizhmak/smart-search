@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * @author Pavel Neizhmak
  */
-public interface IUserDao {
+public interface IUserDAO {
 
     void createNewUser(User user);
 

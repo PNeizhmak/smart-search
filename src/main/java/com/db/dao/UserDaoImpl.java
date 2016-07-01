@@ -13,7 +13,7 @@ import java.util.Collection;
 /**
  * @author Pavel Neizhmak
  */
-public class UserDaoImpl implements IUserDao {
+public class UserDaoImpl implements IUserDAO {
 
     private DataSource dataSource;
 

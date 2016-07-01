@@ -1,6 +1,6 @@
 package com.db;
 
-import com.db.dao.IUserDao;
+import com.db.dao.IUserDAO;
 import com.db.model.User;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -14,7 +14,7 @@ public class TestConnection {
     public static void main(String[] args) {
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("db-config.xml");
 
-        IUserDao userDao = ctx.getBean("userDAO", IUserDao.class);
+        IUserDAO userDao = ctx.getBean("userDAO", IUserDAO.class);
 
         User user = new User();
         user.setUsername("test_username");
