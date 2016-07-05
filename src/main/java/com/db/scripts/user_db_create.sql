@@ -20,6 +20,23 @@ CREATE TABLE `account_status` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
+/*Data for the table `account_status` */
+
+INSERT  INTO `account_status`(`id`,`status_name`) values
+  (1,'active'),
+  (2,'deleted');
+
+/*Table structure for table `user_password` */
+
+DROP TABLE IF EXISTS `user_password`;
+
+CREATE TABLE `user_password` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  `password` VARCHAR(64) NOT NULL,
+  PRIMARY KEY (`id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 /*Table structure for table `user_social_networks` */
 
 DROP TABLE IF EXISTS `user_social_networks`;
@@ -44,6 +61,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `username` varchar(20) NOT NULL,
+  `email` VARCHAR(20) NULL,
   `last_login_ts` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `user_created_ts` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `account_status_id` tinyint(3) NOT NULL,

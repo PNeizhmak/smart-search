@@ -9,7 +9,7 @@ import java.util.Collection;
  */
 public interface IUserDAO {
 
-    void createNewUser(User user);
+    void createNewUser(String login, String password, String email);
 
     User getByName(String name);
 
@@ -20,4 +20,6 @@ public interface IUserDAO {
     void deleteById(Long id);
 
     Collection getAll();
+
+    String getPassword(Long id);
 }

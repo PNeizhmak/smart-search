@@ -2,13 +2,13 @@ package com.db.dao;
 
 import com.db.model.User;
 import com.db.util.DbQueries;
+import com.util.Utils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
-import java.sql.Timestamp;
 import java.util.Collection;
 
 /**
@@ -23,17 +23,19 @@ public class UserDaoImpl implements IUserDAO {
     }
 
     @Override
-    public void createNewUser(User user) {
+    public void createNewUser(String login, String password, String email) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(DbQueries.USERS_INSERT, new String[]{"id"});
+            PreparedStatement ps = con.prepareStatement(DbQueries.USER_INSERT, new String[]{"id"});
+            final int activeAccountStatusId = 1;
 
-            ps.setString(1, user.getUsername());
-            ps.setTimestamp(2, user.getLastLoginDate());
-            ps.setTimestamp(3, user.getUserCreatedDate());
-            ps.setInt(4, user.getAccountStatusId());
+            ps.setString(1, login);
+            ps.setString(2, email);
+            ps.setTimestamp(3, Utils.newTimestamp());
+            ps.setTimestamp(4, Utils.newTimestamp());
+            ps.setInt(5, activeAccountStatusId);
 
             return ps;
         }, keyHolder);
@@ -42,6 +44,12 @@ public class UserDaoImpl implements IUserDAO {
 
         if (key != null) {
             System.out.println("User created with id=" + key);
+            try {
+                storePassword(key.longValue(), password);
+                System.out.println("Password has been recorded");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             System.out.println("User creation failed");
         }
@@ -67,8 +75,32 @@ public class UserDaoImpl implements IUserDAO {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(DbQueries.USER_UPDATE_LAST_LOGIN_TS, ps -> {
-            ps.setTimestamp(1, new Timestamp(new java.util.Date().getTime()));
+            ps.setTimestamp(1, Utils.newTimestamp());
             ps.setLong(2, id);
+        });
+    }
+
+    @Override
+    public String getPassword(Long id) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        return jdbcTemplate.queryForObject(DbQueries.USER_GET_PASSWORD, new String[]{String.valueOf(id)}, (rs, rowNum) -> {
+            return rs.getString("password");
+        });
+    }
+
+    private void storePassword(Long userId, String password) throws Exception {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        final String encryptedPass = Utils.encryptPassword(password);
+
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(DbQueries.USER_INSERT_PASSWORD);
+
+            ps.setLong(1, userId);
+            ps.setString(2, encryptedPass);
+
+            return ps;
         });
     }
 
