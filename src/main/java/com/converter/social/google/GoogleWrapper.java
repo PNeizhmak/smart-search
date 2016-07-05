@@ -1,8 +1,8 @@
-package com.converter.google;
+package com.converter.social.google;
 
 import com.converter.IConvertAPI;
 import com.google.gson.Gson;
-import com.model.GoogleUserInfoDto;
+import com.converter.model.GoogleUserInfoDto;
 
 /**
  * @author Pavel Neizhmak

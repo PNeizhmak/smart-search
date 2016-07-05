@@ -1,20 +1,20 @@
-package com.converter.instagram;
+package com.converter.social.github;
 
 import com.converter.IConvertAPI;
 import com.google.gson.Gson;
-import com.model.InstagramUserInfoDto;
+import com.converter.model.GithubUserInfoDto;
 
 /**
  * @author Pavel Neizhmak
  */
-public class InstagramWrapper implements IConvertAPI {
+public class GithubWrapper implements IConvertAPI {
 
     @Override
     public String parseUserInfo(String response) {
 
         Gson gson = new Gson();
 
-        final InstagramUserInfoDto userInfoDto = gson.fromJson(response, InstagramUserInfoDto.class);
+        final GithubUserInfoDto userInfoDto = gson.fromJson(response, GithubUserInfoDto.class);
 
         return userInfoDto.toString();
     }

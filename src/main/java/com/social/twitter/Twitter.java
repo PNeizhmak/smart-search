@@ -1,8 +1,8 @@
 package com.social.twitter;
 
 import com.google.inject.Inject;
-import com.model.ExtraParamsDto;
-import com.model.IUserOperations;
+import com.converter.model.ExtraParamsDto;
+import com.converter.model.IUserOperations;
 import com.util.Constants;
 import com.util.Utils;
 import oauth.signpost.OAuthConsumer;

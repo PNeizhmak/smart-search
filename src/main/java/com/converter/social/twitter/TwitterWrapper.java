@@ -1,8 +1,8 @@
-package com.converter.twitter;
+package com.converter.social.twitter;
 
 import com.converter.IConvertAPI;
 import com.google.gson.Gson;
-import com.model.TwitterUserInfoDto;
+import com.converter.model.TwitterUserInfoDto;
 
 /**
  * @author Pavel Neizhmak

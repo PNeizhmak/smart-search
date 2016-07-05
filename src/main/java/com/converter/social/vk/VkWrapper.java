@@ -1,7 +1,7 @@
-package com.converter.vk;
+package com.converter.social.vk;
 
 import com.google.gson.Gson;
-import com.model.VkUserInfoDto;
+import com.converter.model.VkUserInfoDto;
 import com.converter.IConvertAPI;
 
 /**

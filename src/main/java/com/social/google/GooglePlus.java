@@ -1,7 +1,7 @@
 package com.social.google;
 
 import com.google.inject.Inject;
-import com.model.IUserOperations;
+import com.converter.model.IUserOperations;
 import com.util.Constants;
 import com.util.Utils;
 import org.apache.http.HttpResponse;

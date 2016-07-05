@@ -1,4 +1,4 @@
-package com.model;
+package com.converter.model;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

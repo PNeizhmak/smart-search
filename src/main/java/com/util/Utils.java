@@ -3,7 +3,7 @@ package com.util;
 import com.converter.IConvertAPI;
 import com.converter.JsonConverter;
 import com.google.gson.Gson;
-import com.model.ExtraParamsDto;
+import com.converter.model.ExtraParamsDto;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 
