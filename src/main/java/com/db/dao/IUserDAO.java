@@ -11,9 +11,11 @@ public interface IUserDAO {
 
     void createNewUser(User user);
 
-    User getById(Long id);
+    User getByName(String name);
 
     void update(User user);
+
+    void updateLoginTs(Long id);
 
     void deleteById(Long id);
 

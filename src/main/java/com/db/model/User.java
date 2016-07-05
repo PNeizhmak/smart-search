@@ -2,7 +2,7 @@ package com.db.model;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * @author Pavel Neizhmak
@@ -11,8 +11,8 @@ public class User {
 
     private Long id;
     private String username;
-    private Date lastLoginDate;
-    private Date userCreatedDate;
+    private Timestamp lastLoginDate;
+    private Timestamp userCreatedDate;
     private int accountStatusId;
 
     public Long getId() {
@@ -31,19 +31,19 @@ public class User {
         this.username = username;
     }
 
-    public Date getLastLoginDate() {
+    public Timestamp getLastLoginDate() {
         return lastLoginDate;
     }
 
-    public void setLastLoginDate(Date lastLoginDate) {
+    public void setLastLoginDate(Timestamp lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
     }
 
-    public Date getUserCreatedDate() {
+    public Timestamp getUserCreatedDate() {
         return userCreatedDate;
     }
 
-    public void setUserCreatedDate(Date userCreatedDate) {
+    public void setUserCreatedDate(Timestamp userCreatedDate) {
         this.userCreatedDate = userCreatedDate;
     }
 

@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 /**
@@ -30,8 +31,8 @@ public class UserDaoImpl implements IUserDAO {
             PreparedStatement ps = con.prepareStatement(DbQueries.USERS_INSERT, new String[]{"id"});
 
             ps.setString(1, user.getUsername());
-            ps.setDate(2, user.getLastLoginDate());
-            ps.setDate(3, user.getUserCreatedDate());
+            ps.setTimestamp(2, user.getLastLoginDate());
+            ps.setTimestamp(3, user.getUserCreatedDate());
             ps.setInt(4, user.getAccountStatusId());
 
             return ps;
@@ -47,17 +48,27 @@ public class UserDaoImpl implements IUserDAO {
     }
 
     @Override
-    public User getById(Long id) {
+    public User getByName(String name) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        return jdbcTemplate.queryForObject(DbQueries.USER_GET, new String[]{String.valueOf(id)}, (rs, rowNum) -> {
+        return jdbcTemplate.queryForObject(DbQueries.USER_GET, new String[]{name}, (rs, rowNum) -> {
             User user = new User();
             user.setId(rs.getLong("id"));
             user.setUsername(rs.getString("username"));
-            user.setLastLoginDate(rs.getDate("last_login_ts"));
-            user.setUserCreatedDate(rs.getDate("user_created_ts"));
+            user.setLastLoginDate(rs.getTimestamp("last_login_ts"));
+            user.setUserCreatedDate(rs.getTimestamp("user_created_ts"));
             user.setAccountStatusId(rs.getInt("account_status_id"));
             return user;
+        });
+    }
+
+    @Override
+    public void updateLoginTs(Long id) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        jdbcTemplate.update(DbQueries.USER_UPDATE_LAST_LOGIN_TS, ps -> {
+            ps.setTimestamp(1, new Timestamp(new java.util.Date().getTime()));
+            ps.setLong(2, id);
         });
     }
 
