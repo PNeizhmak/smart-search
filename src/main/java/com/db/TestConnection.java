@@ -1,6 +1,6 @@
 package com.db;
 
-import com.db.dao.IUserDAO;
+import com.db.dao.IUserDao;
 import com.db.model.User;
 import com.util.Utils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -17,7 +17,7 @@ public class TestConnection {
         final long testUserId = 5L;
         final String testUsername = "testUser";
 
-        IUserDAO userDao = ctx.getBean("userDAO", IUserDAO.class);
+        IUserDao userDao = ctx.getBean("userDao", IUserDao.class);
 
         userDao.createNewUser(testUsername, "hash", null);
         System.out.println("User creation done !");
