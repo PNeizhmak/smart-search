@@ -18,7 +18,7 @@ CREATE TABLE `account_status` (
   `id` tinyint(3) NOT NULL AUTO_INCREMENT,
   `status_name` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `account_status` */
 
@@ -66,7 +66,7 @@ CREATE TABLE `users` (
   `user_created_ts` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `account_status_id` tinyint(3) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
