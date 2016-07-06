@@ -104,17 +104,22 @@
 
         }]);
 
-        module.service('AuthenticationService', ['$base64', '$http', '$cookieStore', '$rootScope', '$timeout',
-            function ($base64, $http, $cookieStore, $rootScope, $timeout) {
+        module.service('AuthenticationService', ['$q', 'CONSTANTS', '$base64', '$http', '$cookieStore', '$rootScope', '$timeout',
+            function ($q, CONSTANTS, $base64, $http, $cookieStore, $rootScope, $timeout) {
 
-                this.login = function (username, password, callback) {
-                    $timeout(function () {
-                        var response = {success: username === 'test' && password === 'test'};
-                        if (!response.success) {
-                            response.message = 'Username or password is incorrect';
-                        }
-                        callback(response);
-                    }, 1000);
+                this.login = function (username, password) {
+                    var deferred = $q.defer();
+
+                    $http({
+                        method: 'POST',
+                        url: CONSTANTS.BASE_URL + 'auth/login'
+                    }).then(function (response) {
+                        deferred.resolve(response.data);
+                    }, function (response) {
+                        deferred.reject(response.data);
+                    });
+
+                    return deferred.promise;
                 };
 
                 this.setCredentials = function (username, password) {

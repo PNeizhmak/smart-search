@@ -1,5 +1,7 @@
 package com.config;
 
+import com.auth.AuthController;
+import com.db.dao.IUserDao;
 import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -17,6 +19,7 @@ import com.social.vk.Vk;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class ServletContextListener extends GuiceServletContextListener {
     @Override
@@ -33,6 +36,7 @@ public class ServletContextListener extends GuiceServletContextListener {
                 bind(Twitter.class);
                 bind(GooglePlus.class);
                 bind(Forsquare.class);
+                bind(AuthController.class);
                 serve("/rest/*").with(GuiceContainer.class);
             }
 
@@ -45,6 +49,17 @@ public class ServletContextListener extends GuiceServletContextListener {
             public Gson buildGson() {
                 return new Gson();
             }
+
+            @Provides
+            public ClassPathXmlApplicationContext buildContext() {
+                return new ClassPathXmlApplicationContext("app-context.xml");
+            }
+
+            @Provides
+            public IUserDao buildUserDao(ClassPathXmlApplicationContext context) {
+                return (IUserDao) context.getBean("userDao");
+            }
+
         });
     }
 }

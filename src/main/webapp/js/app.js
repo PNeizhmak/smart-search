@@ -8,12 +8,16 @@
                 templateUrl: 'templates/pages/login.html',
                 controller: 'LoginController'
             })
+            .when('/main', {
+                templateUrl: 'templates/pages/main.html',
+                controller: 'SocialController'
+            })
             .when('/details', {
                 templateUrl: 'templates/pages/contactDetails.html',
                 controller: 'ContactDetailsController'
             })
             .otherwise({
-                redirectTo: '/'
+                redirectTo: '/main'
             });
     }]);
 

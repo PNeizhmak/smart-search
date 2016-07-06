@@ -8,14 +8,19 @@
 
                 $scope.login = function () {
                     $scope.dataLoading = true;
-                    AuthenticationService.login($scope.username, $scope.password, function(response) {
-                        if(response.success) {
+                    $scope.error = '';
+                    AuthenticationService.login($scope.username, $scope.password).then(function(data) {
+                        $scope.dataLoading = false;
+                        if (data.success) {
                             AuthenticationService.setCredentials($scope.username, $scope.password);
-                            $location.path('/');
+                            $location.path('/main');
                         } else {
-                            $scope.error = response.message;
-                            $scope.dataLoading = false;
+                            $scope.error = data.error;
                         }
+                    }, function (data) {
+                        $scope.dataLoading = false;
+                        $scope.error = 'Server error.';
+                        console.log(data);
                     });
                 };
             }]);
