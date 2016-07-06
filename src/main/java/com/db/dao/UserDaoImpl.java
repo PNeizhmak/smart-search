@@ -2,7 +2,8 @@ package com.db.dao;
 
 import com.db.model.User;
 import com.db.util.DbQueries;
-import com.util.Utils;
+import com.util.DateUtils;
+import com.util.PasswordUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -33,8 +34,8 @@ public class UserDaoImpl implements IUserDao {
 
             ps.setString(1, login);
             ps.setString(2, email);
-            ps.setTimestamp(3, Utils.newTimestamp());
-            ps.setTimestamp(4, Utils.newTimestamp());
+            ps.setTimestamp(3, DateUtils.newTimestamp());
+            ps.setTimestamp(4, DateUtils.newTimestamp());
             ps.setInt(5, activeAccountStatusId);
 
             return ps;
@@ -75,7 +76,7 @@ public class UserDaoImpl implements IUserDao {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(DbQueries.USER_UPDATE_LAST_LOGIN_TS, ps -> {
-            ps.setTimestamp(1, Utils.newTimestamp());
+            ps.setTimestamp(1, DateUtils.newTimestamp());
             ps.setLong(2, id);
         });
     }
@@ -92,7 +93,7 @@ public class UserDaoImpl implements IUserDao {
     private void storePassword(Long userId, String password) throws Exception {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        final String encryptedPass = Utils.encryptPassword(password);
+        final String encryptedPass = PasswordUtils.encryptPassword(password);
 
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(DbQueries.USER_INSERT_PASSWORD);

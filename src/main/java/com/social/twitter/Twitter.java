@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.converter.model.ExtraParamsDto;
 import com.converter.model.IUserOperations;
 import com.util.Constants;
-import com.util.Utils;
+import com.util.UriUtils;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 import oauth.signpost.exception.OAuthCommunicationException;
@@ -61,7 +61,7 @@ public class Twitter implements IUserOperations {
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("q", name));
 
-        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, TWITTER_PREFIX, "/1.1/users/search.json", nameValuePairs);
+        final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, TWITTER_PREFIX, "/1.1/users/search.json", nameValuePairs);
         HttpGet searchGet = new HttpGet(uri);
 
         try {
@@ -73,7 +73,7 @@ public class Twitter implements IUserOperations {
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return Utils.buildResponse(stringResponse);
+        return UriUtils.buildResponse(stringResponse);
     }
 
     @GET
@@ -86,14 +86,14 @@ public class Twitter implements IUserOperations {
 
         HttpResponse response;
 
-        ExtraParamsDto paramsDto = Utils.parseExtraParams(jsonParamsMap.toString());
+        ExtraParamsDto paramsDto = UriUtils.parseExtraParams(jsonParamsMap.toString());
         final String nickname = paramsDto != null ? paramsDto.getNickname() : "";
 
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("screen_name", nickname));
         nameValuePairs.add(new BasicNameValuePair("user_id", id));
 
-        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, TWITTER_PREFIX, "/1.1/users/show.json", nameValuePairs);
+        final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, TWITTER_PREFIX, "/1.1/users/show.json", nameValuePairs);
         HttpGet searchGet = new HttpGet(uri);
 
         try {
@@ -105,7 +105,7 @@ public class Twitter implements IUserOperations {
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return Utils.buildResponse(stringResponse);
+        return UriUtils.buildResponse(stringResponse);
     }
 
     private static OAuthConsumer initAuthConsumer() {

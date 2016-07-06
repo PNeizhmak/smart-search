@@ -2,10 +2,8 @@ package com.db;
 
 import com.db.dao.IUserDao;
 import com.db.model.User;
-import com.util.Utils;
+import com.util.UriUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.sql.Timestamp;
 
 /**
  * @author Pavel Neizhmak
@@ -26,7 +24,7 @@ public class TestConnection {
         System.out.println("User retrieved: " + user2read);
 
         String hashPass = userDao.getPassword(testUserId);
-        String strPass = Utils.decryptPassword(hashPass);
+        String strPass = UriUtils.decryptPassword(hashPass);
         System.out.println("Hash pass is: " + hashPass);
         System.out.println("String pass is: " + strPass);
 

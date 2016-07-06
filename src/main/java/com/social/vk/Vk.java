@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 import com.google.inject.Inject;
 import com.social.exception.SmartSearchException;
 import com.util.Constants;
-import com.util.Utils;
+import com.util.UriUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -48,7 +48,7 @@ public class Vk {
         }
         nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, token));
 
-        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, VK_PREFIX, "/users.search", nameValuePairs);
+        final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, VK_PREFIX, "/users.search", nameValuePairs);
         HttpPost searchPost = new HttpPost(uri);
 
         response = httpClient.execute(searchPost);
@@ -56,7 +56,7 @@ public class Vk {
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return Utils.buildResponse(stringResponse);
+        return UriUtils.buildResponse(stringResponse);
     }
 
     @GET
@@ -70,7 +70,7 @@ public class Vk {
         nameValuePairs.add(new BasicNameValuePair("fields", "city,contacts,site,education,status,connections"));
         nameValuePairs.add(new BasicNameValuePair("name_case", "Nom"));
 
-        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, VK_PREFIX, "/users.get", nameValuePairs);
+        final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, VK_PREFIX, "/users.get", nameValuePairs);
         HttpPost getInfoPost = new HttpPost(uri);
 
         response = httpClient.execute(getInfoPost);
@@ -78,7 +78,7 @@ public class Vk {
 
         String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return Utils.buildResponse(stringResponse);
+        return UriUtils.buildResponse(stringResponse);
     }
 
 }

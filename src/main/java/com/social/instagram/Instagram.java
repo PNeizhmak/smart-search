@@ -3,7 +3,7 @@ package com.social.instagram;
 import com.google.inject.Inject;
 import com.converter.model.IUserOperations;
 import com.util.Constants;
-import com.util.Utils;
+import com.util.UriUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -61,14 +61,14 @@ public class Instagram implements IUserOperations {
         nameValuePairs.add(new BasicNameValuePair("q", name));
         nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, TEMP_ACCESS_TOKEN));
 
-        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, INSTAGRAM_PREFIX, "/users/search", nameValuePairs);
+        final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, INSTAGRAM_PREFIX, "/users/search", nameValuePairs);
         HttpGet searchGet = new HttpGet(uri);
 
         response = httpClient.execute(searchGet);
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return Utils.buildResponse(stringResponse);
+        return UriUtils.buildResponse(stringResponse);
     }
 
     @GET
@@ -83,14 +83,14 @@ public class Instagram implements IUserOperations {
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, TEMP_ACCESS_TOKEN));
 
-        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, INSTAGRAM_PREFIX, "/users/" + id, nameValuePairs);
+        final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, INSTAGRAM_PREFIX, "/users/" + id, nameValuePairs);
         HttpGet getInfoGet = new HttpGet(uri);
 
         response = httpClient.execute(getInfoGet);
 
         String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return Utils.buildResponse(stringResponse);
+        return UriUtils.buildResponse(stringResponse);
     }
 
     private static void getAccessToken() throws IOException {

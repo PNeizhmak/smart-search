@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 
 import com.google.inject.Inject;
 import com.util.Constants;
-import com.util.Utils;
+import com.util.UriUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -54,14 +54,14 @@ public class Facebook {
         nameValuePairs.add(new BasicNameValuePair("q", name));
         nameValuePairs.add(new BasicNameValuePair("type", "user"));
 
-        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, FB_GRAPH_FREFIX, "/search", nameValuePairs);
+        final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, FB_GRAPH_FREFIX, "/search", nameValuePairs);
         HttpGet searchRequest = new HttpGet(uri);
 
         response = httpClient.execute(searchRequest);
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return Utils.buildResponse(stringResponse);
+        return UriUtils.buildResponse(stringResponse);
     }
 
     @GET
@@ -75,14 +75,14 @@ public class Facebook {
         nameValuePairs.add(new BasicNameValuePair("fields", "id,name,picture"));
         nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, token));
 
-        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, FB_GRAPH_FREFIX, "/" + id, nameValuePairs);
+        final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, FB_GRAPH_FREFIX, "/" + id, nameValuePairs);
         HttpGet getInfoRequest = new HttpGet(uri);
 
         response = httpClient.execute(getInfoRequest);
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return Utils.buildResponse(stringResponse);
+        return UriUtils.buildResponse(stringResponse);
     }
 
 }

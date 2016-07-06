@@ -3,7 +3,7 @@ package com.social.google;
 import com.google.inject.Inject;
 import com.converter.model.IUserOperations;
 import com.util.Constants;
-import com.util.Utils;
+import com.util.UriUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -49,14 +49,14 @@ public class GooglePlus implements IUserOperations {
         nameValuePairs.add(new BasicNameValuePair("query", name));
         nameValuePairs.add(new BasicNameValuePair("key", SERVER_KEY));
 
-        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, PLUS_PREFIX, "/people", nameValuePairs);
+        final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, PLUS_PREFIX, "/people", nameValuePairs);
         HttpGet searchGet = new HttpGet(uri);
 
         response = httpClient.execute(searchGet);
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return Utils.buildResponse(stringResponse);
+        return UriUtils.buildResponse(stringResponse);
     }
 
     @GET
@@ -72,13 +72,13 @@ public class GooglePlus implements IUserOperations {
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("key", SERVER_KEY));
 
-        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, PLUS_PREFIX, "/people/" + id, nameValuePairs);
+        final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, PLUS_PREFIX, "/people/" + id, nameValuePairs);
         HttpGet getUserInfo = new HttpGet(uri);
 
         response = httpClient.execute(getUserInfo);
 
         String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return Utils.buildResponse(stringResponse);
+        return UriUtils.buildResponse(stringResponse);
     }
 }

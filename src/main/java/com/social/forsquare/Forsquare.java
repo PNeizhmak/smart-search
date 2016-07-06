@@ -3,7 +3,7 @@ package com.social.forsquare;
 import com.google.inject.Inject;
 import com.converter.model.IUserOperations;
 import com.util.Constants;
-import com.util.Utils;
+import com.util.UriUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -52,14 +52,14 @@ public class Forsquare implements IUserOperations {
         nameValuePairs.add(new BasicNameValuePair("v", "20131016"));
         nameValuePairs.add(new BasicNameValuePair("name", name));
 
-        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, FS_PREFIX, "/users/search", nameValuePairs);
+        final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, FS_PREFIX, "/users/search", nameValuePairs);
         HttpPost searchPost = new HttpPost(uri);
 
         response = httpClient.execute(searchPost);
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return Utils.buildResponse(stringResponse);
+        return UriUtils.buildResponse(stringResponse);
     }
 
     @GET
@@ -74,13 +74,13 @@ public class Forsquare implements IUserOperations {
         nameValuePairs.add(new BasicNameValuePair("oauth_token", TEMP_ACCESS_TOKEN));
         nameValuePairs.add(new BasicNameValuePair("v", "20131016 "));
 
-        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, FS_PREFIX, "/users/" + id, nameValuePairs);
+        final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, FS_PREFIX, "/users/" + id, nameValuePairs);
         HttpGet getUserInfo = new HttpGet(uri);
         response = httpClient.execute(getUserInfo);
 
         String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return Utils.buildResponse(stringResponse);
+        return UriUtils.buildResponse(stringResponse);
     }
 
     private String getAccessToken() throws URISyntaxException, IOException {
@@ -99,7 +99,7 @@ public class Forsquare implements IUserOperations {
         nameValuePairs.add(new BasicNameValuePair("response_type", RESPONSE_TYPE));
         nameValuePairs.add(new BasicNameValuePair("redirect_uri", REDIRECT_URI));
 
-        final URI uri = Utils.buildRequest(Constants.SCHEMA_HTTPS, "foursquare.com", "/oauth2/authenticate", nameValuePairs);
+        final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, "foursquare.com", "/oauth2/authenticate", nameValuePairs);
 
         HttpGet searchGet = new HttpGet(uri);
 
@@ -126,7 +126,7 @@ public class Forsquare implements IUserOperations {
         nameValuePairs.add(new BasicNameValuePair("redirect_uri", REDIRECT_URI));
         nameValuePairs.add(new BasicNameValuePair("code", "P20CSX3SCECN4053ZEWPGJE5GGHDDZS4LEUHE1L5KIFCTVKF"));
 
-        final URI uri1 = Utils.buildRequest(Constants.SCHEMA_HTTPS, "foursquare.com", "/oauth2/access_token", nameValuePairs);
+        final URI uri1 = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, "foursquare.com", "/oauth2/access_token", nameValuePairs);
 
         HttpGet searchGet1 = new HttpGet(uri1);
 
