@@ -3,7 +3,6 @@ package com.db;
 import com.db.dao.IUserDao;
 import com.db.model.User;
 import com.util.PasswordUtils;
-import com.util.UriUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -12,7 +11,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class TestConnection {
 
     public static void main(String[] args) throws Exception {
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("db-config.xml");
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("app-context.xml");
         final long testUserId = 5L;
         final String testUsername = "testUser5";
 
