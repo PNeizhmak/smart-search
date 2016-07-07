@@ -111,7 +111,7 @@
                     var deferred = $q.defer();
 
                     $http.post(
-                        CONSTANTS.BASE_URL + 'auth/login',
+                        '/rest/auth/login',
                         "username=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password))
                         .success(function (response) {
                             deferred.resolve(response);
