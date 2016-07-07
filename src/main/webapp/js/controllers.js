@@ -25,6 +25,27 @@
                 };
             }]);
 
+    module.controller('RegisterController', RegisterController);
+    RegisterController.$inject = ['UserService', '$location', '$rootScope', 'MessageService'];
+    function RegisterController(UserService, $location, $rootScope, MessageService) {
+        var vm = this;
+        vm.register = register;
+
+        function register() {
+            vm.dataLoading = true;
+            UserService.createUser(vm.user)
+                .then(function (response) {
+                    if (response.success) {
+                        MessageService.successMsg('Registration successful', true);
+                        $location.path('/login');
+                    } else {
+                        MessageService.errorMsg(response.message);
+                        vm.dataLoading = false;
+                    }
+                });
+        }
+    }
+
     module.controller('SocialController', ['$rootScope', '$scope', '$window', 'SocialService', 'CONSTANTS',
         function ($rootScope, $scope, $window, SocialService, CONSTANTS) {
 

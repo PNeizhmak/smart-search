@@ -8,6 +8,10 @@
                 templateUrl: 'templates/pages/login.html',
                 controller: 'LoginController'
             })
+            .when('/register', {
+                templateUrl: 'templates/pages/register.html',
+                controller: 'RegisterController'
+            })
             .when('/main', {
                 templateUrl: 'templates/pages/main.html',
                 controller: 'SocialController'
@@ -29,8 +33,10 @@
             }
 
             $rootScope.$on('$locationChangeStart', function (event, next, current) {
-                // redirect to login page if not logged in
-                if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
+                // redirect to login page if not logged in and trying to access a restricted page
+                var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+                var loggedIn = $rootScope.globals.currentUser;
+                if (restrictedPage && !loggedIn) {
                     $location.path('/login');
                 }
             });

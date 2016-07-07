@@ -45,6 +45,15 @@ public class AuthController {
         return usernameNotFound();
     }
 
+    @POST
+    @Path("/register")
+    @Produces(APPLICATION_JSON)
+    public Response register(@FormParam("username") final String username, @FormParam("password") final String password, @FormParam("email") final String email) throws Exception {
+
+        final User dbUser = userDao.getByName(username);
+        return null;
+    }
+
     private Response passwordIncorrect() {
         JsonObject innerObject = new JsonObject();
         innerObject.addProperty("error", "Password is incorrect");
