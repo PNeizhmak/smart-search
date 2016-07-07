@@ -17,7 +17,7 @@
                 return service;
 
                 function createUser(user) {
-                    return $http.post('/auth/register', user).then(handleSuccess, handleError('Error creating user'));
+                    return $http.post('/rest/auth/register', user).then(handleSuccess, handleError('Error creating user'));
                 }
 
                 function deleteUser(id) {
