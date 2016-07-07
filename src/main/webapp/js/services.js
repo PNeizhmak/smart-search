@@ -114,7 +114,7 @@
                         CONSTANTS.BASE_URL + 'auth/login',
                         "username=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password))
                         .success(function (response) {
-                            deferred.resolve(response.data);
+                            deferred.resolve(response);
                         })
                         .error(function (response) {
                             deferred.reject(response.data);

@@ -37,7 +37,7 @@ public class AuthController {
             final String dbPass = userDao.getPassword(dbUser.getId());
             final String userPass = PasswordUtils.encryptPassword(password);
             if (dbPass.equals(userPass)) {
-                success();
+                return success();
             } else {
                 return passwordIncorrect();
             }
