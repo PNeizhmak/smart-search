@@ -51,7 +51,12 @@ public class AuthController {
     public Response register(@FormParam("username") final String username, @FormParam("password") final String password, @FormParam("email") final String email) throws Exception {
 
         final User dbUser = userDao.getByName(username);
-        return null;
+        if (dbUser != null) {
+            return duplicatedUsername();
+        } else {
+            userDao.createNewUser(username, password, email);
+        }
+        return success();
     }
 
     private Response passwordIncorrect() {
@@ -69,6 +74,12 @@ public class AuthController {
     private Response usernameNotFound() {
         JsonObject innerObject = new JsonObject();
         innerObject.addProperty("error", "Username is not found");
+        return Response.ok(gson.toJson(innerObject)).build();
+    }
+
+    private Response duplicatedUsername() {
+        JsonObject innerObject = new JsonObject();
+        innerObject.addProperty("error", "Duplicated username");
         return Response.ok(gson.toJson(innerObject)).build();
     }
 }
