@@ -4,6 +4,7 @@ import com.db.model.User;
 import com.db.util.DbQueries;
 import com.util.DateUtils;
 import com.util.PasswordUtils;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -59,16 +60,19 @@ public class UserDaoImpl implements IUserDao {
     @Override
     public User getByName(String name) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-
-        return jdbcTemplate.queryForObject(DbQueries.USER_GET, new String[]{name}, (rs, rowNum) -> {
-            User user = new User();
-            user.setId(rs.getLong("id"));
-            user.setUsername(rs.getString("username"));
-            user.setLastLoginDate(rs.getTimestamp("last_login_ts"));
-            user.setUserCreatedDate(rs.getTimestamp("user_created_ts"));
-            user.setAccountStatusId(rs.getInt("account_status_id"));
-            return user;
-        });
+        try {
+            return jdbcTemplate.queryForObject(DbQueries.USER_GET, new String[]{name}, (rs, rowNum) -> {
+                User user = new User();
+                user.setId(rs.getLong("id"));
+                user.setUsername(rs.getString("username"));
+                user.setLastLoginDate(rs.getTimestamp("last_login_ts"));
+                user.setUserCreatedDate(rs.getTimestamp("user_created_ts"));
+                user.setAccountStatusId(rs.getInt("account_status_id"));
+                return user;
+            });
+        } catch (EmptyResultDataAccessException ex) {
+            return null;
+        }
     }
 
     @Override
