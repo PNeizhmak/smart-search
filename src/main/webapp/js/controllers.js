@@ -44,8 +44,8 @@
             };
         }]);
 
-    module.controller('SocialController', ['$rootScope', '$scope', '$window', 'SocialService', 'CONSTANTS',
-        function ($rootScope, $scope, $window, SocialService, CONSTANTS) {
+    module.controller('SocialController', ['$location', '$rootScope', '$scope', '$window', 'SocialService', 'AuthenticationService', 'CONSTANTS',
+        function ($location, $rootScope, $scope, $window, SocialService, AuthenticationService, CONSTANTS) {
 
         $rootScope.sessions = $rootScope.sessions || {};
         $scope.result = '';
@@ -145,6 +145,11 @@
 
         $scope.isActive = function (platform) {
             return $rootScope.sessions[CONSTANTS.PLATFORMS[platform].id] ? 'active' : 'inactive';
+        };
+
+        $scope.logout = function() {
+            AuthenticationService.clearCredentials();
+            $location.path('/login');
         }
 
     }]);
