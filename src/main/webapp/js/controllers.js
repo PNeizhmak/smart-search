@@ -13,6 +13,7 @@
                         $scope.dataLoading = false;
                         if (data.success) {
                             AuthenticationService.setCredentials($scope.username, $scope.password);
+                            $rootScope.username = $scope.username;
                             $location.path('/main');
                         } else {
                             $scope.error = data.error;
