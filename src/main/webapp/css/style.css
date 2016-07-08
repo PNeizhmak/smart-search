@@ -59,3 +59,10 @@ div.resultset-vk {
     width: 30%;
     padding: 5px 5px;
 }
+
+div.auth-form {
+    width: 15%;
+    position: inherit;
+    margin: 10% auto auto;
+    background-color: #F5F5F5;
+}
