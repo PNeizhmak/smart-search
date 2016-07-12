@@ -1,85 +1,34 @@
 package com.auth;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
 import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-
-import com.db.dao.IUserDao;
-import com.db.model.User;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.inject.Inject;
-import com.util.PasswordUtils;
-
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 /**
  * @author Pavel Neizhmak
  */
-@Path("auth")
+@Controller
+@RequestMapping("/rest/auth")
 public class AuthController {
 
-    @Inject
-    private IUserDao userDao;
+    private IAuthService authService;
 
-    @Inject
-    private Gson gson;
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public Response login(@RequestBody(required = true) final String username,
+                          @RequestBody(required = true) final String password) throws Exception {
 
-    @POST
-    @Path("/login")
-    @Produces(APPLICATION_JSON)
-    public Response login(@FormParam("username") final String username, @FormParam("password") final String password) throws Exception {
-
-        final User dbUser = userDao.getByName(username);
-        if (dbUser != null) {
-            final String dbPass = userDao.getPassword(dbUser.getId());
-            final String userPass = PasswordUtils.encryptPassword(password);
-            if (dbPass.equals(userPass)) {
-                return success();
-            } else {
-                return passwordIncorrect();
-            }
-        }
-        return usernameNotFound();
+        return authService.login(username, password);
     }
 
-    @POST
-    @Path("/register")
-    @Produces(APPLICATION_JSON)
-    public Response register(@FormParam("username") final String username, @FormParam("password") final String password, @FormParam("email") final String email) throws Exception {
+    public Response register(@FormParam("username") final String username, @FormParam("password") final String password,
+                             @FormParam("email") final String email) throws Exception {
 
-        final User dbUser = userDao.getByName(username);
-        if (dbUser != null) {
-            return duplicatedUsername();
-        } else {
-            userDao.createNewUser(username, password, email);
-        }
-        return success();
+        return authService.register(username, password, email);
     }
 
-    private Response passwordIncorrect() {
-        JsonObject innerObject = new JsonObject();
-        innerObject.addProperty("error", "Password is incorrect");
-        return Response.ok(gson.toJson(innerObject)).build();
-    }
-
-    private Response success() {
-        JsonObject innerObject = new JsonObject();
-        innerObject.addProperty("success", "Success");
-        return Response.ok(gson.toJson(innerObject)).build();
-    }
-
-    private Response usernameNotFound() {
-        JsonObject innerObject = new JsonObject();
-        innerObject.addProperty("error", "Username is not found");
-        return Response.ok(gson.toJson(innerObject)).build();
-    }
-
-    private Response duplicatedUsername() {
-        JsonObject innerObject = new JsonObject();
-        innerObject.addProperty("error", "Duplicated username");
-        return Response.ok(gson.toJson(innerObject)).build();
+    public void setAuthService(IAuthService authService) {
+        this.authService = authService;
     }
 }

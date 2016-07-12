@@ -1,13 +1,15 @@
 package com.db.dao;
 
 import com.db.model.User;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 
 /**
  * @author Pavel Neizhmak
  */
-public interface IUserDao {
+@Component
+public interface IUserDao1 {
 
     void createNewUser(String login, String password, String email);
 

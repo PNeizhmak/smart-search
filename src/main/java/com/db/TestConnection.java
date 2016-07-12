@@ -1,6 +1,6 @@
 package com.db;
 
-import com.db.dao.IUserDao;
+import com.db.dao.IUserDao1;
 import com.db.model.User;
 import com.util.PasswordUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -15,7 +15,7 @@ public class TestConnection {
         final long testUserId = 5L;
         final String testUsername = "testUser5";
 
-        IUserDao userDao = ctx.getBean("userDao", IUserDao.class);
+        IUserDao1 userDao = ctx.getBean("userDao", IUserDao1.class);
 
         userDao.createNewUser(testUsername, "hash", null);
         System.out.println("User creation done !");
