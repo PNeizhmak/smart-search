@@ -8,6 +8,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -16,6 +17,7 @@ import java.util.Collection;
 /**
  * @author Pavel Neizhmak
  */
+@Component
 public class UserDaoImpl implements IUserDao {
 
     private DataSource dataSource;

@@ -7,7 +7,6 @@ import javax.ws.rs.core.Response;
 /**
  * @author Pavel Neizhmak
  */
-@Component
 public interface IAuthService {
 
     Response login(String username, String password) throws Exception;

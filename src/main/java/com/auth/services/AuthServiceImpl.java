@@ -5,13 +5,18 @@ import com.db.model.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.util.PasswordUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import javax.ws.rs.core.Response;
 
 /**
  * @author Pavel Neizhmak
  */
+@Component
 public class AuthServiceImpl implements IAuthService {
 
+    @Autowired
     private IUserDao userDao;
 
     private Gson gson = new Gson();

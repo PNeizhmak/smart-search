@@ -2,6 +2,7 @@ package com.auth.controller;
 
 import com.auth.model.AuthDetails;
 import com.auth.services.IAuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import javax.ws.rs.core.Response;
 @RequestMapping("/rest/auth")
 public class AuthController {
 
+    @Autowired
     private IAuthService authService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
