@@ -9,7 +9,7 @@ import java.util.Collection;
  * @author Pavel Neizhmak
  */
 @Component
-public interface IUserDao1 {
+public interface IUserDao {
 
     void createNewUser(String login, String password, String email);
 

@@ -1,6 +1,6 @@
 package com.auth;
 
-import com.db.dao.IUserDao1;
+import com.db.dao.IUserDao;
 import com.db.model.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
  */
 public class AuthServiceImpl implements IAuthService {
 
-    private IUserDao1 userDao;
+    private IUserDao userDao;
 
     private Gson gson = new Gson();
 
@@ -66,7 +66,7 @@ public class AuthServiceImpl implements IAuthService {
         return Response.ok(gson.toJson(innerObject)).build();
     }
 
-    public void setUserDao(IUserDao1 userDao) {
+    public void setUserDao(IUserDao userDao) {
         this.userDao = userDao;
     }
 }
