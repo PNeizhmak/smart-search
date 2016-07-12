@@ -16,8 +16,8 @@ public class AuthController {
     private IAuthService authService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Response login(@RequestBody(required = true) final String username,
-                          @RequestBody(required = true) final String password) throws Exception {
+    public Response login(@FormParam("username") final String username,
+                          @FormParam("password") final String password) throws Exception {
 
         return authService.login(username, password);
     }
