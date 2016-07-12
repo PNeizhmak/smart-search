@@ -9,11 +9,11 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="authService" class="com.auth.AuthServiceImpl">
+    <bean id="authService" class="com.auth.services.AuthServiceImpl">
         <property name="userDao" ref="userDao"/>
     </bean>
 
-    <bean id="authController" class="com.auth.AuthController">
+    <bean id="authController" class="com.auth.controller.AuthController">
         <property name="authService" ref="authService"/>
     </bean>
 </beans>

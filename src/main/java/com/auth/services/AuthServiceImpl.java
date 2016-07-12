@@ -1,4 +1,4 @@
-package com.auth;
+package com.auth.services;
 
 import com.db.dao.IUserDao;
 import com.db.model.User;

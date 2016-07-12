@@ -110,9 +110,13 @@
                 this.login = function (username, password) {
                     var deferred = $q.defer();
 
+                    var data = {
+                        username: encodeURIComponent(username),
+                        password: encodeURIComponent(password)
+                    };
+
                     $http.post(
-                        '/rest/auth/login',
-                        "username=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password))
+                        '/rest/auth/login', data)
                         .success(function (response) {
                             deferred.resolve(response);
                         })
