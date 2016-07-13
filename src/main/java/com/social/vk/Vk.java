@@ -6,13 +6,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Response;
-
 import com.google.inject.Inject;
 import com.social.exception.SmartSearchException;
 import com.util.Constants;
@@ -24,10 +17,15 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-
-@Path("vk")
+@RestController
+@RequestMapping("/rest/vk")
 public class Vk {
 
     private static final String VK_PREFIX = "api.vk.com/method";
@@ -35,10 +33,9 @@ public class Vk {
     @Inject
     private HttpClient httpClient;
 
-    @GET
-    @Path("/searchByName/{name}")
-    @Produces(APPLICATION_JSON)
-    public Response searchByName(@QueryParam("token") final String token, @PathParam("name") final String name) throws IOException, URISyntaxException {
+    @RequestMapping(value = "/searchByName/{name}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity searchByName(@RequestParam("token") final String token,
+                                       @PathVariable("name") final String name) throws IOException, URISyntaxException {
         HttpResponse response;
 
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -56,13 +53,11 @@ public class Vk {
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return UriUtils.buildResponse(stringResponse);
+        return ResponseEntity.ok(stringResponse);
     }
 
-    @GET
-    @Path("/getUserInfo/{id}")
-    @Produces(APPLICATION_JSON)
-    public Response getUserInfo(@PathParam("id") final String id) throws IOException, URISyntaxException {
+    @RequestMapping(value = "/getUserInfo/{id}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity getUserInfo(@PathVariable("id") final String id) throws IOException, URISyntaxException {
         HttpResponse response;
 
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -78,7 +73,7 @@ public class Vk {
 
         String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return UriUtils.buildResponse(stringResponse);
+        return ResponseEntity.ok(stringResponse);
     }
 
 }

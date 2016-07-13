@@ -6,9 +6,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.util.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
-import javax.ws.rs.core.Response;
 
 /**
  * @author Pavel Neizhmak
@@ -22,7 +21,7 @@ public class AuthServiceImpl implements IAuthService {
     private Gson gson = new Gson();
 
     @Override
-    public Response login(String username, String password) throws Exception {
+    public ResponseEntity login(String username, String password) throws Exception {
         final User dbUser = userDao.getByName(username);
         if (dbUser != null) {
             final String dbPass = userDao.getPassword(dbUser.getId());
@@ -37,7 +36,7 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     @Override
-    public Response register(String username, String password, String email) {
+    public ResponseEntity register(String username, String password, String email) {
         final User dbUser = userDao.getByName(username);
         if (dbUser != null) {
             return duplicatedUsername();
@@ -47,31 +46,28 @@ public class AuthServiceImpl implements IAuthService {
         return success();
     }
 
-    private Response passwordIncorrect() {
+    private ResponseEntity passwordIncorrect() {
         JsonObject innerObject = new JsonObject();
         innerObject.addProperty("error", "Password is incorrect");
-        return Response.ok(gson.toJson(innerObject)).build();
+        return ResponseEntity.ok(gson.toJson(innerObject));
     }
 
-    private Response success() {
+    private ResponseEntity success() {
         JsonObject innerObject = new JsonObject();
         innerObject.addProperty("success", "Success");
-        return Response.ok(gson.toJson(innerObject)).build();
+        return ResponseEntity.ok(gson.toJson(innerObject));
     }
 
-    private Response usernameNotFound() {
+    private ResponseEntity usernameNotFound() {
         JsonObject innerObject = new JsonObject();
         innerObject.addProperty("error", "Username is not found");
-        return Response.ok(gson.toJson(innerObject)).build();
+        return ResponseEntity.ok(gson.toJson(innerObject));
     }
 
-    private Response duplicatedUsername() {
+    private ResponseEntity duplicatedUsername() {
         JsonObject innerObject = new JsonObject();
         innerObject.addProperty("error", "Duplicated username");
-        return Response.ok(gson.toJson(innerObject)).build();
+        return ResponseEntity.ok(gson.toJson(innerObject));
     }
 
-    public void setUserDao(IUserDao userDao) {
-        this.userDao = userDao;
-    }
 }

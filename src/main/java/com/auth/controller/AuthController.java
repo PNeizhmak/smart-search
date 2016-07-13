@@ -3,24 +3,24 @@ package com.auth.controller;
 import com.auth.model.AuthDetails;
 import com.auth.services.IAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import javax.ws.rs.FormParam;
-import javax.ws.rs.core.Response;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Pavel Neizhmak
  */
-@Controller
+@RestController
 @RequestMapping("/rest/auth")
 public class AuthController {
 
     @Autowired
     private IAuthService authService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Response login(@RequestBody(required = true) final AuthDetails authDetails) throws Exception {
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity login(@RequestBody final AuthDetails authDetails) throws Exception {
 
         final String username = authDetails.getUsername();
         final String password = authDetails.getPassword();
@@ -28,13 +28,14 @@ public class AuthController {
         return authService.login(username, password);
     }
 
-    public Response register(@FormParam("username") final String username, @FormParam("password") final String password,
-                             @FormParam("email") final String email) throws Exception {
+    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity register(@RequestBody final AuthDetails authDetails) throws Exception {
+
+        final String username = authDetails.getUsername();
+        final String password = authDetails.getPassword();
+        final String email = authDetails.getEmail();
 
         return authService.register(username, password, email);
     }
 
-    public void setAuthService(IAuthService authService) {
-        this.authService = authService;
-    }
 }

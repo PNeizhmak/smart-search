@@ -1,15 +1,13 @@
 package com.auth.services;
 
-import org.springframework.stereotype.Component;
-
-import javax.ws.rs.core.Response;
+import org.springframework.http.ResponseEntity;
 
 /**
  * @author Pavel Neizhmak
  */
 public interface IAuthService {
 
-    Response login(String username, String password) throws Exception;
+    ResponseEntity login(String username, String password) throws Exception;
 
-    Response register(String username, String password, String email);
+    ResponseEntity register(String username, String password, String email);
 }

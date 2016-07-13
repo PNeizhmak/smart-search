@@ -17,9 +17,15 @@
                 return service;
 
                 function createUser(user) {
+                    var data = {
+                        username: encodeURIComponent(user.username),
+                        password: encodeURIComponent(user.password),
+                        email: encodeURIComponent(user.email)
+                    };
+
                     return $http.post(
                         '/rest/auth/register',
-                        "username=" + encodeURIComponent(user.username) + "&password=" + encodeURIComponent(user.password) + "&email=" + encodeURIComponent(user.email)
+                        data
                     ).then(handleSuccess, handleError('Error creating user'));
                 }
 

@@ -6,13 +6,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Response;
-
 import com.google.inject.Inject;
 import com.util.Constants;
 import com.util.UriUtils;
@@ -22,13 +15,18 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Pavel Neizhmak
  */
-@Path("fb")
+@RestController
+@RequestMapping("/rest/fb")
 public class Facebook {
 
     private static final String FB_GRAPH_FREFIX = "graph.facebook.com";
@@ -43,10 +41,9 @@ public class Facebook {
      * @return {@see IUserOperations#searchByName}
      * @throws IOException
      */
-    @GET
-    @Path("/searchByName/{name}")
-    @Produces(APPLICATION_JSON)
-    public Response searchByName(@QueryParam("token") final String token, @PathParam("name") final String name) throws IOException, URISyntaxException {
+    @RequestMapping(value = "/searchByName/{name}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity searchByName(@RequestParam("token") final String token,
+                                 @PathVariable("name") final String name) throws IOException, URISyntaxException {
         HttpResponse response;
 
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -61,13 +58,11 @@ public class Facebook {
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return UriUtils.buildResponse(stringResponse);
+        return ResponseEntity.ok(stringResponse);
     }
 
-    @GET
-    @Path("/getUserInfo/{id}")
-    @Produces(APPLICATION_JSON)
-    public Response getUserInfo(@QueryParam("token") final String token, @PathParam("id") final String id)
+    @RequestMapping(value = "/getUserInfo/{id}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity getUserInfo(@RequestParam("token") final String token, @PathVariable("id") final String id)
             throws IOException, URISyntaxException {
         HttpResponse response;
 
@@ -82,7 +77,7 @@ public class Facebook {
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return UriUtils.buildResponse(stringResponse);
+        return ResponseEntity.ok(stringResponse);
     }
 
 }
