@@ -6,7 +6,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.inject.Inject;
 import com.social.exception.SmartSearchException;
 import com.util.Constants;
 import com.util.UriUtils;
@@ -17,6 +16,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,10 +30,10 @@ public class Vk {
 
     private static final String VK_PREFIX = "api.vk.com/method";
 
-    @Inject
+    @Autowired
     private HttpClient httpClient;
 
-    @RequestMapping(value = "/searchByName/{name}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/searchByName/{name}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity searchByName(@RequestParam("token") final String token,
                                        @PathVariable("name") final String name) throws IOException, URISyntaxException {
         HttpResponse response;
@@ -56,7 +56,7 @@ public class Vk {
         return ResponseEntity.ok(stringResponse);
     }
 
-    @RequestMapping(value = "/getUserInfo/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/getUserInfo/{id}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity getUserInfo(@PathVariable("id") final String id) throws IOException, URISyntaxException {
         HttpResponse response;
 

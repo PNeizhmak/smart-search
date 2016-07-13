@@ -6,7 +6,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.inject.Inject;
 import com.util.Constants;
 import com.util.UriUtils;
 import org.apache.http.HttpResponse;
@@ -15,6 +14,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +31,7 @@ public class Facebook {
 
     private static final String FB_GRAPH_FREFIX = "graph.facebook.com";
 
-    @Inject
+    @Autowired
     private HttpClient httpClient;
 
     /**
@@ -41,7 +41,7 @@ public class Facebook {
      * @return {@see IUserOperations#searchByName}
      * @throws IOException
      */
-    @RequestMapping(value = "/searchByName/{name}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/searchByName/{name}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity searchByName(@RequestParam("token") final String token,
                                  @PathVariable("name") final String name) throws IOException, URISyntaxException {
         HttpResponse response;
@@ -61,7 +61,7 @@ public class Facebook {
         return ResponseEntity.ok(stringResponse);
     }
 
-    @RequestMapping(value = "/getUserInfo/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/getUserInfo/{id}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity getUserInfo(@RequestParam("token") final String token, @PathVariable("id") final String id)
             throws IOException, URISyntaxException {
         HttpResponse response;
