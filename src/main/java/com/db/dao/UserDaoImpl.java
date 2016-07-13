@@ -4,6 +4,7 @@ import com.db.model.User;
 import com.db.util.DbQueries;
 import com.util.DateUtils;
 import com.util.PasswordUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -20,11 +21,8 @@ import java.util.Collection;
 @Component
 public class UserDaoImpl implements IUserDao {
 
+    @Autowired
     private DataSource dataSource;
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     @Override
     public void createNewUser(String login, String password, String email) {
