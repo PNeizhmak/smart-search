@@ -37,21 +37,37 @@ CREATE TABLE `user_password` (
   PRIMARY KEY (`id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Table structure for table `user_social_networks` */
+/*Table structure for table `social_networks` */
 
-DROP TABLE IF EXISTS `user_social_networks`;
+DROP TABLE IF EXISTS `social_networks`;
 
-CREATE TABLE `user_social_networks` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) NOT NULL,
-  `vk_id` bigint(20) DEFAULT NULL,
-  `fb_id` bigint(20) DEFAULT NULL,
-  `instagram_id` bigint(20) DEFAULT NULL,
-  `github_id` bigint(20) DEFAULT NULL,
-  `twitter_id` bigint(20) DEFAULT NULL,
-  `google_plus_id` bigint(20) DEFAULT NULL,
-  `forsquare_id` bigint(20) DEFAULT NULL,
+CREATE TABLE `social_networks` (
+  `id` bigint(2) NOT NULL,
+  `network` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `social_networks` */
+
+insert  into `social_networks`(`id`,`network_type`) values
+(1,'vkontakte'),
+(2,'facebook'),
+(3,'instagram'),
+(4,'github'),
+(5,'twitter'),
+(6,'google_plus'),
+(7,'forsquare');
+
+/*Table structure for table `user_in_social_network` */
+
+DROP TABLE IF EXISTS `user_in_social_network`;
+
+CREATE TABLE `user_in_social_network` (
+  `ss_user_id` bigint(20) DEFAULT NULL,
+  `social_network_id` bigint(20) DEFAULT NULL,
+  `social_network_type` bigint(2) DEFAULT NULL,
+  KEY `social_network_type` (`social_network_type`),
+  CONSTRAINT `user_in_social_network_ibfk_1` FOREIGN KEY (`social_network_type`) REFERENCES `social_networks` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `users` */

@@ -1,7 +1,6 @@
 package com.db.dao;
 
 import com.db.model.User;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 
@@ -23,4 +22,6 @@ public interface IUserDao {
     Collection getAll();
 
     String getPassword(Long id);
+
+    void storeUserSocialId(Long ssUserId, String socialNetwork, Long socialNetworkUserId);
 }

@@ -1,5 +1,6 @@
 package com.db.dao;
 
+import com.db.model.SocialNetwork;
 import com.db.model.User;
 import com.db.util.DbQueries;
 import com.util.DateUtils;
@@ -7,6 +8,7 @@ import com.util.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowCountCallbackHandler;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
@@ -104,6 +106,54 @@ public class UserDaoImpl implements IUserDao {
 
             ps.setLong(1, userId);
             ps.setString(2, encryptedPass);
+
+            return ps;
+        });
+    }
+
+    @Override
+    public void storeUserSocialId(Long ssUserId, String socialNetwork, Long socialNetworkUserId) {
+
+        Long networkDbId = Long.valueOf(SocialNetwork.valueOf(socialNetwork.toUpperCase()).getNetworkDbId());
+
+        final boolean isExist = checkRecordExists(ssUserId, networkDbId);
+
+        if(!isExist) {
+            insertUserInSocialNetwork(ssUserId, socialNetworkUserId, networkDbId);
+            System.out.println("user has been inserted. Network: " + socialNetwork + ", id: " + socialNetworkUserId);
+        }
+    }
+
+    /**
+     * Checks record is exists
+     *
+     * @param ssUserId user id
+     * @param networkDbId social network id
+     * @return true if record is exists
+     */
+    private boolean checkRecordExists(Long ssUserId, Long networkDbId) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        RowCountCallbackHandler countCallback = new RowCountCallbackHandler();
+
+        jdbcTemplate.query(DbQueries.USER_CHECK_SOCIAL_NETWORK_EXISTS, ps -> {
+
+            ps.setLong(1, ssUserId);
+            ps.setLong(2, networkDbId);
+
+        }, countCallback);
+
+        return countCallback.getRowCount() == 1;
+    }
+
+    private void insertUserInSocialNetwork(Long ssUserId, Long socialNetworkUserId, Long networkDbId) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(DbQueries.USER_STORE_SOCIAL_NETWORK_ID);
+
+            ps.setLong(1, ssUserId);
+            ps.setLong(2, socialNetworkUserId);
+            ps.setLong(3, networkDbId);
 
             return ps;
         });

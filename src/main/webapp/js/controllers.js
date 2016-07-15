@@ -44,8 +44,8 @@
             };
         }]);
 
-    module.controller('SocialController', ['$location', '$rootScope', '$scope', '$window', 'SocialService', 'AuthenticationService', 'CONSTANTS',
-        function ($location, $rootScope, $scope, $window, SocialService, AuthenticationService, CONSTANTS) {
+    module.controller('SocialController', ['$location', '$rootScope', '$scope', '$window', 'SocialService', 'AuthenticationService', 'UserService', 'CONSTANTS',
+        function ($location, $rootScope, $scope, $window, SocialService, AuthenticationService, UserService, CONSTANTS) {
 
         $rootScope.sessions = $rootScope.sessions || {};
         $scope.result = '';
@@ -110,6 +110,10 @@
                         VK.Auth.login(function(response) {
                             if (response.session) {
                                 $rootScope.sessions[CONSTANTS.PLATFORMS.VK.id] = response.session;
+
+                                var vkId = response.session.mid;
+                                UserService.storeUserSocialIds('vk', vkId);
+
                                 if (response.settings) {
 
                                 }
@@ -129,6 +133,10 @@
                                 // FB.api('/me', function(response) {
                                 //     console.log('Good to see you, ' + response.name + '.');
                                 // });
+
+                                var fbId = response.authResponse.userID;
+                                UserService.storeUserSocialIds('fb', fbId);
+
                                 $scope.performSearch();
                             } else {
                                 console.log('User cancelled login or did not fully authorize.');

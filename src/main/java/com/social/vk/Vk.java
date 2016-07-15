@@ -33,7 +33,7 @@ public class Vk {
     @Autowired
     private HttpClient httpClient;
 
-    @RequestMapping(value = "/searchByName/{name}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/searchByName/{name}", method = RequestMethod.GET, produces = Constants.APP_JSON_UTF_8)
     public ResponseEntity searchByName(@RequestParam("token") final String token,
                                        @PathVariable("name") final String name) throws IOException, URISyntaxException {
         HttpResponse response;
@@ -56,7 +56,7 @@ public class Vk {
         return ResponseEntity.ok(stringResponse);
     }
 
-    @RequestMapping(value = "/getUserInfo/{id}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/getUserInfo/{id}", method = RequestMethod.GET, produces = Constants.APP_JSON_UTF_8)
     public ResponseEntity getUserInfo(@PathVariable("id") final String id) throws IOException, URISyntaxException {
         HttpResponse response;
 

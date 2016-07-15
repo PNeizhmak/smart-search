@@ -9,6 +9,8 @@
                 service.createUser = createUser;
                 service.deleteUser = deleteUser;
 
+                service.storeUserSocialIds = storeUserSocialIds;
+
                 //methods for admin application
                 service.getAll = getAll;
                 service.getById = getById;
@@ -30,6 +32,14 @@
                 }
 
                 function deleteUser(id) {
+                }
+
+                function storeUserSocialIds(socialNetwork, id) {
+                    var data = "?socialNetwork=" + encodeURIComponent(socialNetwork) + "&socialNetworkUserId=" + encodeURIComponent(id);
+
+                    return $http.post(
+                        '/rest/user-social/storeSocialIds' + data
+                    ).then(handleSuccess, handleError('Error creating user'));
                 }
 
                 function getAll() {

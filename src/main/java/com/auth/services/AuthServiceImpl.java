@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @author Pavel Neizhmak
  */
@@ -17,6 +19,9 @@ public class AuthServiceImpl implements IAuthService {
 
     @Autowired
     private IUserDao userDao;
+
+    @Autowired
+    private HttpSession httpSession;
 
     private Gson gson = new Gson();
 
@@ -27,6 +32,7 @@ public class AuthServiceImpl implements IAuthService {
             final String dbPass = userDao.getPassword(dbUser.getId());
             final String userPass = PasswordUtils.encryptPassword(password);
             if (dbPass.equals(userPass)) {
+                httpSession.setAttribute("user", dbUser);
                 return success();
             } else {
                 return passwordIncorrect();
