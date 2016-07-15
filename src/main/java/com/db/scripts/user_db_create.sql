@@ -43,7 +43,7 @@ DROP TABLE IF EXISTS `social_networks`;
 
 CREATE TABLE `social_networks` (
   `id` bigint(2) NOT NULL,
-  `network` varchar(20) DEFAULT NULL,
+  `network_type` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
