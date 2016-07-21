@@ -45,7 +45,7 @@ div.resultset:hover {
 }
 
 div.resultset img {
-    width: 100%;
+    width: 50%;
     height: auto;
 }
 
@@ -54,9 +54,8 @@ div.resultset-description {
     text-align: center;
 }
 
-div.resultset-vk {
-    content: url("../img/vk.png");
-    width: 30%;
+img.resultset-vk-img {
+    width: 30% !important;
     padding: 5px 5px;
 }
 
@@ -77,4 +76,12 @@ div.username-area {
     color: #333;
     border: 0;
     border-bottom: 1px solid #e5e5e5;
+}
+div.contact-list-profile-img-wrap {
+    text-align: center;
+    padding-top: 10px;
+}
+
+img.contact-list-profile-img {
+    border-radius: 50%;
 }

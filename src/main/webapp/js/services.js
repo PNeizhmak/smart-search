@@ -85,7 +85,7 @@
             this.buildContactsVK = function (data) {
                 var contacts = [];
                 data.forEach(function (item) {
-                    contacts.push({id: item.uid, firstName: item.first_name, lastName: item.last_name});
+                    contacts.push({id: item.uid, firstName: item.first_name, lastName: item.last_name, photo_medium: item.photo_medium});
                 });
                 return contacts;
             };

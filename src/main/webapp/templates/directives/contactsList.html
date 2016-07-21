@@ -1,7 +1,9 @@
 <!-- contacts list directive -->
 <div ng-repeat="contact in contacts" ng-click="showDetails(contact)">
     <div class="resultset">
-        <div class="resultset-vk">
+        <div class="contact-list-profile-img-wrap">
+            <img class="contact-list-profile-img" src="{{::contact.photo_medium}}"/>
+            <img class="resultset-vk-img " src="../../img/vk.png"/>
         </div>
         <div class="resultset-description">
             {{::contact.firstName}}
