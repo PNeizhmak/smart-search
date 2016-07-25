@@ -47,6 +47,7 @@ public class Vk {
             throw new SmartSearchException("No token.");
         }
         nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, token));
+        nameValuePairs.add(new BasicNameValuePair("fields", "photo,screen_name"));
 
         final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, VK_PREFIX, "/users.search", nameValuePairs);
         HttpPost searchPost = new HttpPost(uri);
