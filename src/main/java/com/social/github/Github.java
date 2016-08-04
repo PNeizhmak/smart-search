@@ -1,7 +1,13 @@
 package com.social.github;
 
-import com.google.inject.Inject;
-import com.converter.model.IUserOperations;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.core.Response;
+
 import com.util.Constants;
 import com.util.UriUtils;
 import org.apache.http.HttpResponse;
@@ -10,23 +16,19 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.MatrixVariable;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Pavel Neizhmak
  */
-@Path("github")
-public class Github implements IUserOperations{
+@RestController
+@RequestMapping("/rest/github")
+public class Github {
 
     private static final String CLIENT_ID = "36925ab7abc42e480b5c";
     private static final String CLIENT_SECRET = "356b6501a0e0e52bf5ff69ec90cbd46380a97ebf";
@@ -36,13 +38,11 @@ public class Github implements IUserOperations{
 
     private static final String TEMP_ACCESS_TOKEN = "dea13c98b352a5cbb30b8106024942556d8786d9";
 
-    @Inject
+    @Autowired
     private HttpClient httpClient;
 
-    @GET
-    @Path("/{userId}/searchByName/{name}")
-    @Produces(APPLICATION_JSON)
-    public Response searchByName(@PathParam("userId") final String userId, @PathParam("name") final String name) throws IOException, URISyntaxException {
+    @RequestMapping(value = "/searchByName/{name}", method = RequestMethod.GET, produces = Constants.APP_JSON_UTF_8)
+    public Response searchByName(@PathVariable("name") final String name) throws IOException, URISyntaxException {
         HttpResponse response;
 
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -68,12 +68,8 @@ public class Github implements IUserOperations{
      * @throws IOException
      * @throws URISyntaxException
      */
-    @GET
-    @Path("/{userId}/getUserInfo/{id}")
-    @Produces(APPLICATION_JSON)
-    public Response getUserInfo(@PathParam("userId") final String userId,
-                              @PathParam("id") final String id,
-                              @MatrixParam("params") final List<String> jsonParamsMap)
+    @RequestMapping(value = "/getUserInfo/{id}", method = RequestMethod.GET, produces = Constants.APP_JSON_UTF_8)
+    public Response getUserInfo(@PathVariable("id") final String id, @MatrixVariable(value = "params", required = false) final List<String> jsonParamsMap)
             throws IOException, URISyntaxException {
 
         HttpResponse response;

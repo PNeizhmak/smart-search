@@ -5,13 +5,13 @@
     module.service('SocialDataProviderFactory', ['$q', '$http', 'CONSTANTS', function ($q, $http, CONSTANTS) {
 
         function SocialDataProvider() {
-            this.search = function (userId, token, platform, apiMethod, value, params) {
+            this.search = function (token, platform, apiMethod, value, params) {
                 var deferred = $q.defer();
                 params = params || '';
 
                 $http({
                     method: 'GET',
-                    url: this.getServiceUrl(userId, token, platform, apiMethod, value, params)
+                    url: this.getServiceUrl(token, platform, apiMethod, value, params)
                 }).then(function (data) {
                     deferred.resolve(data.data.response);
                 }, function (data) {
@@ -20,8 +20,8 @@
 
                 return deferred.promise;
             };
-            this.getServiceUrl = function (userId, token, platform, apiMethod, value, params) {
-                return CONSTANTS.BASE_URL + platform + "/" + userId + "/" + apiMethod + "/" + value + params;
+            this.getServiceUrl = function (token, platform, apiMethod, value, params) {
+                return CONSTANTS.BASE_URL + platform + "/" + apiMethod + "/" + value + params;
             };
             this.buildContacts = function (data) {
                 return data;
@@ -29,11 +29,11 @@
         };
 
         function VkSocialDataProvider() {
-            this.search = function (userId, token, platform, apiMethod, value, params) {
+            this.search = function (token, platform, apiMethod, value, params) {
                 var deferred = $q.defer();
                 $http({
                     method: 'GET',
-                    url: this.getServiceUrl(userId, token, platform, apiMethod, value, params)
+                    url: this.getServiceUrl(token, platform, apiMethod, value, params)
                 }).then(function (data) {
                     deferred.resolve(data.data.response);
                 }, function (data) {
@@ -41,7 +41,7 @@
                 });
                 return deferred.promise;
             };
-            this.getServiceUrl = function (userId, token, platform, apiMethod, value, params) {
+            this.getServiceUrl = function (token, platform, apiMethod, value, params) {
                 if (apiMethod == CONSTANTS.SEARCH_METHODS.BY_ID) {
                     return CONSTANTS.BASE_URL + CONSTANTS.PLATFORMS.VK.id + "/" + apiMethod + "/" + value;
                 } else if (apiMethod == CONSTANTS.SEARCH_METHODS.BY_NAME) {
@@ -58,11 +58,11 @@
         };
 
         function FbSocialDataProvider() {
-            this.search = function (userId, token, platform, apiMethod, value, params) {
+            this.search = function (token, platform, apiMethod, value, params) {
                 var deferred = $q.defer();
                 $http({
                     method: 'GET',
-                    url: this.getServiceUrl(userId, token, platform, apiMethod, value, params)
+                    url: this.getServiceUrl(token, platform, apiMethod, value, params)
                 }).then(function (data) {
                     deferred.resolve(data.data);
                 }, function (data) {
@@ -70,7 +70,7 @@
                 });
                 return deferred.promise;
             };
-            this.getServiceUrl = function (userId, token, platform, apiMethod, value, params) {
+            this.getServiceUrl = function (token, platform, apiMethod, value, params) {
                 return CONSTANTS.BASE_URL + CONSTANTS.PLATFORMS.FB.id + "/" + apiMethod + "/" + value + "?token=" + token;
             };
             this.buildContacts = function (data) {
@@ -87,13 +87,13 @@
         };
 
         function FSQRSocialDataProvider() {
-            this.search = function (userId, token, platform, apiMethod, value, params) {
+            this.search = function (token, platform, apiMethod, value, params) {
                 var deferred = $q.defer();
                 params = params || '';
 
                 $http({
                     method: 'GET',
-                    url: this.getServiceUrl(userId, token, platform, apiMethod, value, params)
+                    url: this.getServiceUrl(token, platform, apiMethod, value, params)
                 }).then(function (data) {
                     deferred.resolve(data.data.response);
                 }, function (data) {
@@ -102,8 +102,8 @@
 
                 return deferred.promise;
             };
-            this.getServiceUrl = function (userId, token, platform, apiMethod, value, params) {
-                return CONSTANTS.BASE_URL + platform + "/" + userId + "/" + apiMethod + "/" + value + params;
+            this.getServiceUrl = function (token, platform, apiMethod, value, params) {
+                return CONSTANTS.BASE_URL + platform + "/" + apiMethod + "/" + value + params;
             };
             this.buildContacts = function (data) {
                 var contacts = [];
