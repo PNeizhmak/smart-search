@@ -1,4 +1,4 @@
 (function () {
     'use strict';
-    angular.module('smartSearchApp.services', ['smartSearchApp.constants', 'ngCookies', 'base64']);
+    angular.module('smartSearchApp.services', ['smartSearchApp.constants', 'smartSearchApp.providers', 'ngCookies', 'base64']);
 })();

@@ -33,30 +33,14 @@
                 };
 
                 $scope.performSearch = function (params) {
-                    if ($scope.platform.id == CONSTANTS.PLATFORMS.VK.id) {
-                        var token = $rootScope.sessions[CONSTANTS.PLATFORMS.VK.id].sid;
-                        SocialService.searchVK(token, $scope.searchParam, $scope.searchValue)
-                            .then(function (data) {
-                                $scope.contacts = SocialService.buildContacts($scope.platform.id, data);
-                            }, function (data) {
-                                console.log(data);
-                            });
-                    } else if ($scope.platform.id == CONSTANTS.PLATFORMS.FB.id) {
-                        var token = $rootScope.sessions[CONSTANTS.PLATFORMS.FB.id].accessToken;
-                        SocialService.searchFB(token, $scope.searchParam, $scope.searchValue)
-                            .then(function (data) {
-                                $scope.contacts = SocialService.buildContacts($scope.platform.id, data);
-                            }, function (data) {
-                                console.log(data);
-                            });
-                    } else {
-                        SocialService.search(null, $scope.platform.id, $scope.searchParam, $scope.searchValue, params)
-                            .then(function (data) {
-                                $scope.contacts = SocialService.buildContacts($scope.platform.id, data);
-                            }, function (data) {
-                                console.log(data);
-                            });
-                    }
+                    var token = $rootScope.sessions[$scope.platform.id] != null ? $rootScope.sessions[$scope.platform.id].sid : null;
+
+                    SocialService.search(null, token, $scope.platform.id, $scope.searchParam, $scope.searchValue, params)
+                        .then(function (data) {
+                            $scope.contacts = SocialService.buildContacts($scope.platform.id, data);
+                        }, function (data) {
+                            console.log(data);
+                        });
                 };
 
                 $scope.authorize = function (platformId) {
