@@ -34,6 +34,7 @@
 
                 $scope.performSearch = function (params) {
                     var token = $rootScope.sessions[$scope.platform.id] != null ? $rootScope.sessions[$scope.platform.id].sid : null;
+                    $rootScope.platform = $scope.platform;
 
                     SocialService.search(token, $scope.platform.id, $scope.searchParam, $scope.searchValue, params)
                         .then(function (data) {
