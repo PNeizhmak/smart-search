@@ -41,21 +41,24 @@ public class Vk {
                                        @PathVariable("name") final String name) throws IOException, URISyntaxException {
         HttpResponse response;
 
-        final List<NameValuePair> nameValuePairs = new ArrayList<>();
-        nameValuePairs.add(new BasicNameValuePair("q", name));
         if (token == null || StringUtils.isEmpty(token)) {
             throw new SmartSearchException("No token.");
         }
+
+        final List<NameValuePair> nameValuePairs = new ArrayList<>();
+        nameValuePairs.add(new BasicNameValuePair("q", name));
         nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, token));
         nameValuePairs.add(new BasicNameValuePair("fields", "photo,screen_name"));
+        nameValuePairs.add(new BasicNameValuePair("count", "1000"));
 
         final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, VK_PREFIX, "/users.search", nameValuePairs);
         HttpPost searchPost = new HttpPost(uri);
 
         response = httpClient.execute(searchPost);
-        searchPost.abort();
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
+
+        searchPost.abort();
 
         return ResponseEntity.ok(stringResponse);
     }
