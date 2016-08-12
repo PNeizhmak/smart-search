@@ -39,6 +39,8 @@
                     SocialService.search(token, $scope.platform.id, $scope.searchParam, $scope.searchValue, params)
                         .then(function (data) {
                             $scope.contacts = SocialService.buildContacts($scope.platform.id, data);
+                            $scope.vm.contacts = $scope.contacts;
+                            $scope.vm.setPage(1);
                         }, function (data) {
                             console.log(data);
                         });

@@ -51,7 +51,9 @@
             this.buildContacts = function (data) {
                 var contacts = [];
                 data.forEach(function (item) {
-                    contacts.push({id: item.uid, firstName: item.first_name, lastName: item.last_name, photo: item.photo, screenName: item.screen_name});
+                    if (item.uid) {
+                        contacts.push({id: item.uid, firstName: item.first_name, lastName: item.last_name, photo: item.photo, screenName: item.screen_name});
+                    }
                 });
                 return contacts;
             };
