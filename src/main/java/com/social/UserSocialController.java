@@ -1,10 +1,9 @@
 package com.social;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 /**
  * @author Pavel Neizhmak
@@ -20,5 +19,11 @@ public class UserSocialController {
     public void storeSocialIds(@RequestParam final String socialNetwork, @RequestParam final String socialNetworkUserId) {
 
         userSocial.storeUserSocialId(socialNetwork, Long.valueOf(socialNetworkUserId));
+    }
+
+    @RequestMapping(value = "/checkDominantColor", method = RequestMethod.POST, produces = "application/json")
+    public String checkDominantColor(@RequestParam final String photoUrl) throws IOException {
+
+        return userSocial.checkDominantColor(photoUrl);
     }
 }

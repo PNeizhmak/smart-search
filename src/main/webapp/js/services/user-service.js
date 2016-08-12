@@ -2,14 +2,15 @@
     'use strict';
 
     angular.module('smartSearchApp.services')
-        .service('UserService', ['$http',
-            function UserService($http) {
+        .service('UserService', ['$rootScope', '$http',
+            function UserService($rootScope, $http) {
                 var service = {};
 
                 service.createUser = createUser;
                 service.deleteUser = deleteUser;
 
                 service.storeUserSocialIds = storeUserSocialIds;
+                service.checkDominantColor = checkDominantColor;
 
                 //methods for admin application
                 service.getAll = getAll;
@@ -40,6 +41,18 @@
                     return $http.post(
                         '/rest/user-social/storeSocialIds' + data
                     ).then(handleSuccess, handleError('Error creating user'));
+                }
+
+                function checkDominantColor(photoUrl) {
+                    var data = "?photoUrl=" + encodeURIComponent(photoUrl);
+
+                    return $http.post(
+                        '/rest/user-social/checkDominantColor' + data
+                    )
+                        .success(function(data){
+                            $rootScope.dominantColor = data;
+                        })
+                        .then(handleSuccess, handleError('Error creating user'));
                 }
 
                 function getAll() {
