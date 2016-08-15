@@ -33,10 +33,8 @@
                 };
 
                 $scope.performSearch = function (params) {
-                    var token = $rootScope.sessions[$scope.platform.id] != null ? $rootScope.sessions[$scope.platform.id].sid : null;
                     $rootScope.platform = $scope.platform;
-
-                    SocialService.search(token, $scope.platform.id, $scope.searchParam, $scope.searchValue, params)
+                    SocialService.search($rootScope.sessions[$scope.platform.id], $scope.platform.id, $scope.searchParam, $scope.searchValue, params)
                         .then(function (data) {
                             $scope.contacts = SocialService.buildContacts($scope.platform.id, data);
                             $scope.vm.contacts = $scope.contacts;

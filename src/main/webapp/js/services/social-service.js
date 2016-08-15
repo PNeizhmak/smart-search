@@ -5,9 +5,9 @@
         .service('SocialService', ['SocialDataProviderFactory', '$http', '$q', 'CONSTANTS',
             function (SocialDataProviderFactory) {
 
-        this.search = function (token, platform, apiMethod, value, params) {
+        this.search = function (sessionInfo, platform, apiMethod, value, params) {
             var provider = SocialDataProviderFactory.getSocialDataProvider(platform);
-            return provider.search(token, platform, apiMethod, value, params);
+            return provider.search(sessionInfo, platform, apiMethod, value, params);
         };
 
         this.buildContacts = function (platformId, data) {

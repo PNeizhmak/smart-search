@@ -5,13 +5,13 @@
     module.service('SocialDataProviderFactory', ['$q', '$http', 'CONSTANTS', function ($q, $http, CONSTANTS) {
 
         function SocialDataProvider() {
-            this.search = function (token, platform, apiMethod, value, params) {
+            this.search = function (sessionInfo, platform, apiMethod, value, params) {
                 var deferred = $q.defer();
                 params = params || '';
 
                 $http({
                     method: 'GET',
-                    url: this.getServiceUrl(token, platform, apiMethod, value, params)
+                    url: this.getServiceUrl(sessionInfo, platform, apiMethod, value, params)
                 }).then(function (data) {
                     deferred.resolve(data.data.response);
                 }, function (data) {
@@ -20,7 +20,7 @@
 
                 return deferred.promise;
             };
-            this.getServiceUrl = function (token, platform, apiMethod, value, params) {
+            this.getServiceUrl = function (sessionInfo, platform, apiMethod, value, params) {
                 return CONSTANTS.BASE_URL + platform + "/" + apiMethod + "/" + value + params;
             };
             this.buildContacts = function (data) {
@@ -29,11 +29,11 @@
         };
 
         function VkSocialDataProvider() {
-            this.search = function (token, platform, apiMethod, value, params) {
+            this.search = function (sessionInfo, platform, apiMethod, value, params) {
                 var deferred = $q.defer();
                 $http({
                     method: 'GET',
-                    url: this.getServiceUrl(token, platform, apiMethod, value, params)
+                    url: this.getServiceUrl(sessionInfo, platform, apiMethod, value, params)
                 }).then(function (data) {
                     deferred.resolve(data.data.response);
                 }, function (data) {
@@ -41,11 +41,11 @@
                 });
                 return deferred.promise;
             };
-            this.getServiceUrl = function (token, platform, apiMethod, value, params) {
+            this.getServiceUrl = function (sessionInfo, platform, apiMethod, value, params) {
                 if (apiMethod == CONSTANTS.SEARCH_METHODS.BY_ID) {
                     return CONSTANTS.BASE_URL + CONSTANTS.PLATFORMS.VK.id + "/" + apiMethod + "/" + value;
                 } else if (apiMethod == CONSTANTS.SEARCH_METHODS.BY_NAME) {
-                    return CONSTANTS.BASE_URL + CONSTANTS.PLATFORMS.VK.id + "/" + apiMethod + "/" + value + "?token=" + token;
+                    return CONSTANTS.BASE_URL + CONSTANTS.PLATFORMS.VK.id + "/" + apiMethod + "/" + value + "?token=" + sessionInfo.sid;
                 }
             };
             this.buildContacts = function (data) {
@@ -60,11 +60,11 @@
         };
 
         function FbSocialDataProvider() {
-            this.search = function (token, platform, apiMethod, value, params) {
+            this.search = function (sessionInfo, platform, apiMethod, value, params) {
                 var deferred = $q.defer();
                 $http({
                     method: 'GET',
-                    url: this.getServiceUrl(token, platform, apiMethod, value, params)
+                    url: this.getServiceUrl(sessionInfo, platform, apiMethod, value, params)
                 }).then(function (data) {
                     deferred.resolve(data.data);
                 }, function (data) {
@@ -72,8 +72,8 @@
                 });
                 return deferred.promise;
             };
-            this.getServiceUrl = function (token, platform, apiMethod, value, params) {
-                return CONSTANTS.BASE_URL + CONSTANTS.PLATFORMS.FB.id + "/" + apiMethod + "/" + value + "?token=" + token;
+            this.getServiceUrl = function (sessionInfo, platform, apiMethod, value, params) {
+                return CONSTANTS.BASE_URL + CONSTANTS.PLATFORMS.FB.id + "/" + apiMethod + "/" + value + "?token=" + sessionInfo.accessToken;
             };
             this.buildContacts = function (data) {
                 if (data.data) {
@@ -89,13 +89,13 @@
         };
 
         function FSQRSocialDataProvider() {
-            this.search = function (token, platform, apiMethod, value, params) {
+            this.search = function (sessionInfo, platform, apiMethod, value, params) {
                 var deferred = $q.defer();
                 params = params || '';
 
                 $http({
                     method: 'GET',
-                    url: this.getServiceUrl(token, platform, apiMethod, value, params)
+                    url: this.getServiceUrl(sessionInfo, platform, apiMethod, value, params)
                 }).then(function (data) {
                     deferred.resolve(data.data.response);
                 }, function (data) {
@@ -104,7 +104,7 @@
 
                 return deferred.promise;
             };
-            this.getServiceUrl = function (token, platform, apiMethod, value, params) {
+            this.getServiceUrl = function (sessionInfo, platform, apiMethod, value, params) {
                 return CONSTANTS.BASE_URL + platform + "/" + apiMethod + "/" + value + params;
             };
             this.buildContacts = function (data) {
