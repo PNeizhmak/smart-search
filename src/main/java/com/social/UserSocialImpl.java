@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Pavel Neizhmak
@@ -22,6 +24,9 @@ public class UserSocialImpl implements IUserSocial {
 
     @Autowired
     private HttpSession httpSession;
+
+    @Autowired
+    private Map<String, List<String>> colorDefinition;
 
     @Override
     public void storeUserSocialId(String socialNetwork, Long socialNetworkUserId) {
