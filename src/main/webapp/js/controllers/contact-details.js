@@ -5,9 +5,7 @@
         .controller('ContactDetailsController', ['$rootScope', '$scope', '$location', 'SocialService', 'UserService', 'CONSTANTS',
             function ($rootScope, $scope, $location, SocialService, UserService, CONSTANTS) {
                 $scope.contactId = $location.search().contactId;
-                
-                var token = $rootScope.sessions[$rootScope.platform.id] != null ? $rootScope.sessions[$rootScope.platform.id].sid : null;
-                SocialService.search(token, $rootScope.platform.id, CONSTANTS.SEARCH_METHODS.BY_ID, $scope.contactId, null)
+                SocialService.search($rootScope.sessions[$rootScope.platform.id], $rootScope.platform.id, CONSTANTS.SEARCH_METHODS.BY_ID, $scope.contactId, null)
                     .then(function (data) {
                         $rootScope.dominantColor = '';
                         $scope.contactDetails = data[0];
