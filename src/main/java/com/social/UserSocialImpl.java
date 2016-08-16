@@ -26,6 +26,7 @@ public class UserSocialImpl implements IUserSocial {
     private HttpSession httpSession;
 
     @Autowired
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private Map<String, List<String>> colorDefinition;
 
     @Override
