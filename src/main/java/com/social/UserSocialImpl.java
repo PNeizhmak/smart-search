@@ -40,8 +40,14 @@ public class UserSocialImpl implements IUserSocial {
 
         final String dominantColor = ImageUtils.getDominantColorByPhoto(new URL(imageUrl));
 
+        final String baseColor = colorDefinition.entrySet().stream()
+                .filter(e -> e.getValue().contains(dominantColor))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
+
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put(dominantColor,"description will be here");
+        jsonObject.put(dominantColor, "base color is: " + baseColor);
 
         return jsonObject.toString();
     }

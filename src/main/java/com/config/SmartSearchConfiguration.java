@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +59,7 @@ public class SmartSearchConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     public Map<String, List<String>> colorDefinition() {
-        return getColorDefinition();
+        return Collections.unmodifiableMap(getColorDefinition());
     }
 
     public Map<String, List<String>> getColorDefinition() {
