@@ -47,8 +47,10 @@ public class UserSocialImpl implements IUserSocial {
                 .findFirst()
                 .orElse(null);
 
+        final String colorDescription = ImageUtils.readColorFile(baseColor);
+
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put(dominantColor, "base color is: " + baseColor);
+        jsonObject.put(dominantColor, colorDescription);
 
         return jsonObject.toString();
     }

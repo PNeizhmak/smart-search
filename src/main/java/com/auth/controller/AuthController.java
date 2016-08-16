@@ -2,6 +2,7 @@ package com.auth.controller;
 
 import com.auth.model.AuthDetails;
 import com.auth.services.IAuthService;
+import com.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +20,7 @@ public class AuthController {
     @Autowired
     private IAuthService authService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = Constants.APP_JSON_UTF_8)
     public ResponseEntity login(@RequestBody final AuthDetails authDetails) throws Exception {
 
         final String username = authDetails.getUsername();
@@ -28,7 +29,7 @@ public class AuthController {
         return authService.login(username, password);
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = Constants.APP_JSON_UTF_8)
     public ResponseEntity register(@RequestBody final AuthDetails authDetails) throws Exception {
 
         final String username = authDetails.getUsername();
