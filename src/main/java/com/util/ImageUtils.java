@@ -18,6 +18,15 @@ public class ImageUtils {
         return imageProcessor.analyzeImage(imageUrl);
     }
 
+    public static void detectFaces(URL imageUrl) throws IOException {
+        imageProcessor.detectFaces(imageUrl);
+    }
+
+    public static int getFacesCount() throws IOException {
+        return imageProcessor.getFacesCount();
+    }
+
+
     public static String readColorFile(final String colorName) throws IOException {
         URL url = Resources.getResource(Constants.COLOR_RES_PATH + colorName + Constants.TXT_EXTENSION);
 

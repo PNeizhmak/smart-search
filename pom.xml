@@ -132,7 +132,7 @@
         <dependency>
             <groupId>com.github.PNeizhmak</groupId>
             <artifactId>image-processor</artifactId>
-            <version>98f1490</version>
+            <version>153dbee</version>
         </dependency>
     </dependencies>
 

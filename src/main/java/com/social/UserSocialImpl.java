@@ -41,6 +41,9 @@ public class UserSocialImpl implements IUserSocial {
 
         final String dominantColor = ImageUtils.getDominantColorByPhoto(new URL(imageUrl));
 
+        ImageUtils.detectFaces(new URL(imageUrl));
+        final int facesCount = ImageUtils.getFacesCount();
+
         final String baseColor = colorDefinition.entrySet().stream()
                 .filter(e -> e.getValue().contains(dominantColor))
                 .map(Map.Entry::getKey)
@@ -50,6 +53,7 @@ public class UserSocialImpl implements IUserSocial {
         final String colorDescription = ImageUtils.readColorFile(baseColor);
 
         JSONObject jsonObject = new JSONObject();
+        jsonObject.put("Faces detected: ", facesCount);
         jsonObject.put(dominantColor, colorDescription);
 
         return jsonObject.toString();
