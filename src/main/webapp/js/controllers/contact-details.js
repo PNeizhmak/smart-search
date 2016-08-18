@@ -9,6 +9,10 @@
                     .then(function (data) {
                         $rootScope.dominantColor = '';
                         $scope.contactDetails = data[0];
+                        if ($rootScope.platform.id == CONSTANTS.PLATFORMS.FB.id) {
+                            $scope.contactDetails = data;
+                            $scope.contactDetails.photo_big = data.picture.data.url;
+                        }
                     }, function (data) {
                         console.log(data);
                     });

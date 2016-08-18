@@ -4,7 +4,17 @@
             <img src="{{contactDetails.photo_big}}" class="avatar img-circle" alt="avatar">
         </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2" ng-show="platform.id == 'fb'">
+        <div>
+            id:
+            {{contactDetails.id}}
+        </div>
+        <div>
+            first name:
+            {{contactDetails.name}}
+        </div>
+    </div>
+    <div class="col-md-2" ng-show="platform.id == 'vk'">
         <div>
             id:
             {{contactDetails.uid}}
