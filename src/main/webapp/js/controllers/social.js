@@ -34,14 +34,17 @@
 
                 $scope.performSearch = function (params) {
                     $rootScope.platform = $scope.platform;
-                    SocialService.search($rootScope.sessions[$scope.platform.id], $scope.platform.id, $scope.searchParam, $scope.searchValue, params)
-                        .then(function (data) {
-                            $scope.contacts = SocialService.buildContacts($scope.platform.id, data);
-                            $scope.vm.contacts = $scope.contacts;
-                            $scope.vm.setPage(1);
-                        }, function (data) {
-                            console.log(data);
-                        });
+                    
+                    SocialService.searchAll($rootScope.sessions, $scope.searchValue).then(function (data) {
+                        $scope.contacts = [];
+                        for (var platformId in data) {
+                            $scope.contacts = $scope.contacts.concat(SocialService.buildContacts(platformId, data[platformId]));
+                        }
+                        $scope.vm.contacts = $scope.contacts;
+                        $scope.vm.setPage(1);
+                    }, function (data) {
+                        console.log(data);
+                    });
                 };
 
                 $scope.authorize = function (platformId) {
