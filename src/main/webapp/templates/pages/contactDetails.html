@@ -52,6 +52,36 @@
             {{contactDetails.skype}}
         </div>
     </div>
+    <div class="col-md-2" ng-show="platform.id == 'googlePlus'">
+        <div>
+            id:
+            {{contactDetails.id}}
+        </div>
+        <div>
+            first name:
+            {{contactDetails.name.givenName}}
+        </div>
+        <div>
+            last name:
+            {{contactDetails.name.familyName}}
+        </div>
+        <div>
+            url:
+            {{contactDetails.url}}
+        </div>
+        <div>
+            organizations:
+            {{contactDetails.organizations}}
+        </div>
+        <div>
+            places lived:
+            {{contactDetails.placesLived}}
+        </div>
+        <div>
+            friends count:
+            {{contactDetails.circledByCount}}
+        </div>
+    </div>
 </div>
 
 <div class="col-md-2">

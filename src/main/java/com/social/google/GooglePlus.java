@@ -61,7 +61,7 @@ public class GooglePlus {
     }
 
     @RequestMapping(value = "/getUserInfo/{id}", method = RequestMethod.GET, produces = Constants.APP_JSON_UTF_8)
-    public Response getUserInfo(@PathVariable("id") final String id, @MatrixVariable(value = "params", required = false) final List<String> jsonParamsMap)
+    public ResponseEntity getUserInfo(@PathVariable("id") final String id, @MatrixVariable(value = "params", required = false) final List<String> jsonParamsMap)
         throws IOException, URISyntaxException {
         HttpResponse response;
 
@@ -75,6 +75,6 @@ public class GooglePlus {
 
         String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return UriUtils.buildResponse(stringResponse);
+        return ResponseEntity.ok(stringResponse);
     }
 }
