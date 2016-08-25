@@ -49,6 +49,12 @@
 
                 $scope.authorize = function (platformId) {
                     if (!$rootScope.sessions || !$rootScope.sessions[platformId]) {
+
+                        //ad-hoc solution
+                        delete $rootScope.sessions[CONSTANTS.PLATFORMS.GOOGLE_PLUS.id];
+                        delete $rootScope.sessions[CONSTANTS.PLATFORMS.VK.id];
+                        delete $rootScope.sessions[CONSTANTS.PLATFORMS.FB.id];
+
                         if (platformId == CONSTANTS.PLATFORMS.VK.id) {
                             if (!window.confirm('You are not logged in to VK. Log in?')) {
                                 return false;
@@ -89,6 +95,9 @@
                                     }
                                 }, {scope: 'email,user_likes'});
                             }
+                        } else if (platformId == CONSTANTS.PLATFORMS.GOOGLE_PLUS.id) {
+                            $rootScope.sessions[CONSTANTS.PLATFORMS.GOOGLE_PLUS.id] = "connected";
+                            $scope.performSearch();
                         } else {
                             return true;
                         }

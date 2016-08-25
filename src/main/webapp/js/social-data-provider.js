@@ -88,6 +88,34 @@
             };
         };
 
+        function GoogleSocialDataProvider() {
+            this.search = function (sessionInfo, platform, apiMethod, value, params) {
+                var deferred = $q.defer();
+                params = params || '';
+
+                $http({
+                    method: 'GET',
+                    url: this.getServiceUrl(sessionInfo, platform, apiMethod, value, params)
+                }).then(function (data) {
+                    deferred.resolve(data.data);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+
+                return deferred.promise;
+            };
+            this.getServiceUrl = function (sessionInfo, platform, apiMethod, value, params) {
+                return CONSTANTS.BASE_URL + platform + "/" + apiMethod + "/" + value + params;
+            };
+            this.buildContacts = function (data) {
+                var contacts = [];
+                data.items.forEach(function (item) {
+                    contacts.push({id: item.id, firstName: item.displayName, photo: item.image.url});
+                });
+                return contacts;
+            };
+        };
+
         function FSQRSocialDataProvider() {
             this.search = function (sessionInfo, platform, apiMethod, value, params) {
                 var deferred = $q.defer();
@@ -122,7 +150,9 @@
                     return new VkSocialDataProvider();
                 case CONSTANTS.PLATFORMS.FB.id:
                     return new FbSocialDataProvider();
-                case CONSTANTS.PLATFORMS.FB.id:
+                case CONSTANTS.PLATFORMS.GOOGLE_PLUS.id:
+                    return new GoogleSocialDataProvider();
+                case CONSTANTS.PLATFORMS.FORSQUARE.id:
                     return new FSQRSocialDataProvider();
                 default:
                     return new SocialDataProvider();

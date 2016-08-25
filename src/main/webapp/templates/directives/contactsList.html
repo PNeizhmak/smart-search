@@ -3,7 +3,9 @@
     <div class="resultset">
         <div class="contact-list-profile-img-wrap">
             <img class="contact-list-profile-img" src="{{::contact.photo}}"/>
-            <img class="resultset-vk-img " src="../../img/vk.png"/>
+            <img class="resultset-social-img " ng-show="platform.id == 'vk'" src="../../img/vk.png"/>
+            <img class="resultset-social-img " ng-show="platform.id == 'fb'" src="../../img/fb.png"/>
+            <img class="resultset-social-img " ng-show="platform.id == 'googlePlus'" src="../../img/google.png"/>
         </div>
         <div class="resultset-description">
             {{::contact.firstName}}

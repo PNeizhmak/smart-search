@@ -17,6 +17,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +43,7 @@ public class GooglePlus {
     private HttpClient httpClient;
 
     @RequestMapping(value = "/searchByName/{name}", method = RequestMethod.GET, produces = Constants.APP_JSON_UTF_8)
-    public Response searchByName(@PathVariable("name") final String name) throws IOException, URISyntaxException {
+    public ResponseEntity searchByName(@PathVariable("name") final String name) throws IOException, URISyntaxException {
         HttpResponse response;
 
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -56,7 +57,7 @@ public class GooglePlus {
 
         final String stringResponse = EntityUtils.toString(response.getEntity());
 
-        return UriUtils.buildResponse(stringResponse);
+        return ResponseEntity.ok(stringResponse);
     }
 
     @RequestMapping(value = "/getUserInfo/{id}", method = RequestMethod.GET, produces = Constants.APP_JSON_UTF_8)
