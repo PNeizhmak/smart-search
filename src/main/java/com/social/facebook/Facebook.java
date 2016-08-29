@@ -50,6 +50,7 @@ public class Facebook {
         nameValuePairs.add(new BasicNameValuePair(Constants.ACCESS_TOKEN, token));
         nameValuePairs.add(new BasicNameValuePair("q", name));
         nameValuePairs.add(new BasicNameValuePair("type", "user"));
+        nameValuePairs.add(new BasicNameValuePair("limit", "1000"));
 
         final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, FB_GRAPH_FREFIX, "/search", nameValuePairs);
         HttpGet searchRequest = new HttpGet(uri);
