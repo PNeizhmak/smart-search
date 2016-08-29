@@ -15,7 +15,7 @@
                             $scope.contactDetails.photo_big = data.picture.data.url;
                         } else if ($rootScope.platform.id == CONSTANTS.PLATFORMS.GOOGLE_PLUS.id) {
                             $scope.contactDetails = data;
-                            $scope.contactDetails.photo_big = data.image.url;
+                            $scope.contactDetails.photo_big = data.image.url.slice(0,-6);
                         }
                     }, function (data) {
                         console.log(data);
