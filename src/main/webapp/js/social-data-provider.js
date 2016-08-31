@@ -144,6 +144,34 @@
             };
         };
 
+        function TwitterSocialDataProvider() {
+            this.search = function (sessionInfo, platform, apiMethod, value, params) {
+                var deferred = $q.defer();
+                params = params || '';
+
+                $http({
+                    method: 'GET',
+                    url: this.getServiceUrl(sessionInfo, platform, apiMethod, value, params)
+                }).then(function (data) {
+                    deferred.resolve(data.data);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+
+                return deferred.promise;
+            };
+            this.getServiceUrl = function (sessionInfo, platform, apiMethod, value, params) {
+                return CONSTANTS.BASE_URL + platform + "/" + apiMethod + "/" + value + params;
+            };
+            this.buildContacts = function (data) {
+                var contacts = [];
+                data.forEach(function (item) {
+                    contacts.push({id: item.id, firstName: item.name, photo: item.profile_image_url_https});
+                });
+                return contacts;
+            };
+        };
+
         this.getSocialDataProvider = function (platform) {
             switch (platform) {
                 case CONSTANTS.PLATFORMS.VK.id:
@@ -154,6 +182,8 @@
                     return new GoogleSocialDataProvider();
                 case CONSTANTS.PLATFORMS.FORSQUARE.id:
                     return new FSQRSocialDataProvider();
+                case CONSTANTS.PLATFORMS.TWITTER.id:
+                    return new TwitterSocialDataProvider();
                 default:
                     return new SocialDataProvider();
             }

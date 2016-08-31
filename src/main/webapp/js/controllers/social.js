@@ -54,6 +54,7 @@
                         delete $rootScope.sessions[CONSTANTS.PLATFORMS.GOOGLE_PLUS.id];
                         delete $rootScope.sessions[CONSTANTS.PLATFORMS.VK.id];
                         delete $rootScope.sessions[CONSTANTS.PLATFORMS.FB.id];
+                        delete $rootScope.sessions[CONSTANTS.PLATFORMS.TWITTER.id];
 
                         if (platformId == CONSTANTS.PLATFORMS.VK.id) {
                             if (!window.confirm('You are not logged in to VK. Log in?')) {
@@ -97,6 +98,9 @@
                             }
                         } else if (platformId == CONSTANTS.PLATFORMS.GOOGLE_PLUS.id) {
                             $rootScope.sessions[CONSTANTS.PLATFORMS.GOOGLE_PLUS.id] = "connected";
+                            $scope.performSearch();
+                        } else if (platformId == CONSTANTS.PLATFORMS.TWITTER.id) {
+                            $rootScope.sessions[CONSTANTS.PLATFORMS.TWITTER.id] = "connected";
                             $scope.performSearch();
                         } else {
                             return true;
