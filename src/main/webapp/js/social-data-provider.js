@@ -145,13 +145,13 @@
         };
 
         function TwitterSocialDataProvider() {
-            this.search = function (sessionInfo, platform, apiMethod, value, params) {
+            this.search = function (sessionInfo, platform, apiMethod, value, nickname) {
                 var deferred = $q.defer();
-                params = params || '';
+                nickname = nickname || '';
 
                 $http({
                     method: 'GET',
-                    url: this.getServiceUrl(sessionInfo, platform, apiMethod, value, params)
+                    url: this.getServiceUrl(sessionInfo, platform, apiMethod, value, nickname)
                 }).then(function (data) {
                     deferred.resolve(data.data);
                 }, function (data) {
@@ -160,13 +160,20 @@
 
                 return deferred.promise;
             };
-            this.getServiceUrl = function (sessionInfo, platform, apiMethod, value, params) {
-                return CONSTANTS.BASE_URL + platform + "/" + apiMethod + "/" + value + params;
+            this.getServiceUrl = function (sessionInfo, platform, apiMethod, value, nickname) {
+                var url;
+                if (nickname == '') {
+                    url = CONSTANTS.BASE_URL + platform + "/" + apiMethod + "/?name=" + value;
+                } else {
+                   url = CONSTANTS.BASE_URL + platform + "/" + apiMethod + "/?id=" + value + "&nickname=" + nickname;
+                }
+
+                return url;
             };
             this.buildContacts = function (data) {
                 var contacts = [];
                 data.forEach(function (item) {
-                    contacts.push({id: item.id, firstName: item.name, photo: item.profile_image_url_https});
+                    contacts.push({id: item.id, firstName: item.name, photo: item.profile_image_url_https, screenName: item.screen_name});
                 });
                 return contacts;
             };

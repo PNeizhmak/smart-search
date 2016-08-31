@@ -5,7 +5,11 @@
         .controller('ContactDetailsController', ['$rootScope', '$scope', '$location', 'SocialService', 'UserService', 'CONSTANTS',
             function ($rootScope, $scope, $location, SocialService, UserService, CONSTANTS) {
                 $scope.contactId = $location.search().contactId;
-                SocialService.search($rootScope.sessions[$rootScope.platform.id], $rootScope.platform.id, CONSTANTS.SEARCH_METHODS.BY_ID, $scope.contactId, null)
+
+                //ad-hoc for twitter
+                var nickname = $scope.contact.screenName;
+
+                SocialService.search($rootScope.sessions[$rootScope.platform.id], $rootScope.platform.id, CONSTANTS.SEARCH_METHODS.BY_ID, $scope.contactId, nickname)
                     .then(function (data) {
                         $rootScope.dominantColor = '';
                         if ($rootScope.platform.id == CONSTANTS.PLATFORMS.VK.id) {
@@ -16,6 +20,8 @@
                         } else if ($rootScope.platform.id == CONSTANTS.PLATFORMS.GOOGLE_PLUS.id) {
                             $scope.contactDetails = data;
                             $scope.contactDetails.photo_big = data.image.url.slice(0,-6);
+                        } else if ($rootScope.platform.id == CONSTANTS.PLATFORMS.TWITTER.id) {
+                            $scope.contactDetails = data;
                         }
                     }, function (data) {
                         console.log(data);
