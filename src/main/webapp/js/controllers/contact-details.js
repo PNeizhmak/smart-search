@@ -22,6 +22,7 @@
                             $scope.contactDetails.photo_big = data.image.url.slice(0,-6);
                         } else if ($rootScope.platform.id == CONSTANTS.PLATFORMS.TWITTER.id) {
                             $scope.contactDetails = data;
+                            $scope.contactDetails.photo_big = data.profile_image_url_https.replace('_normal','');
                         }
                     }, function (data) {
                         console.log(data);
