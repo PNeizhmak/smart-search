@@ -3,10 +3,10 @@
     <div class="resultset">
         <div class="contact-list-profile-img-wrap">
             <img class="contact-list-profile-img" src="{{::contact.photo}}"/>
-            <img class="resultset-social-img " ng-show="platform.id == 'vk'" src="../../img/vk.png"/>
-            <img class="resultset-social-img " ng-show="platform.id == 'fb'" src="../../img/fb.png"/>
-            <img class="resultset-social-img " ng-show="platform.id == 'googlePlus'" src="../../img/google.png"/>
-            <img class="resultset-social-img " ng-show="platform.id == 'twitter'" src="../../img/twitter.png"/>
+            <img class="resultset-social-img " ng-show="vm.platform.id == 'vk'" src="../../img/vk.png"/>
+            <img class="resultset-social-img " ng-show="vm.platform.id == 'fb'" src="../../img/fb.png"/>
+            <img class="resultset-social-img " ng-show="vm.platform.id == 'googlePlus'" src="../../img/google.png"/>
+            <img class="resultset-social-img " ng-show="vm.platform.id == 'twitter'" src="../../img/twitter.png"/>
         </div>
         <div class="resultset-description">
             {{::contact.firstName}}

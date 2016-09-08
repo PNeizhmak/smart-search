@@ -27,6 +27,7 @@
                 }
 
                 function setPage(page) {
+                    vm.platform = $scope.platform;
                     if (page < 1 || (page > vm.pager.totalPages && vm.pager.totalPages > 0)) {
                         return;
                     }
