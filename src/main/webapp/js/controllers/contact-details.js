@@ -2,8 +2,14 @@
     'use strict';
 
     angular.module('smartSearchApp.controllers')
-        .controller('ContactDetailsController', ['$rootScope', '$scope', '$location', 'SocialService', 'UserService', 'CONSTANTS',
-            function ($rootScope, $scope, $location, SocialService, UserService, CONSTANTS) {
+        .controller('ContactDetailsController', ['$rootScope', '$scope', '$location', 'SocialService', 'UserService', 'CONSTANTS', 'contactsService',
+            function ($rootScope, $scope, $location, SocialService, UserService, CONSTANTS, contactsService) {
+
+                $rootScope.contact = contactsService.model.contact;
+                $rootScope.contactDetails = contactsService.model.contactDetails;
+                $rootScope.sessions = contactsService.model.sessions || {};
+                $rootScope.platform = contactsService.model.platform || {};
+
                 $scope.contactId = $location.search().contactId;
 
                 //ad-hoc for twitter
@@ -24,6 +30,7 @@
                             $scope.contactDetails = data;
                             $scope.contactDetails.photo_big = data.profile_image_url_https.replace('_normal','');
                         }
+                        contactsService.model.contactDetails = $scope.contactDetails;
                     }, function (data) {
                         console.log(data);
                     });

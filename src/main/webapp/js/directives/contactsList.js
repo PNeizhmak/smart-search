@@ -1,7 +1,8 @@
 (function () {
     'use strict';
     var module = angular.module('smartSearchApp.controllers');
-    module.directive('contactsList', ['$rootScope', '$location', 'PagerService', function ($rootScope, $location, PagerService) {
+    module.directive('contactsList', ['$rootScope', '$location', 'PagerService', 'contactsService',
+        function ($rootScope, $location, PagerService, contactsService) {
         return {
             templateUrl: 'templates/directives/contactsList.html',
             restrict: 'E',
@@ -9,10 +10,11 @@
 
                 var vm = this;
 
-                vm.displayedContacts = [];
-                vm.contacts = [];
+                vm.displayedContacts = contactsService.model.displayedContacts || [];
+                vm.contacts = contactsService.model.contacts || [];
                 $scope.showDetails = function (contact) {
                     $rootScope.contact = contact;
+                    contactsService.model.contact = contact;
                     $location.path('/details').search({contactId: contact.id});
                 };
 
@@ -28,6 +30,7 @@
 
                 function setPage(page) {
                     vm.platform = $scope.platform;
+                    contactsService.model.platform = vm.platform;
                     if (page < 1 || (page > vm.pager.totalPages && vm.pager.totalPages > 0)) {
                         return;
                     }
@@ -36,7 +39,10 @@
                     vm.pager = PagerService.GetPager(vm.contacts.length, page);
 
                     // get current page of items
-                    vm.displayedContacts = vm.contacts.slice(vm.pager.startIndex, vm.pager.endIndex + 1);
+                    if (vm.contacts && vm.contacts.length > 0) {
+                        vm.displayedContacts = vm.contacts.slice(vm.pager.startIndex, vm.pager.endIndex + 1);
+                        contactsService.model.displayedContacts = vm.displayedContacts;
+                    }
                 }
             },
             controllerAs: 'vm'

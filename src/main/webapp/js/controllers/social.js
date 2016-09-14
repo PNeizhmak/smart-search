@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('smartSearchApp.controllers')
-        .controller('SocialController', ['$location', '$rootScope', '$scope', '$window', 'SocialService', 'AuthenticationService', 'UserService', 'CONSTANTS',
-            function ($location, $rootScope, $scope, $window, SocialService, AuthenticationService, UserService, CONSTANTS) {
+        .controller('SocialController', ['$location', '$rootScope', '$scope', '$window', 'SocialService', 'AuthenticationService', 'UserService', 'CONSTANTS', 'contactsService',
+            function ($location, $rootScope, $scope, $window, SocialService, AuthenticationService, UserService, CONSTANTS, contactsService) {
 
-                $rootScope.sessions = $rootScope.sessions || {};
+                $rootScope.sessions = contactsService.model.sessions || {};
                 $scope.result = '';
                 $scope.searchParam = 'getUserInfo';
                 $scope.searchValue = '';
@@ -14,6 +14,7 @@
 
                 $scope.submit = function ($event) {
                     $scope.contacts = null;
+                    contactsService.model.contacts = null;
 
                     var params;
                     if ($scope.platform.id == CONSTANTS.PLATFORMS.TWITTER.id) {
@@ -41,6 +42,7 @@
                             $scope.contacts = $scope.contacts.concat(SocialService.buildContacts(platformId, data[platformId]));
                         }
                         $scope.vm.contacts = $scope.contacts;
+                        contactsService.model.contacts = $scope.contacts;
                         $scope.vm.setPage(1);
                     }, function (data) {
                         console.log(data);
@@ -63,7 +65,7 @@
                                 VK.Auth.login(function (response) {
                                     if (response.session) {
                                         $rootScope.sessions[CONSTANTS.PLATFORMS.VK.id] = response.session;
-
+                                        contactsService.model.sessions = $rootScope.sessions;
                                         var vkId = response.session.mid;
                                         UserService.storeUserSocialIds('vk', vkId);
 
@@ -83,6 +85,7 @@
                                 FB.login(function (response) {
                                     if (response.authResponse) {
                                         $rootScope.sessions[CONSTANTS.PLATFORMS.FB.id] = response.authResponse;
+                                        contactsService.model.sessions = $rootScope.sessions;
                                         // FB.api('/me', function(response) {
                                         //     console.log('Good to see you, ' + response.name + '.');
                                         // });
@@ -98,9 +101,11 @@
                             }
                         } else if (platformId == CONSTANTS.PLATFORMS.GOOGLE_PLUS.id) {
                             $rootScope.sessions[CONSTANTS.PLATFORMS.GOOGLE_PLUS.id] = "connected";
+                            contactsService.model.sessions = $rootScope.sessions;
                             $scope.performSearch();
                         } else if (platformId == CONSTANTS.PLATFORMS.TWITTER.id) {
                             $rootScope.sessions[CONSTANTS.PLATFORMS.TWITTER.id] = "connected";
+                            contactsService.model.sessions = $rootScope.sessions;
                             $scope.performSearch();
                         } else {
                             return true;

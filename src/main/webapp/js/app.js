@@ -41,4 +41,41 @@
                 }
             });
         }]);
+
+    app.factory('contactsService', ['$rootScope', function ($rootScope) {
+        var service = {
+
+            model: {},
+
+            SaveState: function () {
+                sessionStorage.contactsService = angular.toJson(service.model);
+            },
+
+            RestoreState: function () {
+                service.model = angular.fromJson(sessionStorage.contactsService);
+            }
+        }
+
+        $rootScope.$on("savestate", service.SaveState);
+        $rootScope.$on("restorestate", service.RestoreState);
+
+        service.model = angular.fromJson(sessionStorage.contactsService) || {};
+
+        return service;
+    }]);
+
+    app.run(['$rootScope', function($rootScope) {
+        window.onbeforeunload = function(event) {
+            sessionStorage.restorestate = true;
+            $rootScope.$broadcast('savestate');
+        };
+
+        $rootScope.$on("$routeChangeStart", function (event, next, current) {
+            if (sessionStorage.restorestate == "true") {
+                $rootScope.$broadcast('restorestate'); //let everything know we need to restore state
+                sessionStorage.restorestate = false;
+            }
+        });
+    }]);
+
 })();

@@ -15,7 +15,7 @@
     </div>
 </div>
 <!-- pager -->
-<ul ng-if="vm.pager.pages.length" class="pagination" ng-show="contacts">
+<ul ng-if="vm.pager.pages.length" class="pagination" ng-show="vm.contacts">
     <li ng-class="{disabled:vm.pager.currentPage === 1}">
         <a ng-click="vm.setPage(1)">First</a>
     </li>
