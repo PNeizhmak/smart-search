@@ -1,133 +1,150 @@
-<div class="row">
-    <div class="col-md-2">
-        <div class="text-center">
-            <img src="{{contactDetails.photo_big}}" class="avatar img-circle" alt="avatar">
+<div class="contact-details">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="text-center">
+                <img src="{{contactDetails.photo_big}}" class="avatar img-circle" alt="avatar">
+            </div>
+        </div>
+        <div class="col-md-10" ng-show="platform.id == 'fb'">
+            <div>
+                id:
+                {{contactDetails.id}}
+            </div>
+            <div>
+                first name:
+                {{contactDetails.name}}
+            </div>
+        </div>
+        <div class="col-md-10" ng-show="platform.id == 'vk'">
+            <div>
+                id:
+                {{contactDetails.uid}}
+            </div>
+            <div>
+                status:
+                {{contactDetails.status}}
+            </div>
+            <div>
+                first name:
+                {{contactDetails.first_name}}
+            </div>
+            <div>
+                last name:
+                {{contactDetails.last_name}}
+            </div>
+            <div>
+                home phone:
+                {{contactDetails.home_phone}}
+            </div>
+            <div>
+                mobile phone:
+                {{contactDetails.mobile_phone}}
+            </div>
+            <div>
+                site:
+                {{contactDetails.site}}
+            </div>
+            <div>
+                twitter:
+                {{contactDetails.twitter}}
+            </div>
+            <div>
+                instagram:
+                {{contactDetails.instagram}}
+            </div>
+            <div>
+                skype:
+                {{contactDetails.skype}}
+            </div>
+            <div>
+                universities:
+                <div>
+                    {{contactDetails.universities}}
+                </div>
+            </div>
+            <div>
+                schools:
+                {{contactDetails.schools}}
+            </div>
+        </div>
+        <div class="col-md-10" ng-show="platform.id == 'googlePlus'">
+            <div>
+                id:
+                {{contactDetails.id}}
+            </div>
+            <div>
+                first name:
+                {{contactDetails.name.givenName}}
+            </div>
+            <div>
+                last name:
+                {{contactDetails.name.familyName}}
+            </div>
+            <div>
+                url:
+                {{contactDetails.url}}
+            </div>
+            <div>
+                organizations:
+                {{contactDetails.organizations}}
+            </div>
+            <div>
+                places lived:
+                {{contactDetails.placesLived}}
+            </div>
+            <div>
+                friends count:
+                {{contactDetails.circledByCount}}
+            </div>
+        </div>
+        <div class="col-md-10" ng-show="platform.id == 'twitter'">
+            <div>
+                id:
+                {{contactDetails.id}}
+            </div>
+            <div>
+                name:
+                {{contactDetails.name}}
+            </div>
+            <div>
+                screen_name:
+                {{contactDetails.screen_name}}
+            </div>
+            <div>
+                lang:
+                {{contactDetails.lang}}
+            </div>
+            <div>
+                description:
+                {{contactDetails.description}}
+            </div>
+            <div>
+                location:
+                {{contactDetails.location}}
+            </div>
+            <div>
+                profile location:
+                {{contactDetails.profile_location}}
+            </div>
+            <div>
+                time zone:
+                {{contactDetails.time_zone}}
+            </div>
+            <div>
+                url:
+                {{contactDetails.url}}
+            </div>
         </div>
     </div>
-    <div class="col-md-2" ng-show="platform.id == 'fb'">
-        <div>
-            id:
-            {{contactDetails.id}}
-        </div>
-        <div>
-            first name:
-            {{contactDetails.name}}
-        </div>
-    </div>
-    <div class="col-md-2" ng-show="platform.id == 'vk'">
-        <div>
-            id:
-            {{contactDetails.uid}}
-        </div>
-        <div>
-            status:
-            {{contactDetails.status}}
-        </div>
-        <div>
-            first name:
-            {{contactDetails.first_name}}
-        </div>
-        <div>
-            last name:
-            {{contactDetails.last_name}}
-        </div>
-        <div>
-            mobile phone:
-            {{contactDetails.mobile_phone}}
-        </div>
-        <div>
-            site:
-            {{contactDetails.site}}
-        </div>
-        <div>
-            twitter:
-            {{contactDetails.twitter}}
-        </div>
-        <div>
-            instagram:
-            {{contactDetails.instagram}}
-        </div>
-        <div>
-            skype:
-            {{contactDetails.skype}}
+    <div class="row">
+        <div class="col-md-10">
+            <button ng-click="checkDominantColor()" id="checkDominantColorBtn" name="checkDominantColorBtn"
+                    class="btn btn-primary">
+                analyze profile photo
+            </button>
+            <div>
+                {{dominantColor}}
+            </div>
         </div>
     </div>
-    <div class="col-md-2" ng-show="platform.id == 'googlePlus'">
-        <div>
-            id:
-            {{contactDetails.id}}
-        </div>
-        <div>
-            first name:
-            {{contactDetails.name.givenName}}
-        </div>
-        <div>
-            last name:
-            {{contactDetails.name.familyName}}
-        </div>
-        <div>
-            url:
-            {{contactDetails.url}}
-        </div>
-        <div>
-            organizations:
-            {{contactDetails.organizations}}
-        </div>
-        <div>
-            places lived:
-            {{contactDetails.placesLived}}
-        </div>
-        <div>
-            friends count:
-            {{contactDetails.circledByCount}}
-        </div>
-    </div>
-    <div class="col-md-2" ng-show="platform.id == 'twitter'">
-        <div>
-            id:
-            {{contactDetails.id}}
-        </div>
-        <div>
-            name:
-            {{contactDetails.name}}
-        </div>
-        <div>
-            screen_name:
-            {{contactDetails.screen_name}}
-        </div>
-        <div>
-            lang:
-            {{contactDetails.lang}}
-        </div>
-        <div>
-            description:
-            {{contactDetails.description}}
-        </div>
-        <div>
-            location:
-            {{contactDetails.location}}
-        </div>
-        <div>
-            profile location:
-            {{contactDetails.profile_location}}
-        </div>
-        <div>
-            time zone:
-            {{contactDetails.time_zone}}
-        </div>
-        <div>
-            url:
-            {{contactDetails.url}}
-        </div>
-    </div>
-</div>
-
-<div class="col-md-2">
-    <button ng-click="checkDominantColor()" id="checkDominantColorBtn" name="checkDominantColorBtn"
-            class="btn btn-primary">
-        analyze profile photo
-    </button>
-    <h4>
-        {{dominantColor}}
-    </h4>
 </div>

@@ -84,3 +84,10 @@ div.contact-list-profile-img-wrap {
 img.contact-list-profile-img {
     border-radius: 50%;
 }
+
+div.contact-details {
+    width: 50%;
+    margin: auto;
+    padding-top: 50px;
+    background-color: #F5F5F5;
+}

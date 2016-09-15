@@ -69,7 +69,7 @@ public class Vk {
 
         final List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("user_ids", id));
-        nameValuePairs.add(new BasicNameValuePair("fields", "city,contacts,site,education,status,connections,photo_medium,photo_big"));
+        nameValuePairs.add(new BasicNameValuePair("fields", "city,contacts,site,education,status,connections,photo_medium,photo_big,bdate,country,universities,schools,last_seen,interests,activities,about,screen_name"));
         nameValuePairs.add(new BasicNameValuePair("name_case", "Nom"));
 
         final URI uri = UriUtils.buildRequest(Constants.SCHEMA_HTTPS, VK_PREFIX, "/users.get", nameValuePairs);
