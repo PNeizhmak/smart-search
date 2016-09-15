@@ -91,3 +91,13 @@ div.contact-details {
     padding-top: 50px;
     background-color: #F5F5F5;
 }
+
+div.pagerCentered {
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+}
+.centerUL li {
+    display: inline;
+    text-align: center;
+}
