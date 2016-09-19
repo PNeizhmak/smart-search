@@ -5,7 +5,7 @@
                 <img src="{{contactDetails.photo_big}}" class="avatar img-circle" alt="avatar">
             </div>
         </div>
-        <div class="col-md-10" ng-show="platform.id == 'fb'">
+        <div class="col-md-10 contact-details-info" ng-show="platform.id == 'fb'">
             <div>
                 id:
                 {{contactDetails.id}}
@@ -15,7 +15,7 @@
                 {{contactDetails.name}}
             </div>
         </div>
-        <div class="col-md-10" ng-show="platform.id == 'vk'">
+        <div class="col-md-10 contact-details-info" ng-show="platform.id == 'vk'">
             <div>
                 id:
                 {{contactDetails.uid}}
@@ -67,7 +67,7 @@
                 {{contactDetails.schools}}
             </div>
         </div>
-        <div class="col-md-10" ng-show="platform.id == 'googlePlus'">
+        <div class="col-md-10 contact-details-info" ng-show="platform.id == 'googlePlus'">
             <div>
                 id:
                 {{contactDetails.id}}
@@ -97,7 +97,7 @@
                 {{contactDetails.circledByCount}}
             </div>
         </div>
-        <div class="col-md-10" ng-show="platform.id == 'twitter'">
+        <div class="col-md-10 contact-details-info" ng-show="platform.id == 'twitter'">
             <div>
                 id:
                 {{contactDetails.id}}

@@ -101,3 +101,7 @@ div.pagerCentered {
     display: inline;
     text-align: center;
 }
+
+div.contact-details-info {
+    margin: 25px;
+}
